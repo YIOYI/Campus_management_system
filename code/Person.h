@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Event.h"
+#include "Building.h"
 using namespace std;
 
 class Person
@@ -15,8 +16,8 @@ public:
 private:
 	string ID;
 	string password;
-	vector<Event&> DayCurriculum;
-	Building position;
+	vector<Event&> DayCurriculum;	//每天晚上读取学生第二天的课表
+	Building position;				//学生当前位置
 	unsigned Tag;
 };
 

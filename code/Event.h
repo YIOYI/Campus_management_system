@@ -1,34 +1,52 @@
-#ifndef _EVENT_H_
-#define _EVENT_H_
+#ifndef _CURRICULUM_H_
+#define _CURRICULUM_H_
 
+#include<iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
+#include <array>
+#include<fstream>
 #include "Time.h"
-#include "Building.h"
+//#include "Building.h"
+//#include "Person.h"
 using namespace std;
 
 class Event
 {
 public:
-	Event();
-	~Event();
-
+	Event() { ; };
+	~Event() { ; };
+	friend class Curriculum;
+	void init(Event& a);
 private:
-	Time time;
+	Time start;
+	Time end;
 	string name;
-	Building& building;
-	vector<string> member;
-	vector<int> weeks;
-	unsigned Tag;
+	/*Building& building;*/
+	vector<int> weeks;      //事件发生周次
+	unsigned Tag;           //区分不同种类事件
+	vector<int> ID;         //学生学号(2021xxx)
+	vector<Event> event;
+	vector<vector<int>> time_sort_;
 };
 
-Event::Event()
+class Curriculum
 {
-}
+public:
+	Curriculum() { ; };
+	~Curriculum() { ; };
+	void createcurriculum();
+	void show();
+	void search_one_day(int);
+	void search_one_class(string);
+	void sort_time();
+private:
+	vector<Event> events;
+	vector<vector<int>> time_sort_;
+	array<vector<int>, 7> time;
+	array<vector<int>, 5> weight;
+};
 
-Event::~Event()
-{
-}
 
-#endif // !_EVENT_H_
-
+#endif // !_CURRICULUM_H_
