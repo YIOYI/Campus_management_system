@@ -1,0 +1,42 @@
+<RCC>
+    <qresource prefix="/">
+        <file>picture/lonely_rock.jpg</file>
+        <file>picture/lucy.jpg</file>
+        <file>picture/violet.jpg</file>
+        <file>picture/mkim.jpg</file>
+        <file>picture/who.jpg</file>
+        <file>picture/spiderman.jpg</file>
+        <file>picture/natrue.jpg</file>
+        <file>picture/search.png</file>
+        <file>picture/mkim1.png</file>
+        <file>picture/natrue1.png</file>
+        <file>picture/2021210.png</file>
+        <file>picture/girl.png</file>
+        <file>picture/college.png</file>
+        <file>picture/name.png</file>
+        <file>picture/major.png</file>
+        <file>picture/id_card.png</file>
+        <file>picture/2021211.png</file>
+        <file>picture/2021215.png</file>
+        <file>picture/2021216.png</file>
+        <file>picture/2021218.png</file>
+        <file>picture/2021219.png</file>
+        <file>picture/2021212.png</file>
+        <file>picture/2021213.png</file>
+        <file>picture/2021214.png</file>
+        <file>picture/2021217.png</file>
+        <file>txt/Buildings.txt</file>
+        <file>picture/arrow.png</file>
+        <file>picture/clear.png</file>
+        <file>picture/continue.png</file>
+        <file>picture/guide.png</file>
+        <file>picture/happy.jpg</file>
+        <file>picture/pause.png</file>
+        <file>picture/week.png</file>
+        <file>picture/buptmap.jpg</file>
+        <file>picture/hour.png</file>
+        <file>picture/add_alarm.png</file>
+        <file>picture/delete.png</file>
+        <file>mp3/alarm.wav</file>
+    </qresource>
+</RCC>
