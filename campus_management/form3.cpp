@@ -219,6 +219,7 @@ void Form3::AlarmTable_init()
     ui->AlarmTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
     ui->AlarmTable->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->AlarmTable->hideColumn(5);
+    //ui->AlarmTable->setStyleSheet("#frame{border-image: url(:/picture/alarmtable_background.png)}");
 
     connect(model, &QStandardItemModel::itemChanged, this, &Form3::on_UseCheck_activated);
 
@@ -229,7 +230,7 @@ void Form3::AlarmTable_init()
             AddAlarmRow(rowcount, single);
     }
 
-    //Ring(all_alarm[0]);
+    Ring(all_alarm[0]);
 }
 
 void Form3::AddAlarmRow (const int row, Alarm& single)
@@ -767,9 +768,11 @@ void Form3::Ring (Alarm &single)
     QMediaPlayer *player = new QMediaPlayer;
     QAudioOutput * audioOutput = new QAudioOutput;
     player->setAudioOutput(audioOutput);
-    player->setSource(QUrl::fromLocalFile(":/mp3/alarm.wav"));
+    player->setSource(QUrl::fromLocalFile("../campus_management/mp3/alarm.wav"));
+    qDebug() << player->source();
     audioOutput->setVolume(50);
     player->play();
+    qDebug() << player->isPlaying();
 
     vector<QString> tag_QString = {"课余活动", "临时活动", "", "课程"};
     QString text;
