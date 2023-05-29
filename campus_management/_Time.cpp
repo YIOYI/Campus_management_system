@@ -26,16 +26,21 @@ void _Time::time_set(int w,int d,int h)  //用户设定时间
 }
 void _Time::time_suspend()  //暂停时间
 {
-	time_tag = 0;
-    now_time = time(NULL);  //记录暂停时的时间
-
+    if(time_tag==1)
+    {
+        time_tag = 0;
+        now_time = time(NULL);  //记录暂停时的时间
+    }
 }
 void _Time::time_continue()  //时间继续流动
 {
-	time_tag = 1;
-	int dis = now_time - start_time;
-    now_time = time(0);
-	start_time = now_time - dis;
+    if(time_tag==0)
+    {
+        time_tag = 1;
+        int dis = now_time - start_time;
+        now_time = time(0);
+        start_time = now_time - dis;
+    }
 }
 int _Time::is_continue()
 {

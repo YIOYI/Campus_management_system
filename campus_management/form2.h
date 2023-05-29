@@ -17,6 +17,7 @@
 #include <QWheelEvent>
 #include <QTimer>
 #include <QScrollBar>
+#include <QAbstractItemView>
 #include"Person.h"
 #include"Event.h"
 
@@ -58,6 +59,7 @@ public:
     void init_form2(Person *,_Time *);
     void guide_anime(deque<int> &a);
     void plan_anime(deque<int> &a);
+    void guide_for_alarm(Building dest);
 
 protected:
     virtual void wheelEvent(QWheelEvent *event) override;

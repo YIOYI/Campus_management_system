@@ -54,5 +54,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     picture.qrc
 
-DISTFILES += \
-    ../build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/debug/qt.conf
+DISTFILES +=

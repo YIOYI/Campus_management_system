@@ -220,7 +220,6 @@ void Form1::FF_day()
 }
 void Form1::set_week()
 {
-    if(ui->cb_week->currentIndex()!=0)
     ti->time_set(ui->cb_week->currentIndex()+1,1,0);
     timeUpdate();
 }

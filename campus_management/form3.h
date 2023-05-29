@@ -21,11 +21,20 @@ class Form3 : public QWidget
 
 signals:
     void QUIT_form();
+    void jmp_to_guide(Building);
+    void alarm_ring();
+public slots:
+    void set_time(const QString &tmp);
+    void timeUpdate();
+    void time_pause();
+    void FF_hour();
+    void FF_day();
+    void set_week();
 
 public:
     explicit Form3(QWidget *parent = nullptr);
     ~Form3();
-    void init_form3(Person *);
+    void init_form3(Person *,_Time *t);
     void search();
     void mycellenter(int row, int column);
     void search_outcome(int row,int column);
@@ -46,7 +55,7 @@ public:
     QString alarm_to_format_QString(Event &temp);
     bool format_QString_to_Event(const QString &text, Event &tar);
 
-    void detect_alarm (_Time now);
+    void detect_alarm ();
     void read_alarm_file (void);
     void write_alarm_file (void);
 
@@ -55,7 +64,9 @@ private slots:
 
     void on_deleteButton_clicked();
 
+
 private:
+    _Time *ti;
     Person* current_user;  //目前正在登录的学生
     int previousColorRow;
     vector<QString> search_select;/*与搜索匹配的事件名称*/

@@ -2624,7 +2624,7 @@ color: rgba(255, 255, 255, 0);</string>
         <string notr="true">border: 0px solid gray;/*设置边框的粗细，以及颜色*/
 font: 700 9pt &quot;Microsoft YaHei UI&quot;;
 border-radius: 10px;/*设置圆角的大小*/
-background-color: rgba(229, 229, 229, 100);
+background-color: rgb(179, 212, 213);
 </string>
        </property>
        <property name="placeholderText">
