@@ -176,6 +176,130 @@ void Person::get_perevents()
 
 }
 
+void Person::get_admin_perevents()
+{
+    Map m;
+    m.get_Map();
+    int Building_id=0;
+    bool judge;/*用于判断集体事务是否有该管理员*/
+    vector<int> all_Student = {2021210, 2021211, 2021212, 2021213, 2021214, 2021215, 2021216, 2021217, 2021218, 2021219};
+
+    QFile inFile1("./information_file/curriculum.txt");
+    if (!inFile1.open(QIODevice::ReadOnly))
+        qDebug() << "open failed curriculum.txt";
+    QTextStream in1(&inFile1);
+
+
+    qDebug() << "读取课表";
+    while (!in1.atEnd())
+    {
+        Event tempevent;
+        in1>>tempevent.Tag; /*读取事件类型*/
+
+        if(tempevent.Tag==0) /*判断文件是否读到末尾*/
+            break;
+
+        /*读取事件开始和结束时间*/
+        in1 >> tempevent.start.day();
+        in1 >> tempevent.start.hour();
+        tempevent.end.day() = tempevent.start.day();
+        in1 >> tempevent.end.hour();
+        in1 >> tempevent.name;/*读取事件名称*/
+        in1 >> Building_id;
+        tempevent.building=m.Get_i_Building(Building_id);
+
+        /*输入学生学号，学生学号有多个，所以以0结尾*/
+        int temp; /*临时变量，储存学号*/
+        if(tempevent.Tag == 2)
+        {
+            in1 >> temp;
+            while(temp)/*循环读取学生学号*/
+            {
+                tempevent.ID.push_back(temp);
+                in1 >> temp;
+            }
+        }
+        else
+            tempevent.ID =  all_Student;
+
+        int row_index=tempevent.start.day()-1;
+        int col_index=tempevent.start.hour()-6;
+        for(int temphour = tempevent.start.hour();temphour!=tempevent.end.hour();temphour++)
+        {
+            perEvents[row_index][temphour-6].push_back(tempevent);
+        }
+
+        if(namequeue.find(tempevent.name)==namequeue.end())/*判断该事件是否已经在set容器里，目的是记录一共有多少种事件*/
+            event_names.push_back(tempevent.name);
+
+        namequeue[tempevent.name].push_back({row_index,col_index,(int)perEvents[row_index][col_index].size()});
+
+    }
+
+    inFile1.close();
+    qDebug() << "读取课表结束";
+
+    QFile inFile2("./information_file/collective_event.txt");
+    if (!inFile2.open(QIODevice::ReadOnly))
+        qDebug() << "open failed curriculum.txt";
+    QTextStream in2(&inFile2);
+
+    /*从collective_event文件中读取集体事务*/
+
+    qDebug() << "读取集体事务";
+    while(!in2.atEnd())
+    {
+        Event tempevent;
+        judge = false;
+
+        tempevent.periodicity = 0;/*判断文件是否到末尾*/
+        tempevent.Tag = 3; /*全是集体事务*/
+        in2 >> tempevent.periodicity;/*首先输出该集体事件周期数*/
+
+        if(!tempevent.periodicity)
+            break;
+
+        tempevent.weeks.resize(tempevent.periodicity); /*根据读取的事件周数来分配事件发生周weeks的大小*/
+        for (auto& x : tempevent.weeks)
+            in2 >> x;
+
+        in2 >> tempevent.start.day();
+        in2 >> tempevent.start.hour();
+        in2 >> tempevent.end.hour(); /*开始和结束同一天，不重复读入day*/
+        in2 >> tempevent.name;/*读取事件名称*/
+        in2 >> Building_id;
+        tempevent.building=m.Get_i_Building(Building_id);
+
+        /*输入学生学号，学生学号有多个，所以以0结尾*/
+        int temp; /*临时变量，储存学号*/
+        in2 >> temp; /*循环读取学生学号*/
+        while (temp)
+        {
+            tempevent.ID.push_back(temp);
+            if(temp == ID)
+                judge = true;
+            in2 >> temp;
+        }
+
+        if(judge)
+        {
+            perEvents[tempevent.start.day()-1][tempevent.start.hour()-6].push_back(tempevent);
+            int row_index=tempevent.start.day()-1;
+            int col_index=tempevent.start.hour()-6;
+
+            if(namequeue.find(tempevent.name)==namequeue.end())/*判断该事件是否已经在set容器里，目的是记录一共有多少种事件*/
+                event_names.push_back(tempevent.name);
+
+            namequeue[tempevent.name].push_back({row_index,col_index,(int)perEvents[row_index][col_index].size()});
+        }
+    }
+
+    inFile2.close();
+    qDebug() << "读取集体事物结束";
+
+    init_perevents_time_set();
+}
+
 void Person::update_perevents()
 {
     const QString filename_collective = "./information_file/collective_event.txt";    //更新储存学生集体事务临时事务的文件

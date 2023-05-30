@@ -230,7 +230,7 @@ void Form3::AlarmTable_init()
             AddAlarmRow(rowcount, single);
     }
 
-    Ring(all_alarm[0]);
+    //Ring(all_alarm[0]);
 }
 
 void Form3::AddAlarmRow (const int row, Alarm& single)

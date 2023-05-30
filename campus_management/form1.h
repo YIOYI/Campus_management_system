@@ -14,15 +14,11 @@
 #include"Event.h"
 
 namespace Ui {
-class Form_events;
+class Form1;
 }
 
 
-struct position{
-    int first_index;
-    int second_index;
-    int count;
-};
+
 
 class Form1 : public QWidget
 {

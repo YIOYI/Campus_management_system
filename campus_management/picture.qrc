@@ -38,5 +38,6 @@
         <file>picture/add_alarm.png</file>
         <file>picture/delete.png</file>
         <file>mp3/alarm.wav</file>
+        <file>picture/admin.png</file>
     </qresource>
 </RCC>

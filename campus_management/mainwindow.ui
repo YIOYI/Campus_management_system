@@ -211,6 +211,11 @@
               <string>2021219</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>88888888</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item>
@@ -346,7 +351,7 @@
      <x>0</x>
      <y>0</y>
      <width>962</width>
-     <height>26</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

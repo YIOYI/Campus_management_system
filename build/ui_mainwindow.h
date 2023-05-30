@@ -114,6 +114,7 @@ public:
         select_ID->addItem(QString());
         select_ID->addItem(QString());
         select_ID->addItem(QString());
+        select_ID->addItem(QString());
         select_ID->setObjectName("select_ID");
         sizePolicy1.setHeightForWidth(select_ID->sizePolicy().hasHeightForWidth());
         select_ID->setSizePolicy(sizePolicy1);
@@ -207,7 +208,7 @@ public:
         MainWindow->setStatusBar(statusbar);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName("menuBar");
-        menuBar->setGeometry(QRect(0, 0, 962, 26));
+        menuBar->setGeometry(QRect(0, 0, 962, 17));
         MainWindow->setMenuBar(menuBar);
 
         retranslateUi(MainWindow);
@@ -232,6 +233,7 @@ public:
         select_ID->setItemText(7, QCoreApplication::translate("MainWindow", "2021217", nullptr));
         select_ID->setItemText(8, QCoreApplication::translate("MainWindow", "2021218", nullptr));
         select_ID->setItemText(9, QCoreApplication::translate("MainWindow", "2021219", nullptr));
+        select_ID->setItemText(10, QCoreApplication::translate("MainWindow", "88888888", nullptr));
 
         code_lineedit->setText(QString());
         code_lineedit->setPlaceholderText(QCoreApplication::translate("MainWindow", "  \345\257\206\347\240\201", nullptr));

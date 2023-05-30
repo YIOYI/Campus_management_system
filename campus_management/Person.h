@@ -19,6 +19,8 @@
 #define WEEKS 16
 //#include "Building.h"
 
+enum {STUDENT, ADMIN};
+
 using namespace std;
 
 struct arrayindex  //储存perevent下标，用于map第二个参数
@@ -56,6 +58,11 @@ public:
     */
     void get_perevents();
 
+    /**
+     * @brief 从大课表中中读出管理员的所有事件,储存在vector<Event> perEvents[DAY][HOURS]
+    */
+    void get_admin_perevents();
+
 	/**
 	 * @brief 更新个人事务、临时事务表和集体活动的文件，选修必修课不能被学生增加修改
 	*/
@@ -88,10 +95,13 @@ public:
     QString &getname(){return name;};
     vector<QString> &getevent_name(){return event_names;};
 
+    unsigned Tag;
+
 	friend class Students;
     friend class Form1;
     friend class Form2;
     friend class Form3;
+    friend class adminwdt;
 private:
     QString name;
 	int ID;
@@ -104,8 +114,8 @@ private:
 
     vector<QString> event_names;
 
-	/*Building position;	*/			            //学生当前位置
-	unsigned Tag;
+    Building position;			            //学生当前位置
+
 };
 
 
@@ -139,4 +149,5 @@ private:
     unordered_map<int, int>  ID_index;     // 通过学生ID查找在students数组的下标
 	vector<Person> students;               // Students类的私有成员变量，储存所有学生id、name、password
 };
+
 #endif 

@@ -7,6 +7,7 @@
 #include"form1.h"
 #include"form2.h"
 #include"form3.h"
+#include "adminwdt.h"
 
 namespace Ui {
 class TabWidget;
@@ -32,6 +33,7 @@ private:
     Form1 *page1;
     Form2 *page2;
     Form3 *page3;
+    adminwdt *page4;
     Person *current_user;
     Ui::TabWidget *ui;
 };
