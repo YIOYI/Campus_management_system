@@ -4,13 +4,14 @@
 #include <QObject>
 #include <QString>
 #include <iostream>
+#include <timepause.h>
 using namespace std;
 class _Time
 {
-
 public:
+    TimePause *tp;
     _Time(int m = 1, int d = 1, int h = 0) :
-		week_(m), day_(d), hour_(h) {};
+        week_(m), day_(d), hour_(h) { tp=new TimePause; };
     ~_Time() { ; };
     int& week() { return week_; };
     int& day() { return day_; };

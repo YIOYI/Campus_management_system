@@ -9,6 +9,8 @@ Form2::Form2(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+
     connect(ui->bt_guide,&QPushButton::clicked,this,&Form2::guide);
     connect(ui->bt_clear,&QPushButton::clicked,this,&Form2::clear_map);
 
@@ -57,7 +59,6 @@ Form2::~Form2()
 }
 void Form2::guide()
 {
-    qDebug()<<"start guide";
     guide_break=0;
     if(ui->plan_hour->currentIndex()==0)
     {
@@ -79,6 +80,7 @@ void Form2::guide()
         else
         {
             guide_img=new QImage(*map_img);
+            ti->time_suspend();
 
             QString src = ui->search_src->text();
             QString dst = ui->search_tar->text();
@@ -104,11 +106,11 @@ void Form2::guide()
         else
         {
             guide_img=new QImage(*map_img);
-
+            ti->time_suspend();
             QString src = ui->plan_src->text();
             int isrc = m->findBuilding(src);
             vector<int> b;
-            //={53,69,56,59,61};
+
             b.push_back(isrc);
             for(auto iter:current_user->perEvents[ui->plan_day->currentIndex()][ui->plan_hour->currentIndex()-1])
             {
@@ -151,11 +153,13 @@ void Form2::wheelEvent(QWheelEvent *event)
 }
 void Form2::clear_map()
 {
+    ti->time_suspend();
     ui->label_event_text->clear();
     ui->label_guide_text->clear();
+    ui->plan_week->setCurrentIndex(0);
     guide_break=1;
     paint_over=1;
-    qDebug()<<"clear";
+    qDebug("清空导航界面");
     guide_img=new QImage(*map_img);
     int w = ratio*guide_img->width();
     int h = ratio*guide_img->height();
@@ -175,7 +179,7 @@ void Form2::init_form2(Person*a,_Time *ti)
 void Form2::guide_anime(deque<int> &a)
 {
     paint_over=0;
-    qDebug()<<"guide";
+    qDebug("使用导航");
     QPainter painter(guide_img);
     painter.setPen(QPen(Qt::red,3,Qt::SolidLine,Qt::RoundCap));
     QImage *last_img = nullptr;
@@ -270,6 +274,7 @@ void Form2::guide_anime(deque<int> &a)
 }
 void Form2::plan_anime(deque<int> &a)
 {
+    qDebug("使用多事务规划");
     ui->label_guide_text->clear();
     ui->label_guide_text->setText("开始导航\n");
     QPainter painter(guide_img);
@@ -501,7 +506,6 @@ void Form2::guide_for_alarm(Building dest)
         }
     }
 
-    qDebug()<<event_num;
     if(event_num!=1)
         bsrc=m->Get_i_Building(46);  //学五
 

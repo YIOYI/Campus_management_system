@@ -1,3 +1,4 @@
+#include <emmintrin.h>
 #include<iostream>
 #include"_Time.h"
 #include<ctime>
@@ -28,6 +29,7 @@ void _Time::time_suspend()  //暂停时间
 {
     if(time_tag==1)
     {
+        tp->to_time_pause();
         time_tag = 0;
         now_time = time(NULL);  //记录暂停时的时间
     }

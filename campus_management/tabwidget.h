@@ -24,6 +24,7 @@ public slots:
 public:
     QTimer*timer_calendar;
     _Time *ti;  /*虚拟时间*/
+    TimePause *tp;
     explicit TabWidget(QWidget *parent = nullptr);
     ~TabWidget();
     void init(Person *,_Time *);

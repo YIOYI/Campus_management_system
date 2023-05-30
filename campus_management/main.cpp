@@ -3,7 +3,7 @@
 #include "Person.h"
 #include <QApplication>
 #include <QScreen>
-
+#include "log.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 //    qDebug()<< "屏幕缩放" <<screenDpi;
 
     QApplication a(argc, argv);
+    qInstallMessageHandler(outputMessage);
     MainWindow w;
     w.ready();
     return a.exec();

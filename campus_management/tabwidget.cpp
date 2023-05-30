@@ -38,6 +38,7 @@ TabWidget::~TabWidget()
 void TabWidget::init(Person* user_information,_Time *t)
 {
     this->ti=t;
+    tp=ti->tp;
     ti->time_now();
     current_user = user_information;
     page1->init_form1(current_user,ti);
@@ -51,6 +52,7 @@ void TabWidget::init(Person* user_information,_Time *t)
     timer_calendar->start(1000);
     connect(timer_calendar,&QTimer::timeout,this,&TabWidget::time_update);
     connect(timer_calendar,&QTimer::timeout,page3,&Form3::detect_alarm);
+    connect(ti->tp,&TimePause::t_pause,this,&TabWidget::time_update);
 }
 
 void TabWidget::quit()

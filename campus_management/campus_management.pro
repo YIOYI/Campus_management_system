@@ -23,7 +23,8 @@ SOURCES += \
     insert_event.cpp \
     main.cpp \
     mainwindow.cpp \
-    tabwidget.cpp
+    tabwidget.cpp \
+    timepause.cpp
 
 HEADERS += \
     Alarm.h \
@@ -35,8 +36,10 @@ HEADERS += \
     form2.h \
     form3.h \
     insert_event.h \
+    log.h \
     mainwindow.h \
-    tabwidget.h
+    tabwidget.h \
+    timepause.h
 
 FORMS += \
     form1.ui \
