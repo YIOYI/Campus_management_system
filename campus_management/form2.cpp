@@ -32,7 +32,7 @@ Form2::Form2(QWidget *parent) :
     for(int i=1;i<Building_Number;i++)
         word_list<<m->Buildings_()[i].name_();
     QCompleter *MyInfor = new QCompleter(word_list);
-
+    MyInfor->setFilterMode(Qt::MatchFlag::MatchContains);
     ui->search_src->setCompleter(MyInfor);
     ui->search_tar->setCompleter(MyInfor);
     ui->plan_src->setCompleter(MyInfor);
