@@ -14,7 +14,7 @@
 #include"Event.h"
 
 namespace Ui {
-class Form1;
+class Form_events;
 }
 
 
