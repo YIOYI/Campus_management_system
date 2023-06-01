@@ -25,9 +25,14 @@ using namespace std;
 
 struct arrayindex  //储存perevent下标，用于map第二个参数
 {
+public:
     int first_index;//天
     int second_index;//小时
     int count; //自动计数器,分每个value,注意每次获取下标要-1
+    bool operator== (const arrayindex &rhs)
+    {
+        return this->first_index==rhs.first_index && this->second_index==rhs.second_index && this->count==rhs.count;
+    }
 };
 
 struct seektime //储存时间,用于iscollision函数返回值

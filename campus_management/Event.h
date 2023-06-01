@@ -26,11 +26,6 @@ struct duration {
     _Time end;
 };
 
-struct position{
-    int first_index;
-    int second_index;
-    int count;
-};
 
 class Event               // 储存单个事件单次的信息,可以是课程也可以是其他事件
 {

@@ -7,6 +7,19 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QCheckBox>
+#include <QCompleter>
+
+static Map * Bupt_map = new Map;
+
+static QStringList local_QStringList = {"北邮科技酒店", "青年公寓", "学十三公寓", "邮局", "移动营业厅",
+"学十一公寓","学九公寓", "学十公寓", "留学生公寓", "综合食堂",
+"学五公寓", "学八公寓",
+"学三公寓", "学四公寓", "学一公寓", "学二公寓", "教四楼",
+"教三楼", "校医院", "时光咖啡", "南区超市",
+"电信营业厅","经管楼", "学生活动中心", "学六公寓","澡堂", "水房", "教工餐厅", "图书馆",
+"财务处", "行政办公楼", "教一楼", "主楼", "教二楼", "中门邮局", "科研大楼", "学生食堂",
+"保卫处","篮球场", "网球场","学29公寓", "体育馆", "游泳馆", "科学会堂", "通信中心", "体育场", "西门", "北门",
+"中门","东北门", "东门"};
 
 adminwdt::adminwdt(QWidget *parent) :
     QWidget(parent),
@@ -16,6 +29,7 @@ adminwdt::adminwdt(QWidget *parent) :
     refresh = 0;
     positioning_tag =0;
     event_position.count = -1;
+    Bupt_map->get_Map();
 
     ui->tableWidget->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
     ui->frame->setStyleSheet("#frame{border-image: url(:/picture/admin.png)}"); //添加背景图片
@@ -91,9 +105,16 @@ void adminwdt::init_adminwdt(Person *a)
     show_percurriculum();
     init_week_sel_combo({});
     init_ID_sel_combo({});
+    QVBoxLayout *name_layout = new QVBoxLayout();
+    ui->name_wdt->setLayout(name_layout);
+    init_name_wdt(ADD);
+    QVBoxLayout *local_layout = new QVBoxLayout();
+    ui->local_wdt->setLayout(local_layout);
+    init_local_wdt(OFFLINE);
+    ui->offline_Button->setChecked(true);
 }
 
-void adminwdt::add_event(Event & insert_event)
+bool adminwdt::add_event(Event & insert_event)
 {
     qDebug()<<"add";
     QMessageBox msgBox;
@@ -110,7 +131,7 @@ void adminwdt::add_event(Event & insert_event)
         msgBox.setDefaultButton(QMessageBox::Ok);
         int ret = msgBox.exec();
         if(ret == QMessageBox::Ok)
-            return;
+            return false;
     }
 
     if(refresh)
@@ -126,34 +147,15 @@ void adminwdt::add_event(Event & insert_event)
         if(!isexist(insert_event))
         {
             qDebug()<<"no exist";
-            current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].push_back(insert_event);
+            for (int i = insert_event.start.hour()-6; i != insert_event.end.hour()-6; i ++)
+                current_user->perEvents[insert_event.start.day()-1][i].push_back(insert_event);
             if(current_user->namequeue.find(insert_event.name)==current_user->namequeue.end())
                 current_user->event_names.push_back(insert_event.name);
             current_user->namequeue[insert_event.name].push_back({insert_event.start.day()-1,insert_event.start.hour()-6,(int)current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].size()});
         }//未找到属性一致的事件，新增事件
 
         refresh=1;
-        if(!positioning_tag)
-        {
-            msgBox.setWindowTitle("提示");
-            msgBox.setText("添加成功");
-            msgBox.setStandardButtons(QMessageBox::Ok);
-            msgBox.setDefaultButton(QMessageBox::Ok);
-            int ret = msgBox.exec();
-            if(ret == QMessageBox::Ok)
-                return;
-        }
-        else
-        {
-            positioning_tag = 0;
-            msgBox.setWindowTitle("提示");
-            msgBox.setText("修改成功");
-            msgBox.setStandardButtons(QMessageBox::Ok);
-            msgBox.setDefaultButton(QMessageBox::Ok);
-            int ret = msgBox.exec();
-            if(ret == QMessageBox::Ok)
-                return;
-        }
+        return true;
     }
 
     else if(temp_time.tag == 0)
@@ -191,83 +193,30 @@ void adminwdt::add_event(Event & insert_event)
         msgBox.setDefaultButton(QMessageBox::Ok);
         int ret = msgBox.exec();
         if(ret == QMessageBox::Ok)
-            return;
+            return false;
     }
 
 }
 
 
-void adminwdt::delete_event(Event & insert_event)
+void adminwdt::delete_event()
 {
     qDebug()<<"delete";
-    Event tempevent;
-    arrayindex temparray;
     QMessageBox msgBox;
+    Event event_tmp = current_user->perEvents[event_position.first_index][event_position.second_index][event_position.count-1];
 
-    int count =0;
-    qDebug()<<current_user->namequeue[insert_event.name].size();
-    QString temp1;
-    QString temp2;
-    temp1.append(insert_event.name).append(QString::number(insert_event.Tag)).append(QString::number(insert_event.start.day())).append(QString::number(insert_event.start.hour()));
+    for (int i = event_tmp.start.hour()-6; i != event_tmp.end.hour()-6; i ++)
+        current_user->perEvents[event_position.first_index][i].erase(current_user->perEvents[event_position.first_index][i].begin() + event_position.count - 1);
 
-    for(auto &a:current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6])
+    if ((int)current_user->namequeue[event_tmp.name].size() > 1)
     {
-        if(a.name == insert_event.name && a.Tag == insert_event.Tag)
-        {
-            if(a.Tag==3&&a.ID[0]!=current_user->ID)
-            {
-                msgBox.setWindowTitle("提示");
-                msgBox.setText("无权限修改该集体事务");
-                msgBox.setStandardButtons(QMessageBox::Ok);
-                msgBox.setDefaultButton(QMessageBox::Ok);
-                int ret = msgBox.exec();
-                if(ret == QMessageBox::Ok)
-                    return;
-            }
-            refresh=1;
-            current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].erase(current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].begin()+count);
-            if((int)current_user->namequeue[insert_event.name].size()>1)/*判断该名称是否还有其他事件*/
-            {
-                for(int i=0;i<(int)current_user->namequeue[insert_event.name].size();i++)/*删除该容器已经删除的事件的下标*/
-                {
-                    temparray = current_user->namequeue[insert_event.name][i];
-                    tempevent = current_user->perEvents[temparray.first_index][temparray.second_index][temparray.count-1];
-                    temp2.clear();
-                    temp2.append(tempevent.name).append(QString::number(tempevent.Tag)).append(QString::number(tempevent.start.day())).append(QString::number(tempevent.start.hour()));
-                    qDebug()<<temparray.first_index<<temparray.second_index<<temparray.count;
-                    if(temp1==temp2)
-                    {
-                        current_user->namequeue[insert_event.name].erase(current_user->namequeue[insert_event.name].begin()+i);
-                    }
-                }
-            }
-            else/*若该名称已没有其他事件，直接从容器中删除该名称*/
-            {
-                current_user->namequeue.erase(insert_event.name);
-            }
-
-            qDebug()<<current_user->namequeue[insert_event.name].size();
-            if(!positioning_tag)
-            {
-                msgBox.setWindowTitle("提示");
-                msgBox.setText("删除成功");
-                msgBox.setStandardButtons(QMessageBox::Ok);
-                msgBox.setDefaultButton(QMessageBox::Ok);
-                int ret = msgBox.exec();
-                if(ret == QMessageBox::Ok)
-                    return;
-            }
-            return ;
-        }
-        count++;
+        auto vector_tmp = current_user->namequeue[event_tmp.name];
+        vector_tmp.erase(std::remove(vector_tmp.begin(), vector_tmp.end(), event_position), vector_tmp.end());
     }
-    msgBox.setWindowTitle("提示");
-    msgBox.setText("不存在该事件或者不能删除/修改该事件");
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    int ret = msgBox.exec();
-    if(ret == QMessageBox::Ok)
-        return;
+    else
+        current_user->namequeue.erase(event_tmp.name);
+
+
 }
 
 
@@ -294,6 +243,7 @@ bool adminwdt::isexist(Event &a)
     }
     return 0;
 }
+
 
 void adminwdt::init_week_sel_combo (vector<int> week)
 {
@@ -329,6 +279,7 @@ void adminwdt::init_week_sel_combo (vector<int> week)
     change_week_sel_combo(0);
 }
 
+
 void adminwdt::change_week_sel_combo (int status)
 {
     QString strSelectedData("");
@@ -361,14 +312,18 @@ void adminwdt::change_week_sel_combo (int status)
     }
 }
 
+
 void adminwdt::init_ID_sel_combo (vector<int> student_ID)
 {
     auto it = student_ID.begin();
+    if (student_ID.size())
+        if (*it == 88888888)
+            it ++;
 
     QListWidget *ID_sel_listwdt = new QListWidget;
     for (int i = 0; i <= 9; ++i) {
         QListWidgetItem* pItem = new QListWidgetItem();// 增加listwidget的item
-        pItem->setData(Qt::UserRole, i);
+        pItem->setData(Qt::UserRole, i+2021210);
 
         QCheckBox *pCheckBox = new QCheckBox(this);
         pCheckBox->setText(QString("202121%1").arg(i));
@@ -394,6 +349,7 @@ void adminwdt::init_ID_sel_combo (vector<int> student_ID)
 
     change_ID_sel_combo(0);
 }
+
 
 void adminwdt::change_ID_sel_combo (int status)
 {
@@ -426,3 +382,360 @@ void adminwdt::change_ID_sel_combo (int status)
         ui->ID_sel_combo->lineEdit()->clear();
     }
 }
+
+
+void adminwdt::init_name_wdt (int status, vector<QString> Event_names)
+{
+    QLayout * name_layout = ui->name_wdt->layout();
+    if (name_layout)
+        delete name_layout;
+    name_layout = new QVBoxLayout();
+    ui->name_wdt->setLayout(name_layout);
+
+    if (status ==  ADD)
+    {
+        QLineEdit * name_lineedit = new QLineEdit;
+        name_lineedit->setPlaceholderText("在此输入要添加的事件名称");
+        name_layout->addWidget(name_lineedit);
+    }
+    else if (status == CHANGE)
+    {
+        QComboBox * name_sel_combo = new QComboBox;
+        for (auto single : Event_names)
+            name_sel_combo->addItem(single);
+        name_layout->addWidget(name_sel_combo);
+        connect(name_sel_combo, &QComboBox::currentIndexChanged, this, &adminwdt::Show_index_index_class);
+    }
+}
+
+
+void adminwdt::init_local_wdt (int status, QString building_name)
+{
+    QLayout * local_layout = ui->local_wdt->layout();
+    if (local_layout)
+        delete local_layout;
+    local_layout = new QVBoxLayout();
+    ui->local_wdt->setLayout(local_layout);
+
+
+    QLineEdit * local_lineedit;
+    if (status == ONLINE)
+    {
+        local_lineedit = new QLineEdit;
+        local_lineedit->setPlaceholderText("在此输入线上上课网址");
+        local_layout->addWidget(local_lineedit);
+    }
+    else if (status == OFFLINE)
+    {
+        QComboBox * local_sel_combo = new QComboBox;
+        local_sel_combo->addItems(local_QStringList);
+        local_lineedit = new QLineEdit;
+        QCompleter *local_infor = new QCompleter(local_QStringList);
+        local_lineedit->setCompleter(local_infor);
+        local_infor->setFilterMode(Qt::MatchFlag::MatchContains);
+        local_sel_combo->setLineEdit(local_lineedit);
+        local_sel_combo->setInsertPolicy(QComboBox::NoInsert);
+        local_layout->addWidget(local_sel_combo);
+    }
+
+    if (!building_name.isEmpty())
+        local_lineedit->setText(building_name);
+}
+
+
+void adminwdt::on_online_Button_clicked()
+{
+    init_local_wdt(ONLINE);
+}
+
+
+void adminwdt::on_offline_Button_clicked()
+{
+    init_local_wdt(OFFLINE);
+}
+
+
+
+void adminwdt::on_tableWidget_cellClicked(int row, int column)
+{
+    event_position.first_index = column;
+    event_position.second_index = row;
+    event_position.count = 1;
+
+    Show_index_class(current_user->perEvents[column][row]);
+}
+
+
+void adminwdt::Show_index_class (vector<Event> curriculum)
+{
+    if (curriculum.empty())
+    {
+        init_name_wdt(ADD);
+        ui->Tag_sel_combo->setCurrentIndex(0);
+        init_local_wdt(OFFLINE);
+        ui->offline_Button->setChecked(true);
+        ui->day_sel_combo->setCurrentIndex(event_position.first_index);
+        ui->start_time_sel_combo->setCurrentIndex(event_position.second_index);
+        ui->end_time_sel_combo->setCurrentIndex(event_position.second_index);
+        init_week_sel_combo({});
+        init_ID_sel_combo({});
+        return;
+    }
+
+    vector<QString> event_names;
+    for (auto single : curriculum)
+        event_names.push_back(single.name);
+
+    init_name_wdt(CHANGE, event_names);
+
+    Show_index_index_class(0);
+}
+
+
+void adminwdt::Show_index_index_class (int index)
+{
+    event_position.count = index+1;
+    Event tmp = current_user->perEvents[event_position.first_index][event_position.second_index][index];
+
+    int Tag_to_index[] = {-1, 0, 1, 2};
+    ui->Tag_sel_combo->setCurrentIndex(Tag_to_index[tmp.Tag]);
+
+    ui->offline_Button->setChecked(tmp.building.id_() >= 134);
+    ui->online_Button->setChecked(tmp.building.id_() >= 134);
+    init_local_wdt(tmp.building.id_() < 134, tmp.building.name_());
+
+    ui->day_sel_combo->setCurrentIndex(tmp.start.day()-1);
+    ui->start_time_sel_combo->setCurrentIndex(tmp.start.hour()-6);
+    ui->end_time_sel_combo->setCurrentIndex(tmp.end.hour()-7);
+    if (tmp.Tag == 1 || tmp.Tag == 2)
+        init_week_sel_combo({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16});
+    else
+        init_week_sel_combo(tmp.weeks);
+    init_ID_sel_combo(tmp.ID);
+}
+
+QString adminwdt::Event_to_format_QString (Event &single)
+{
+    QString text;
+    vector<QString> Tag_to_QString = {"", "必修课", "选修课", "集体事物"};
+    vector<QString> week_to_QString = {"", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+    text += "事件名称: " + single.name + "\n";
+    text += "事件类型: " + Tag_to_QString[single.Tag] + "\n";
+    text += "事件时间: " + week_to_QString[single.start.day()] + " " + QString::number(single.start.hour()) + ":00 ~ " + QString::number(single.end.hour()) + ":00\n";
+    text += "事件地点: " + single.building.name_() + "\n";
+
+    text += "事件周数: ";
+    if (single.Tag == 1 || single.Tag == 2)
+        text += "每周都有\n";
+    else
+    {
+        auto p = single.weeks.begin();
+        text += "第" + QString::number(*p) + "周";
+        for ( ; p != single.weeks.end(); p ++)
+            text += ", 第" + QString::number(*p) + "周";
+        text += "\n";
+    }
+
+    text += "事件参与人数: ";
+    if (single.Tag == 1)
+        text += "每人都有\n";
+    else
+    {
+        auto p = single.ID.begin();
+        text += QString::number(*p);
+        for ( ; p != single.ID.end(); p ++)
+            text += ", " + QString::number(*p);
+        text += "\n";
+    }
+
+    return text;
+}
+
+void adminwdt::on_delete_Button_clicked()
+{
+    if (ui->name_wdt->layout()->itemAt(0)->widget()->inherits("QLineEdit"))
+    {
+        QMessageBox::information(this,
+                                 tr("警告"), tr("您当前为输入模式，不能删除！"),
+                                 QMessageBox::Ok , QMessageBox::Ok);
+        return;
+    }
+
+    Event tmp = current_user->perEvents[event_position.first_index][event_position.second_index][event_position.count-1];
+    QString text = "您当前选择的事件如下:\n\n";
+    text += Event_to_format_QString(tmp);
+    text += "\n是否删除?";
+
+    QMessageBox msgBox = QMessageBox(QMessageBox::Warning, "删除确认", text);
+
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+    auto * yesButton = msgBox.button(QMessageBox::Save);
+    yesButton->setText("确认删除");
+    auto * noButton = msgBox.button(QMessageBox::Cancel);
+    noButton->setText("取消删除");
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == yesButton)
+    {
+        delete_event();
+        show_percurriculum();
+        Show_index_class(current_user->perEvents[event_position.first_index][event_position.second_index]);
+        QMessageBox::information(this,
+                                 tr("提示"), tr("删除成功"),
+                                 QMessageBox::Ok , QMessageBox::Ok);
+    }
+}
+
+Event adminwdt::handle_evevt (void)
+{
+    Event ret;
+
+    if (ui->name_wdt->layout()->itemAt(0)->widget()->inherits("QLineEdit"))
+        ret.name = ((QLineEdit*)ui->name_wdt->layout()->itemAt(0)->widget())->text();
+    else
+        ret.name = ((QComboBox*)ui->name_wdt->layout()->itemAt(0)->widget())->currentText();
+
+    ret.Tag = ui->Tag_sel_combo->currentIndex() + 1;
+    ret.start.day() = ret.end.day() = ui->day_sel_combo->currentIndex() + 1;
+    ret.start.hour() = ui->start_time_sel_combo->currentIndex() + 6;
+    ret.end.hour() = ui->end_time_sel_combo->currentIndex() + 7;
+
+    QWidget * l_wdt = ui->local_wdt->layout()->itemAt(0)->widget();
+    if (ui->offline_Button->isCheckable())
+    {
+        int id = Bupt_map->findBuilding(((QComboBox *) l_wdt)->currentText());
+        ret.building = Bupt_map->Get_i_Building(id);
+    }
+    else if (ui->online_Button->isCheckable())
+    {
+        Bupt_map->save_netBuilding(((QLineEdit*) l_wdt)->text());
+        int id = Bupt_map->findBuilding(((QLineEdit*) l_wdt)->text());
+        ret.building = Bupt_map->Get_i_Building(id);
+    }
+
+    if (ret.Tag == 3)
+    {
+        ret.periodicity = 0;
+        QListWidget *weel_sel_listwdt = (QListWidget *) (ui->week_sel_combo->view());
+
+        int nCount = weel_sel_listwdt->count();
+        for (int i = 0; i < nCount; ++i)
+        {
+            QListWidgetItem *pItem = weel_sel_listwdt->item(i);
+            QWidget *pWidget = weel_sel_listwdt->itemWidget(pItem);
+            QCheckBox *pCheckBox = (QCheckBox *)pWidget;
+            if (pCheckBox->isChecked())
+            {
+                ret.weeks.push_back(pItem->data(Qt::UserRole).toInt());
+                ret.periodicity ++;
+            }
+        }
+    }
+
+    QListWidget *ID_sel_listwdt = (QListWidget *) (ui->ID_sel_combo->view());
+
+
+    int nCount = ID_sel_listwdt->count();
+    for (int i = 0; i < nCount; ++i)
+    {
+        QListWidgetItem *pItem = ID_sel_listwdt->item(i);
+        QWidget *pWidget = ID_sel_listwdt->itemWidget(pItem);
+        QCheckBox *pCheckBox = (QCheckBox *)pWidget;
+        if (pCheckBox->isChecked())
+        {
+            ret.ID.push_back(pItem->data(Qt::UserRole).toInt());
+        }
+    }
+
+    return ret;
+}
+
+
+void adminwdt::on_change_Button_clicked()
+{
+    if (ui->name_wdt->layout()->itemAt(0)->widget()->inherits("QLineEdit"))
+    {
+        QMessageBox::information(this,
+                                 tr("警告"), tr("您当前为输入模式，不能修改！"),
+                                 QMessageBox::Ok , QMessageBox::Ok);
+        return;
+    }
+
+    Event now = handle_evevt();
+    Event tmp = current_user->perEvents[event_position.first_index][event_position.second_index][event_position.count-1];
+    QString text = "您当前选择的事件如下:\n\n";
+    text += Event_to_format_QString(tmp);
+    text += "\n是否修改为以下事件?\n\n";
+    text += Event_to_format_QString(now);
+
+
+    QMessageBox msgBox = QMessageBox(QMessageBox::Warning, "修改确认", text);
+
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+    auto * yesButton = msgBox.button(QMessageBox::Save);
+    yesButton->setText("确认修改");
+    auto * noButton = msgBox.button(QMessageBox::Cancel);
+    noButton->setText("取消修改");
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == yesButton) {
+        delete_event();
+        if (add_event(now) == true)
+        {
+            show_percurriculum();
+            Show_index_class(current_user->perEvents[event_position.first_index][event_position.second_index]);
+            QMessageBox::information(this,
+                                     tr("提示"), tr("修改成功"),
+                                     QMessageBox::Ok , QMessageBox::Ok);
+        }
+        else
+        {
+            add_event(tmp);
+            show_percurriculum();
+            Show_index_class(current_user->perEvents[event_position.first_index][event_position.second_index]);
+        }
+    }
+}
+
+
+void adminwdt::on_add_Button_clicked()
+{
+    if (ui->name_wdt->layout()->itemAt(0)->widget()->inherits("QComboBox"))
+    {
+        init_name_wdt(ADD);
+        QMessageBox::information(this,
+                                 tr("提示"), tr("当前已改为输入模式，请输入课程"),
+                                 QMessageBox::Ok , QMessageBox::Ok);
+        return;
+    }
+
+    Event now = handle_evevt();
+    QString text = "您当前添加的事件如下:\n\n";
+    text += Event_to_format_QString(now);
+    text += "\n是否添加?";
+
+
+    QMessageBox msgBox = QMessageBox(QMessageBox::Warning, "添加确认", text);
+
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+    auto * yesButton = msgBox.button(QMessageBox::Save);
+    yesButton->setText("确认添加");
+    auto * noButton = msgBox.button(QMessageBox::Cancel);
+    noButton->setText("取消添加");
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == yesButton) {
+        if (add_event(now) == true)
+        {
+            show_percurriculum();
+            Show_index_class(current_user->perEvents[now.start.day()-1][now.start.hour()-6]);
+            QMessageBox::information(this,
+                                     tr("提示"), tr("添加成功"),
+                                     QMessageBox::Ok , QMessageBox::Ok);
+        }
+    }
+}
+

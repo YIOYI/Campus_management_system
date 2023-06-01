@@ -10,13 +10,16 @@
 #define UI_ADMINWDT_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
 
@@ -34,6 +37,23 @@ public:
     QComboBox *week_sel_combo;
     QLabel *label_2;
     QComboBox *ID_sel_combo;
+    QLabel *label_3;
+    QComboBox *day_sel_combo;
+    QComboBox *start_time_sel_combo;
+    QLabel *label_4;
+    QComboBox *end_time_sel_combo;
+    QLabel *label_5;
+    QWidget *local_wdt;
+    QGroupBox *groupBox;
+    QRadioButton *online_Button;
+    QRadioButton *offline_Button;
+    QLabel *label_6;
+    QWidget *name_wdt;
+    QLabel *label_7;
+    QComboBox *Tag_sel_combo;
+    QPushButton *add_Button;
+    QPushButton *change_Button;
+    QPushButton *delete_Button;
 
     void setupUi(QWidget *adminwdt)
     {
@@ -83,6 +103,7 @@ public:
         font1.setFamilies({QString::fromUtf8("\345\276\256\350\275\257\351\233\205\351\273\221")});
         font1.setPointSize(15);
         select_week->setFont(font1);
+        select_week->setStyleSheet(QString::fromUtf8(""));
         tableWidget = new QTableWidget(frame);
         if (tableWidget->columnCount() < 7)
             tableWidget->setColumnCount(7);
@@ -540,7 +561,7 @@ public:
         QFont font8;
         font8.setPointSize(10);
         label->setFont(font8);
-        label->setStyleSheet(QString::fromUtf8("color: rgb(255, 170, 0);"));
+        label->setStyleSheet(QString::fromUtf8(""));
         week_sel_combo = new QComboBox(frame);
         week_sel_combo->setObjectName("week_sel_combo");
         week_sel_combo->setGeometry(QRect(1120, 650, 231, 22));
@@ -548,10 +569,141 @@ public:
         label_2->setObjectName("label_2");
         label_2->setGeometry(QRect(1120, 710, 151, 16));
         label_2->setFont(font8);
-        label_2->setStyleSheet(QString::fromUtf8("color: rgb(255, 170, 0);"));
+        label_2->setStyleSheet(QString::fromUtf8(""));
         ID_sel_combo = new QComboBox(frame);
         ID_sel_combo->setObjectName("ID_sel_combo");
         ID_sel_combo->setGeometry(QRect(1120, 730, 231, 22));
+        label_3 = new QLabel(frame);
+        label_3->setObjectName("label_3");
+        label_3->setGeometry(QRect(1120, 550, 81, 16));
+        label_3->setFont(font8);
+        label_3->setStyleSheet(QString::fromUtf8(""));
+        day_sel_combo = new QComboBox(frame);
+        day_sel_combo->addItem(QString());
+        day_sel_combo->addItem(QString());
+        day_sel_combo->addItem(QString());
+        day_sel_combo->addItem(QString());
+        day_sel_combo->addItem(QString());
+        day_sel_combo->addItem(QString());
+        day_sel_combo->addItem(QString());
+        day_sel_combo->setObjectName("day_sel_combo");
+        day_sel_combo->setGeometry(QRect(1120, 580, 62, 22));
+        day_sel_combo->setFont(font8);
+        start_time_sel_combo = new QComboBox(frame);
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->addItem(QString());
+        start_time_sel_combo->setObjectName("start_time_sel_combo");
+        start_time_sel_combo->setGeometry(QRect(1220, 580, 62, 22));
+        start_time_sel_combo->setFont(font8);
+        label_4 = new QLabel(frame);
+        label_4->setObjectName("label_4");
+        label_4->setGeometry(QRect(1280, 580, 31, 20));
+        QFont font9;
+        font9.setPointSize(15);
+        label_4->setFont(font9);
+        label_4->setStyleSheet(QString::fromUtf8("color: rgb(255, 170, 0);"));
+        label_4->setAlignment(Qt::AlignCenter);
+        end_time_sel_combo = new QComboBox(frame);
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->addItem(QString());
+        end_time_sel_combo->setObjectName("end_time_sel_combo");
+        end_time_sel_combo->setGeometry(QRect(1310, 580, 62, 22));
+        end_time_sel_combo->setFont(font8);
+        label_5 = new QLabel(frame);
+        label_5->setObjectName("label_5");
+        label_5->setGeometry(QRect(1120, 480, 71, 16));
+        label_5->setFont(font8);
+        label_5->setStyleSheet(QString::fromUtf8(""));
+        local_wdt = new QWidget(frame);
+        local_wdt->setObjectName("local_wdt");
+        local_wdt->setGeometry(QRect(1110, 500, 261, 41));
+        local_wdt->setStyleSheet(QString::fromUtf8(""));
+        groupBox = new QGroupBox(frame);
+        groupBox->setObjectName("groupBox");
+        groupBox->setGeometry(QRect(1420, 500, 131, 30));
+        online_Button = new QRadioButton(groupBox);
+        online_Button->setObjectName("online_Button");
+        online_Button->setGeometry(QRect(10, 6, 51, 18));
+        online_Button->setFont(font8);
+        online_Button->setStyleSheet(QString::fromUtf8(""));
+        offline_Button = new QRadioButton(groupBox);
+        offline_Button->setObjectName("offline_Button");
+        offline_Button->setGeometry(QRect(70, 6, 51, 18));
+        offline_Button->setFont(font8);
+        offline_Button->setStyleSheet(QString::fromUtf8(""));
+        label_6 = new QLabel(frame);
+        label_6->setObjectName("label_6");
+        label_6->setGeometry(QRect(1120, 330, 51, 16));
+        label_6->setFont(font8);
+        label_6->setStyleSheet(QString::fromUtf8(""));
+        name_wdt = new QWidget(frame);
+        name_wdt->setObjectName("name_wdt");
+        name_wdt->setGeometry(QRect(1110, 350, 261, 41));
+        name_wdt->setStyleSheet(QString::fromUtf8(""));
+        label_7 = new QLabel(frame);
+        label_7->setObjectName("label_7");
+        label_7->setGeometry(QRect(1120, 400, 51, 16));
+        label_7->setFont(font8);
+        label_7->setStyleSheet(QString::fromUtf8(""));
+        Tag_sel_combo = new QComboBox(frame);
+        Tag_sel_combo->addItem(QString());
+        Tag_sel_combo->addItem(QString());
+        Tag_sel_combo->addItem(QString());
+        Tag_sel_combo->setObjectName("Tag_sel_combo");
+        Tag_sel_combo->setGeometry(QRect(1120, 430, 91, 22));
+        Tag_sel_combo->setFont(font8);
+        add_Button = new QPushButton(frame);
+        add_Button->setObjectName("add_Button");
+        add_Button->setGeometry(QRect(1120, 780, 50, 50));
+        add_Button->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/picture/add_admin.png"), QSize(), QIcon::Normal, QIcon::Off);
+        add_Button->setIcon(icon);
+        add_Button->setIconSize(QSize(50, 50));
+        change_Button = new QPushButton(frame);
+        change_Button->setObjectName("change_Button");
+        change_Button->setGeometry(QRect(1220, 780, 50, 50));
+        change_Button->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/picture/change_admin.png"), QSize(), QIcon::Normal, QIcon::Off);
+        change_Button->setIcon(icon1);
+        change_Button->setIconSize(QSize(50, 50));
+        delete_Button = new QPushButton(frame);
+        delete_Button->setObjectName("delete_Button");
+        delete_Button->setGeometry(QRect(1320, 780, 50, 50));
+        delete_Button->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/picture/delete_admin.png"), QSize(), QIcon::Normal, QIcon::Off);
+        delete_Button->setIcon(icon2);
+        delete_Button->setIconSize(QSize(50, 50));
         tableWidget->raise();
         select_week->raise();
         pushButton_refresh->raise();
@@ -559,6 +711,21 @@ public:
         week_sel_combo->raise();
         label_2->raise();
         ID_sel_combo->raise();
+        label_3->raise();
+        day_sel_combo->raise();
+        start_time_sel_combo->raise();
+        label_4->raise();
+        end_time_sel_combo->raise();
+        label_5->raise();
+        local_wdt->raise();
+        groupBox->raise();
+        label_6->raise();
+        name_wdt->raise();
+        label_7->raise();
+        Tag_sel_combo->raise();
+        add_Button->raise();
+        change_Button->raise();
+        delete_Button->raise();
 
         gridLayout->addWidget(frame, 0, 0, 1, 1);
 
@@ -665,8 +832,65 @@ public:
         tableWidget->setToolTip(QCoreApplication::translate("adminwdt", "<html><head/><body><p>\350\277\231\346\230\257\350\257\276\350\241\250</p></body></html>", nullptr));
 #endif // QT_CONFIG(tooltip)
         pushButton_refresh->setText(QCoreApplication::translate("adminwdt", "\345\210\267\346\226\260", nullptr));
-        label->setText(QCoreApplication::translate("adminwdt", "\350\276\223\345\205\245\345\221\250\346\225\260", nullptr));
-        label_2->setText(QCoreApplication::translate("adminwdt", "\351\200\211\346\213\251\345\217\202\345\212\240\345\255\246\347\224\237\345\255\246\345\217\267", nullptr));
+        label->setText(QCoreApplication::translate("adminwdt", "\345\221\250\346\225\260", nullptr));
+        label_2->setText(QCoreApplication::translate("adminwdt", "\345\217\202\345\212\240\345\255\246\347\224\237\345\255\246\345\217\267", nullptr));
+        label_3->setText(QCoreApplication::translate("adminwdt", "\345\205\267\344\275\223\346\227\266\351\227\264", nullptr));
+        day_sel_combo->setItemText(0, QCoreApplication::translate("adminwdt", "\345\221\250\344\270\200", nullptr));
+        day_sel_combo->setItemText(1, QCoreApplication::translate("adminwdt", "\345\221\250\344\272\214", nullptr));
+        day_sel_combo->setItemText(2, QCoreApplication::translate("adminwdt", "\345\221\250\344\270\211", nullptr));
+        day_sel_combo->setItemText(3, QCoreApplication::translate("adminwdt", "\345\221\250\345\233\233", nullptr));
+        day_sel_combo->setItemText(4, QCoreApplication::translate("adminwdt", "\345\221\250\344\272\224", nullptr));
+        day_sel_combo->setItemText(5, QCoreApplication::translate("adminwdt", "\345\221\250\345\205\255", nullptr));
+        day_sel_combo->setItemText(6, QCoreApplication::translate("adminwdt", "\345\221\250\346\227\245", nullptr));
+
+        start_time_sel_combo->setItemText(0, QCoreApplication::translate("adminwdt", "6:00", nullptr));
+        start_time_sel_combo->setItemText(1, QCoreApplication::translate("adminwdt", "7:00", nullptr));
+        start_time_sel_combo->setItemText(2, QCoreApplication::translate("adminwdt", "8:00", nullptr));
+        start_time_sel_combo->setItemText(3, QCoreApplication::translate("adminwdt", "9:00", nullptr));
+        start_time_sel_combo->setItemText(4, QCoreApplication::translate("adminwdt", "10:00", nullptr));
+        start_time_sel_combo->setItemText(5, QCoreApplication::translate("adminwdt", "11:00", nullptr));
+        start_time_sel_combo->setItemText(6, QCoreApplication::translate("adminwdt", "12:00", nullptr));
+        start_time_sel_combo->setItemText(7, QCoreApplication::translate("adminwdt", "13:00", nullptr));
+        start_time_sel_combo->setItemText(8, QCoreApplication::translate("adminwdt", "14:00", nullptr));
+        start_time_sel_combo->setItemText(9, QCoreApplication::translate("adminwdt", "15:00", nullptr));
+        start_time_sel_combo->setItemText(10, QCoreApplication::translate("adminwdt", "16:00", nullptr));
+        start_time_sel_combo->setItemText(11, QCoreApplication::translate("adminwdt", "17:00", nullptr));
+        start_time_sel_combo->setItemText(12, QCoreApplication::translate("adminwdt", "18:00", nullptr));
+        start_time_sel_combo->setItemText(13, QCoreApplication::translate("adminwdt", "19:00", nullptr));
+        start_time_sel_combo->setItemText(14, QCoreApplication::translate("adminwdt", "20:00", nullptr));
+        start_time_sel_combo->setItemText(15, QCoreApplication::translate("adminwdt", "21:00", nullptr));
+
+        label_4->setText(QCoreApplication::translate("adminwdt", "~", nullptr));
+        end_time_sel_combo->setItemText(0, QCoreApplication::translate("adminwdt", "7:00", nullptr));
+        end_time_sel_combo->setItemText(1, QCoreApplication::translate("adminwdt", "8:00", nullptr));
+        end_time_sel_combo->setItemText(2, QCoreApplication::translate("adminwdt", "9:00", nullptr));
+        end_time_sel_combo->setItemText(3, QCoreApplication::translate("adminwdt", "10:00", nullptr));
+        end_time_sel_combo->setItemText(4, QCoreApplication::translate("adminwdt", "11:00", nullptr));
+        end_time_sel_combo->setItemText(5, QCoreApplication::translate("adminwdt", "12:00", nullptr));
+        end_time_sel_combo->setItemText(6, QCoreApplication::translate("adminwdt", "13:00", nullptr));
+        end_time_sel_combo->setItemText(7, QCoreApplication::translate("adminwdt", "14:00", nullptr));
+        end_time_sel_combo->setItemText(8, QCoreApplication::translate("adminwdt", "15:00", nullptr));
+        end_time_sel_combo->setItemText(9, QCoreApplication::translate("adminwdt", "16:00", nullptr));
+        end_time_sel_combo->setItemText(10, QCoreApplication::translate("adminwdt", "17:00", nullptr));
+        end_time_sel_combo->setItemText(11, QCoreApplication::translate("adminwdt", "18:00", nullptr));
+        end_time_sel_combo->setItemText(12, QCoreApplication::translate("adminwdt", "19:00", nullptr));
+        end_time_sel_combo->setItemText(13, QCoreApplication::translate("adminwdt", "20:00", nullptr));
+        end_time_sel_combo->setItemText(14, QCoreApplication::translate("adminwdt", "21:00", nullptr));
+        end_time_sel_combo->setItemText(15, QCoreApplication::translate("adminwdt", "22:00", nullptr));
+
+        label_5->setText(QCoreApplication::translate("adminwdt", "\344\272\213\344\273\266\345\234\260\347\202\271", nullptr));
+        groupBox->setTitle(QString());
+        online_Button->setText(QCoreApplication::translate("adminwdt", "\347\272\277\344\270\212", nullptr));
+        offline_Button->setText(QCoreApplication::translate("adminwdt", "\347\272\277\344\270\213", nullptr));
+        label_6->setText(QCoreApplication::translate("adminwdt", "\344\272\213\344\273\266\345\220\215\347\247\260", nullptr));
+        label_7->setText(QCoreApplication::translate("adminwdt", "\344\272\213\344\273\266\347\247\215\347\261\273", nullptr));
+        Tag_sel_combo->setItemText(0, QCoreApplication::translate("adminwdt", "\345\277\205\344\277\256\350\257\276", nullptr));
+        Tag_sel_combo->setItemText(1, QCoreApplication::translate("adminwdt", "\351\200\211\344\277\256\350\257\276", nullptr));
+        Tag_sel_combo->setItemText(2, QCoreApplication::translate("adminwdt", "\351\233\206\344\275\223\344\272\213\345\212\241", nullptr));
+
+        add_Button->setText(QString());
+        change_Button->setText(QString());
+        delete_Button->setText(QString());
     } // retranslateUi
 
 };
