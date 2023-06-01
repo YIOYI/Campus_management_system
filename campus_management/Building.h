@@ -109,6 +109,7 @@ public:
 	vector<Building>& Buildings_() { return Buildings; }
     int findBuilding(const QString &name);  //找到返回位置，没有返回-1
 	int get_Map();
+    void save_netBuilding(const QString& netname);
 
     /**
      * @brief 获取第i个Building

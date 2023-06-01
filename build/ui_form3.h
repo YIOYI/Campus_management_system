@@ -128,8 +128,13 @@ public:
         pushButton->setIconSize(QSize(56, 56));
         deleteButton = new QPushButton(groupBox);
         deleteButton->setObjectName("deleteButton");
-        deleteButton->setGeometry(QRect(1310, 350, 41, 51));
-        deleteButton->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        deleteButton->setGeometry(QRect(1310, 350, 48, 48));
+        deleteButton->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+"border-bottom-right-radius: 24px;\n"
+"border-bottom-left-radius: 24px;\n"
+"border-top-left-radius: 24px;/*\350\256\276\347\275\256\345\234\206\350\247\222\347\232\204\345\244\247\345\260\217*/\n"
+"border-top-right-radius: 24px\n"
+""));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/picture/delete.png"), QSize(), QIcon::Normal, QIcon::Off);
         deleteButton->setIcon(icon1);

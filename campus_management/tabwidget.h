@@ -7,6 +7,7 @@
 #include"form1.h"
 #include"form2.h"
 #include"form3.h"
+#include "adminwdt.h"
 
 namespace Ui {
 class TabWidget;
@@ -20,9 +21,7 @@ signals:
     void quit_tabwidget();
 public slots:
     void time_update();
-    void alarm_guide(Building dest);
 public:
-    QTimer*timer_calendar;
     _Time *ti;  /*虚拟时间*/
     explicit TabWidget(QWidget *parent = nullptr);
     ~TabWidget();
@@ -34,6 +33,7 @@ private:
     Form1 *page1;
     Form2 *page2;
     Form3 *page3;
+    adminwdt *page4;
     Person *current_user;
     Ui::TabWidget *ui;
 };

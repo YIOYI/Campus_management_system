@@ -38,11 +38,6 @@ Form3::Form3(QWidget *parent) :
     connect(ui->tableWidget_search,&QTableWidget::cellClicked,this,&Form3::search_outcome);
     connect(ui->pushButton_quit,&QPushButton::clicked,this,&Form3::quit);
     connect(ui->pushButton_correct,&QPushButton::clicked,this,&Form3::correct);
-
-    connect(ui->bt_pause,&QPushButton::clicked,this,&Form3::time_pause);
-    connect(ui->bt_hour,&QPushButton::clicked,this,&Form3::FF_hour);
-    connect(ui->bt_day,&QPushButton::clicked,this,&Form3::FF_day);
-    connect(ui->cb_week,&QComboBox::currentIndexChanged,this,&Form3::set_week);
 }
 
 Form3::~Form3()
@@ -51,9 +46,8 @@ Form3::~Form3()
     delete ui;
 }
 
-void Form3::init_form3(Person *a,_Time *t)
+void Form3::init_form3(Person *a)
 {
-    ti=t;
     current_user =a;
     ui->label_name->setText(current_user->getname());
     ui->label_ID->setText(QString::number(current_user->getID()));
@@ -225,6 +219,7 @@ void Form3::AlarmTable_init()
     ui->AlarmTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
     ui->AlarmTable->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->AlarmTable->hideColumn(5);
+    //ui->AlarmTable->setStyleSheet("#frame{border-image: url(:/picture/alarmtable_background.png)}");
 
     connect(model, &QStandardItemModel::itemChanged, this, &Form3::on_UseCheck_activated);
 
@@ -235,13 +230,11 @@ void Form3::AlarmTable_init()
             AddAlarmRow(rowcount, single);
     }
 
-    ti->time_continue();
     //Ring(all_alarm[0]);
 }
 
 void Form3::AddAlarmRow (const int row, Alarm& single)
-{ 
-    ti->time_suspend();
+{
     disconnect(model, &QStandardItemModel::itemChanged, this, &Form3::on_UseCheck_activated);
     QStandardItem *UseCheck = new QStandardItem();
     UseCheck->setFlags(UseCheck->flags() | Qt::ItemIsUserCheckable);
@@ -621,16 +614,14 @@ void Form3::NoneLineedit_textChanged (const QString& text)
     all_alarm[alarm_index].tip = text;
 }
 
-void Form3::detect_alarm ()
+void Form3::detect_alarm (_Time now)
 {
-    _Time now=*ti;
     static _Time prev = {-1, -1, -1};
 
-    now.time_now();
     if (prev.day() == now.day() && prev.hour() == now.hour() && prev.week() == now.week())
         return;
 
-    for (auto &single : all_alarm)
+    for (auto single : all_alarm)
     {
         if (!single.IsUsed)
             continue;
@@ -642,11 +633,9 @@ void Form3::detect_alarm ()
         if (single.alarm_tag == ONCE)
         {
             if (now.hour() == single.alarm_hour)
-            {
                 Ring(single);
-                single.IsRung = true;
-                single.IsUsed = false;
-            }
+            single.IsRung = true;
+            single.IsUsed = false;
         }
         else if (single.alarm_tag == DAYLY)
         {
@@ -776,12 +765,11 @@ void Form3::write_alarm_file (void)
 
 void Form3::Ring (Alarm &single)
 {
-    ti->time_suspend();
-    emit alarm_ring();
     QMediaPlayer *player = new QMediaPlayer;
     QAudioOutput * audioOutput = new QAudioOutput;
     player->setAudioOutput(audioOutput);
-    player->setSource(QUrl::fromLocalFile(":/mp3/alarm.wav"));
+    player->setSource(QUrl::fromLocalFile("../campus_management/mp3/alarm.wav"));
+    qDebug() << player->source();
     audioOutput->setVolume(50);
     player->play();
     qDebug() << player->isPlaying();
@@ -802,9 +790,8 @@ void Form3::Ring (Alarm &single)
 
     msgBox.exec();
 
-
     if (msgBox.clickedButton() == yesButton) {
-        emit jmp_to_guide(single.alarm_event.building);
+
     }
 
     player->stop();
@@ -859,61 +846,4 @@ void Form3::on_deleteButton_clicked()
 
     model->removeRows(row, 1);
 }
-void Form3::set_time(const QString &tmp)
-{
-    ui->cb_week->setCurrentIndex(ti->week()-1);
-    ui->label_time->setText(tmp);
-    if(ti->is_continue()==1)
-        ui->bt_pause->setStyleSheet("border-image: url(:/picture/continue_white.png);background-color: rgba(229, 229, 229, 0);");
-    else
-        ui->bt_pause->setStyleSheet("border-image: url(:/picture/pause_white.png);background-color: rgba(229, 229, 229, 0);");
-}
-void Form3::timeUpdate()
-{
-    QString tmp;
-    QString day;
-    ti->time_now();
-    switch (ti->day())
-    {
-    case 1: day="周一"; break;
-    case 2: day="周二"; break;
-    case 3: day="周三"; break;
-    case 4: day="周四"; break;
-    case 5: day="周五"; break;
-    case 6: day="周六"; break;
-    case 7: day="周日"; break;
-    }
-    tmp=day+QString("/%1点").arg(ti->hour());
-    ui->label_time->setText(tmp);
-    ui->cb_week->setCurrentIndex(ti->week()-1);
-}
-void Form3::time_pause()
-{
-    if(ti->is_continue()==0)
-    {
-        ti->time_continue();
-    ui->bt_pause->setStyleSheet("border-image: url(:/picture/continue_white.png);color: rgba(255, 255, 255, 0);");
-    }
-    else
-    {
-        ti->time_suspend();
-    ui->bt_pause->setStyleSheet("border-image: url(:/picture/pause_white.png);color: rgba(255, 255, 255, 0);");
-    }
-}
-void Form3::FF_hour()
-{
-    ti->time_now();
-    ti->time_set(ti->week(),ti->day(),ti->hour()+1);
-    timeUpdate();
-}
-void Form3::FF_day()
-{
-    ti->time_now();
-    ti->time_set(ti->week(),ti->day()+1,ti->hour());
-    timeUpdate();
-}
-void Form3::set_week()
-{
-    ti->time_set(ui->cb_week->currentIndex()+1,1,0);
-    timeUpdate();
-}
+

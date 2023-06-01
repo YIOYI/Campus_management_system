@@ -18,11 +18,7 @@ class Form_events;
 }
 
 
-struct position{
-    int first_index;
-    int second_index;
-    int count;
-};
+
 
 class Form1 : public QWidget
 {
@@ -61,7 +57,7 @@ public slots:
     void FF_day();
     void set_week();
 private:
-    position event_position;
+    arrayindex event_position;
     int positioning_tag;
     vector<int> ID;
     QString label_ID;

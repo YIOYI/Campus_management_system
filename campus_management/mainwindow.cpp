@@ -10,11 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("登录界面");
-    tabwidget = new TabWidget;
     current_user = new Person;
     connect(ui->log_on,&QPushButton::clicked,this,&MainWindow::detect_input_code);
     connect(ui->select_ID,&QComboBox::currentIndexChanged,this,&MainWindow::select_change);
-    connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
 }
 
 MainWindow::~MainWindow()
@@ -42,6 +40,18 @@ void MainWindow::detect_input_code()
         current_user->getpassword() = rightcode;
         current_user->getname() = All_students_information.students_information()[index].getname();
         current_user->get_perevents();
+        current_user->Tag = STUDENT;
+        logon_to_main();
+    }
+    else if (ui->select_ID->currentText() == "88888888" && ui->code_lineedit->text() == "88888888")
+    {
+        current_user->getID() = 88888888;
+        current_user->getpassword() = 88888888;
+        current_user->getname() = "管理员";
+        qDebug() << "正在读取";
+        current_user->get_admin_perevents();
+        qDebug() << "读取结束";
+        current_user->Tag = ADMIN;
         logon_to_main();
     }
     else
@@ -51,6 +61,8 @@ void MainWindow::detect_input_code()
 
  void MainWindow::logon_to_main()
 {
+    tabwidget = new TabWidget;
+    connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
     _Time *ti=new _Time;
     ti->time_set(1,1,0);
     tabwidget->init(current_user,ti);
@@ -73,20 +85,6 @@ void MainWindow::clean()
     tabwidget->close();
     delete tabwidget;
     delete current_user;
-    tabwidget = new TabWidget;
     current_user = new Person;
-    connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
     this->show();
 }
-
-
-
-
-
-
-
-
-
-
-
-
