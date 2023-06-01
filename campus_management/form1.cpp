@@ -11,6 +11,18 @@ Form1::Form1(QWidget *parent) :
     refresh = 0;
     positioning_tag =0;
     event_position.count = -1;
+    m=new Map;
+    m->get_Map(); //获取地图
+
+    QStringList word_list;
+
+    for(int i=1;i<Building_Number;i++)
+        word_list<<m->Buildings_()[i].name_();
+    QCompleter *MyInfor = new QCompleter(word_list);
+    MyInfor->setFilterMode(Qt::MatchFlag::MatchContains);
+
+    ui->lineEdit_address->setCompleter(MyInfor);
+    insert_dialog.ui->lineEdit_2->setCompleter(MyInfor);
 
     ui->widget->hide();
     ui->tableWidget->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
@@ -67,7 +79,7 @@ void Form1::show_percurriculum()
                 for(auto X:current_user->perEvents[day][i])
                 {
                     bool is =false; /*判断该事件本周是否有*/
-                    if(X.Tag==1||X.Tag==2)/*课程每周都有*/
+                    if((X.Tag==1||X.Tag==2)&&!X.name.endsWith("考试"))/*课程每周都有*/
                         is=true;
                     else
                     {
@@ -98,6 +110,7 @@ void Form1::show_percurriculum()
 void Form1::check_detial(int r, int c)
 {
     QString detail;
+    bool hasexam =false;
 
     ui->event_detial->clear();
     int week = ui->select_week->currentIndex()+1;
@@ -105,16 +118,12 @@ void Form1::check_detial(int r, int c)
     if (item == nullptr)
        return;
     vector<int> index =current_user->find_index(week,c+1,r+6);
+
     detail.append("事件名称: ");
-    if(index.size()>1)
+    for(auto count:index)
     {
-        for(auto count:index)
-        {
-            detail.append(current_user->perEvents[c][r][count].name).append(" ");
-        }
+        detail.append(current_user->perEvents[c][r][count].name).append(" ");
     }
-    else
-        detail.append(current_user->perEvents[c][r][index[0]].name);
 
     detail.append("\n");
     detail.append("持续时间: ");
@@ -123,12 +132,25 @@ void Form1::check_detial(int r, int c)
     detail.append(QString::number(current_user->perEvents[c][r][index[0]].end.hour(),10));
     detail.append(":00\n");
     detail.append("事件地点: ");
+    for(auto count:index)
+    {
+        detail.append(current_user->perEvents[c][r][count].building.name_()).append(" ");
+    }
+
     detail.append("\n");
     detail.append("事件类型: ");
     switch(current_user->perEvents[c][r][index[0]].Tag)
     {
-        case 1:detail.append("必修课");break;
-        case 2:detail.append("选修课");break;
+    case 1:if(current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
+                detail.append("必修课考试");
+            else
+                detail.append("必修课");
+            break;
+    case 2:if(current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
+                detail.append("选修课考试");
+            else
+                detail.append("选修课");
+            break;
         case 3:detail.append("集体事务");break;
         case 4:detail.append("个人事务");break;
         case 5:detail.append("临时事务");break;
@@ -136,12 +158,11 @@ void Form1::check_detial(int r, int c)
 
     detail.append("\n");
     detail.append("事件周数: ");
-    if(current_user->perEvents[c][r][index[0]].Tag==1 ||current_user->perEvents[c][r][index[0]].Tag==2)
+    if((current_user->perEvents[c][r][index[0]].Tag==1 ||current_user->perEvents[c][r][index[0]].Tag==2)&&!current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
     {
         detail.append("每周都有");
-        detail.append("\n考试信息:");
+        hasexam = true;
     }
-
     else if(index.size()>1)
     {
         detail.append("各个事件不同，详细信息请在主页搜索");
@@ -155,6 +176,45 @@ void Form1::check_detial(int r, int c)
         }
     }
 
+
+    if(hasexam)
+    {
+        detail.append("\n考试信息: ");
+        QString exam_name = current_user->perEvents[c][r][index[0]].name +"考试";
+        if(current_user->namequeue.find(exam_name)!=current_user->namequeue.end())
+        {
+            detail.append("考试周有 ");
+            vector<arrayindex> exam_index = current_user->namequeue[exam_name];
+            for(int i=0;i<(int)exam_index.size();i++)
+            {
+                Event exam_information=current_user->perEvents[exam_index[i].first_index][exam_index[i].second_index][exam_index[i].count-1];
+                for(auto tempweek:exam_information.weeks)
+                {
+                    detail.append(QString::number(tempweek)).append(" ");
+                }
+            }
+            detail.append("       \n具体考试信息请搜索").append("\"").append(exam_name).append("\"");
+        }
+        else
+        {
+            detail.append("暂未发布");
+        }
+    }
+
+    else if(current_user->perEvents[c][r][index[0]].Tag == 3)
+    {
+        detail.append("\n参加学生有：");
+        int num =0;
+        for(auto tempID:current_user->perEvents[c][r][index[0]].ID)
+        {
+            detail.append(QString::number(tempID)).append(" ");
+            num++;
+            if(num%3==0)
+                detail.append("\n");
+        }
+    }
+
+
     ui->event_detial->setText(detail);
 }
 
@@ -165,6 +225,7 @@ void Form1::init_form1(Person *a,_Time *t)
     insert_dialog.current_ID = current_user->ID;
     show_percurriculum();
 }
+
 void Form1::set_time(const QString &tmp)
 {
     ui->cb_week->setCurrentIndex(ti->week()-1);
@@ -174,6 +235,7 @@ void Form1::set_time(const QString &tmp)
     else
         ui->bt_pause->setStyleSheet("border-image: url(:/picture/pause.png);color: rgba(255, 255, 255, 0);");
 }
+
 void Form1::timeUpdate()
 {
     QString tmp;
@@ -193,6 +255,7 @@ void Form1::timeUpdate()
     ui->label_time->setText(tmp);
     ui->cb_week->setCurrentIndex(ti->week()-1);
 }
+
 void Form1::time_pause()
 {
     if(ti->is_continue()==0)
@@ -206,20 +269,24 @@ void Form1::time_pause()
     ui->bt_pause->setStyleSheet("border-image: url(:/picture/pause.png);color: rgba(255, 255, 255, 0);");
     }
 }
+
 void Form1::FF_hour()
 {
     ti->time_now();
     ti->time_set(ti->week(),ti->day(),ti->hour()+1);
     timeUpdate();
 }
+
 void Form1::FF_day()
 {
     ti->time_now();
     ti->time_set(ti->week(),ti->day()+1,ti->hour());
     timeUpdate();
 }
+
 void Form1::set_week()
 {
+    if(ui->cb_week->currentIndex()!=0)
     ti->time_set(ui->cb_week->currentIndex()+1,1,0);
     timeUpdate();
 }
@@ -233,14 +300,18 @@ void Form1::skip_to_dialog(int r,int c)
        insert_dialog.line=c;
 }
 
-int Form1::dialog_add_event(QAbstractButton* button)
+void Form1::dialog_add_event(QAbstractButton* button)
 {
     insert_dialog.ui->widget->hide();
     if(button == (QAbstractButton *)(insert_dialog.ui->buttonBox->button(QDialogButtonBox::Ok)))
     {
+        bool judge = false;
+        QMessageBox msgBox;
         Event temp;
         refresh =1;
-        temp.name=insert_dialog.ui->lineEdit->text();
+        temp.name = insert_dialog.ui->lineEdit->text();
+        temp.building.name_() = insert_dialog.ui->lineEdit_2->text();
+        temp.building.id_()=m->findBuilding(temp.building.name_());
         temp.weeks.push_back(ui->select_week->currentIndex()+1);
         temp.start.day()=insert_dialog.line+1;
         temp.start.hour()=insert_dialog.row+6;
@@ -256,23 +327,91 @@ int Form1::dialog_add_event(QAbstractButton* button)
         temp.ID.push_back(current_user->ID);
         temp.ID.insert(temp.ID.end(),insert_dialog.ID.begin(),insert_dialog.ID.end());
 
-        if(!isexist(temp))
+        if(temp.Tag == 3)//在空白格上添加事务
         {
-            current_user->perEvents[insert_dialog.line][insert_dialog.row].push_back(temp);
-            if(current_user->namequeue.find(temp.name)==current_user->namequeue.end())
-                current_user->event_names.push_back(temp.name);
-            current_user->namequeue[temp.name].push_back({insert_dialog.line,insert_dialog.row,(int)current_user->perEvents[insert_dialog.line][insert_dialog.row].size()});
-        }//未找到属性一致的事件，新增事件
+            seektime temp_time=current_user->iscollision(temp);//判断当前时间是否冲突
+            if(temp_time.tag==0)
+            {
+                QString tip;
+
+                vector<seektime> idle_time = current_user->findidle(temp_time,temp.Tag);/*找到最近的三个时间点*/
+                if(temp_time.week != 0)
+                 {
+                    tip+="在第";tip+=QString::number(temp_time.week);tip+="周\n";
+                 }
+
+                tip+="周";tip+=QString::number(temp_time.day);
+                tip+="       ";
+                tip+=QString::number(temp_time.hour);tip+=":00 ~ ";tip+=QString::number(temp_time.hour+1);tip+=":00\n";
+                tip+="与其他事务发生冲突\n";
+
+                if(idle_time.size()==0)
+                    tip+="添加失败";
+                else if(idle_time[0].tag==1)//找到空闲时间
+                {
+                    tip+="冲突当天的空闲时间点有:    \n";
+
+                    for(auto a:idle_time)
+                    {
+                        tip+=QString::number(a.hour);
+                        tip+=":00~";
+                        tip+=QString::number(a.hour+1);
+                        tip+=":00\n";
+                    }
+                }
+                else if(idle_time[0].tag == 2)//找到冲突最少的时间
+                {
+                    tip+="当天冲突最少的三个时间点为:    \n";
+
+                    for(auto a:idle_time)
+                    {
+                        tip+=QString::number(a.hour);
+                        tip+=":00~";
+                        tip+=QString::number(a.hour+1);
+                        tip+=":00\n";
+                    }
+                }
+
+                msgBox.setWindowTitle("提示");
+                msgBox.setText(tip);
+                msgBox.setStandardButtons(QMessageBox::Ok);
+                msgBox.setDefaultButton(QMessageBox::Ok);
+                int ret = msgBox.exec();
+                if(ret == QMessageBox::Ok)
+                    return;
+            }
+            else
+            {
+                judge = true;
+            }
+        }
+        else
+            judge =true;
 
 
-        //在课表上显示
-        ui->tableWidget->setItem(insert_dialog.row,insert_dialog.line,new QTableWidgetItem(temp.name));
-        ui->tableWidget->item(insert_dialog.row,insert_dialog.line)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
-        ui->tableWidget->item(insert_dialog.row,insert_dialog.line)->setForeground(Qt::black);
+        if(judge)
+        {
+            if(!isexist(temp))
+            {
+                current_user->perEvents[insert_dialog.line][insert_dialog.row].push_back(temp);
+                if(current_user->namequeue.find(temp.name)==current_user->namequeue.end())
+                    current_user->event_names.push_back(temp.name);
+                current_user->namequeue[temp.name].push_back({insert_dialog.line,insert_dialog.row,(int)current_user->perEvents[insert_dialog.line][insert_dialog.row].size()});
+            }//未找到属性一致的事件，新增事件
+
+            for(auto tempweek:temp.weeks)//添加成功的事件插入时间容器
+                if(current_user->perevents_time_set.find(tempweek*MAX_ONE_WEEK + temp.start.day()*MAX_ONE_DAY + temp.start.hour())==current_user->perevents_time_set.end())
+                    current_user->perevents_time_set.insert(tempweek*MAX_ONE_WEEK + temp.start.day()*MAX_ONE_DAY + temp.start.hour());
+
+            //在课表上显示
+            ui->tableWidget->setItem(insert_dialog.row,insert_dialog.line,new QTableWidgetItem(temp.name));
+            ui->tableWidget->item(insert_dialog.row,insert_dialog.line)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+            ui->tableWidget->item(insert_dialog.row,insert_dialog.line)->setForeground(Qt::black);
+        }
 
     }
 
-    return 0;
+    return ;
 }
 
 void Form1::handle_event()
@@ -318,10 +457,10 @@ void Form1::handle_event()
     }
 
     /*获取用户输入的事件的信息*/
-    if(ui->lineEdit_name->text().isEmpty())
+    if(ui->lineEdit_name->text().isEmpty()||ui->lineEdit_address->text().isEmpty())
     {
         msgBox.setWindowTitle("提示");
-        msgBox.setText("事件名称不能为空");
+        msgBox.setText("信息填写不能为空");
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Ok);
         int ret = msgBox.exec();
@@ -366,6 +505,8 @@ void Form1::handle_event()
     insert_event.start.day()=ui->comboBox_day->currentIndex()+1;
     insert_event.start.hour()=ui->comboBox_start_time->currentIndex()+6;
     insert_event.name = ui->lineEdit_name->text();
+    insert_event.building.name_()=ui->lineEdit_address->text();
+    insert_event.building.id_()=m->findBuilding(insert_event.building.name_());
     insert_event.end.hour()=insert_event.start.hour()+1;
     insert_event.periodicity = insert_event.weeks.size();
     insert_event.ID.push_back(current_user->ID);
@@ -394,7 +535,6 @@ void Form1::handle_event()
 
 void Form1::add_event(Event & insert_event)
 {
-    qDebug()<<"add";
     QMessageBox msgBox;
 
     insert_event.ID.insert(insert_event.ID.end(),ID.begin(),ID.end());
@@ -412,13 +552,13 @@ void Form1::add_event(Event & insert_event)
             return;
     }
 
-    if(refresh)
+    if(refresh)//是否出现过修改事务的清况，如果修改过更新储存事件时间的容器
     {
         current_user->init_perevents_time_set();
         refresh=0;
-
     }
-    seektime temp_time=current_user->iscollision(insert_event);
+
+    seektime temp_time=current_user->iscollision(insert_event);//判断当前时间是否冲突
 
     if(temp_time.tag == 1)
     {
@@ -430,6 +570,10 @@ void Form1::add_event(Event & insert_event)
                 current_user->event_names.push_back(insert_event.name);
             current_user->namequeue[insert_event.name].push_back({insert_event.start.day()-1,insert_event.start.hour()-6,(int)current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].size()});
         }//未找到属性一致的事件，新增事件
+
+        for(auto tempweek:insert_event.weeks)//添加成功的事件插入时间容器
+            if(current_user->perevents_time_set.find(tempweek*MAX_ONE_WEEK + insert_event.start.day()*MAX_ONE_DAY + insert_event.start.hour())==current_user->perevents_time_set.end())
+                current_user->perevents_time_set.insert(tempweek*MAX_ONE_WEEK + insert_event.start.day()*MAX_ONE_DAY + insert_event.start.hour());
 
         refresh=1;
         if(!positioning_tag)
@@ -459,7 +603,7 @@ void Form1::add_event(Event & insert_event)
     {
         QString tip;
 
-        vector<seektime> idle_time = current_user->findidle(temp_time);/*找到最近的三个时间点*/
+        vector<seektime> idle_time = current_user->findidle(temp_time,insert_event.Tag);/*找到最近的三个时间点*/
         if(temp_time.week != 0)
         {
             tip+="在第";tip+=QString::number(temp_time.week);tip+="周\n";
@@ -469,19 +613,31 @@ void Form1::add_event(Event & insert_event)
         tip+="       ";
         tip+=QString::number(temp_time.hour);tip+=":00 ~ ";tip+=QString::number(temp_time.hour+1);tip+=":00\n";
         tip+="与其他事务发生冲突\n";
-        tip+="距离冲突时间最近的三个时间点为:    \n";
-
-        for(auto a:idle_time)
+        if(idle_time.size()==0)
+            tip+="添加失败";
+        else if(idle_time[0].tag==1)//找到空闲时间
         {
-            tip+="第";
-            tip+=QString::number(a.week);
-            tip+="周  星期";
-            tip+=QString::number(a.day);
-            tip+="  ";
-            tip+=QString::number(a.hour);
-            tip+=":00~";
-            tip+=QString::number(a.hour+1);
-            tip+=":00\n";
+            tip+="冲突当天的空闲时间点有:    \n";
+
+            for(auto a:idle_time)
+            {
+                tip+=QString::number(a.hour);
+                tip+=":00~";
+                tip+=QString::number(a.hour+1);
+                tip+=":00\n";
+            }
+        }
+        else if(idle_time[0].tag == 2)//找到冲突最少的时间
+        {
+            tip+="当天冲突最少的三个时间点为:    \n";
+
+            for(auto a:idle_time)
+            {
+                tip+=QString::number(a.hour);
+                tip+=":00~";
+                tip+=QString::number(a.hour+1);
+                tip+=":00\n";
+            }
         }
 
         msgBox.setWindowTitle("提示");
@@ -504,20 +660,18 @@ void Form1::revise_event(Event & insert_event)
 
 void Form1::delete_event(Event & insert_event)
 {
-    qDebug()<<"delete";
     Event tempevent;
     arrayindex temparray;
     QMessageBox msgBox;
 
     int count =0;
-    qDebug()<<current_user->namequeue[insert_event.name].size();
     QString temp1;
     QString temp2;
-    temp1.append(insert_event.name).append(QString::number(insert_event.Tag)).append(QString::number(insert_event.start.day())).append(QString::number(insert_event.start.hour()));
+    temp1.append(insert_event.name).append(QString::number(insert_event.Tag)).append(QString::number(insert_event.start.day())).append(QString::number(insert_event.start.hour())).append(insert_event.building.name_());
 
     for(auto &a:current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6])
     {
-        if(a.name == insert_event.name && a.Tag == insert_event.Tag)
+        if(a.name == insert_event.name && a.Tag == insert_event.Tag&&a.building.name_()==insert_event.building.name_())
         {
             if(a.Tag==3&&a.ID[0]!=current_user->ID)
             {
@@ -531,15 +685,15 @@ void Form1::delete_event(Event & insert_event)
             }
             refresh=1;
             current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].erase(current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].begin()+count);
-            if((int)current_user->namequeue[insert_event.name].size()>1)/*判断该名称是否还有其他事件*/
+
+            if((int)current_user->namequeue[insert_event.name].size()>1) /*判断该名称是否还有其他事件*/
             {
-                for(int i=0;i<(int)current_user->namequeue[insert_event.name].size();i++)/*删除该容器已经删除的事件的下标*/
+                for(int i=0;i<(int)current_user->namequeue[insert_event.name].size();i++) /*删除该容器中已删除事件的下标*/
                 {
                     temparray = current_user->namequeue[insert_event.name][i];
                     tempevent = current_user->perEvents[temparray.first_index][temparray.second_index][temparray.count-1];
                     temp2.clear();
-                    temp2.append(tempevent.name).append(QString::number(tempevent.Tag)).append(QString::number(tempevent.start.day())).append(QString::number(tempevent.start.hour()));
-                    qDebug()<<temparray.first_index<<temparray.second_index<<temparray.count;
+                    temp2.append(tempevent.name).append(QString::number(tempevent.Tag)).append(QString::number(tempevent.start.day())).append(QString::number(tempevent.start.hour())).append(tempevent.building.name_());
                     if(temp1==temp2)
                     {
                         current_user->namequeue[insert_event.name].erase(current_user->namequeue[insert_event.name].begin()+i);
@@ -551,7 +705,12 @@ void Form1::delete_event(Event & insert_event)
                 current_user->namequeue.erase(insert_event.name);
             }
 
-            qDebug()<<current_user->namequeue[insert_event.name].size();
+            for(auto tempweek:insert_event.weeks)
+                if((current_user->find_index(tempweek,insert_event.start.day(),insert_event.start.hour())).size() == 1)
+                {
+                    current_user->perevents_time_set.erase(tempweek*MAX_ONE_WEEK + insert_event.start.day()*MAX_ONE_DAY + insert_event.start.hour());
+                }
+
             if(!positioning_tag)
             {
                 msgBox.setWindowTitle("提示");
@@ -648,9 +807,10 @@ void Form1::doubleclick_set(int r,int c)
 
 
         ui->lineEdit_name->setText(set_event.name);
+        ui->lineEdit_address->setText(set_event.building.name_());
         ui->comboBox_day->setCurrentIndex(set_event.start.day()-1);
         ui->comboBox_start_time->setCurrentIndex(set_event.start.hour()-6);
-        ui->comboBox_end_time->setCurrentIndex(set_event.end.hour()-7);
+        //ui->comboBox_end_time->setCurrentIndex(set_event.end.hour()-7);
 
         for(auto tempweek :set_event.weeks)
         {
@@ -683,7 +843,7 @@ bool Form1::isexist(Event &a)
     bool alreadyin=false;
     for(auto &p:current_user->perEvents[a.start.day()-1][a.start.hour()-6])
     {
-        if(p.name == a.name&&p.Tag==a.Tag)//在其他周找到属性完全一致的事件，将当前事件的周数加入其中
+        if(p.name == a.name&&p.Tag==a.Tag&&p.building.name_()==a.building.name_())//在其他周找到属性完全一致的事件，将当前事件的周数加入其中
         {
             for(auto week_insert:a.weeks)
             {
@@ -705,6 +865,7 @@ bool Form1::isexist(Event &a)
 void Form1::seek_position()
 {
     QString name;
+    QString address;
     int TAG;
     QMessageBox msgBox;
     int count=0;
@@ -728,10 +889,11 @@ void Form1::seek_position()
     event_position.first_index=ui->comboBox_day->currentIndex();
     event_position.second_index=ui->comboBox_start_time->currentIndex();
     name = ui->lineEdit_name->text();
+    address=ui->lineEdit_address->text();
 
     for(auto a:current_user->perEvents[event_position.first_index][event_position.second_index])
     {
-        if(a.name==name&&a.Tag==TAG)
+        if(a.name==name&&a.Tag==TAG&&a.building.name_()==address)
         {
             positioning_tag =1;
             event_position.count = count;
@@ -781,7 +943,6 @@ void Form1::insert_ID()
         label_ID.append("\n");
     ui->label_ID->setText(label_ID);
 }
-
 
 
 

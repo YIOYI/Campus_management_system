@@ -8,6 +8,7 @@
 #include <QToolTip>
 #include <QLabel>
 #include<unordered_map>
+#include <QCompleter>
 #include "ui_form1.h"
 #include"insert_event.h"
 #include"Person.h"
@@ -42,7 +43,7 @@ public slots:
     void check_detial(int r, int c);//点击单个单元格显示事件具体信息
     void skip_to_dialog(int r,int c);//双击单元格，跳转到修改窗口。
     void doubleclick_set(int r,int c);//双击非空格单元格，初始化右下角事件增删框
-    int dialog_add_event(QAbstractButton*);
+    void dialog_add_event(QAbstractButton*);
     void handle_event();/*增删事件*/
     void clear_frame2();/*清空事务增删表*/
     void auto_give_end(){ui->comboBox_end_time->setCurrentIndex(ui->comboBox_start_time->currentIndex());};/*下拉框槽函数*/
@@ -60,7 +61,9 @@ public slots:
     void FF_hour();
     void FF_day();
     void set_week();
+
 private:
+    Map *m;      //地图数据
     position event_position;
     int positioning_tag;
     vector<int> ID;

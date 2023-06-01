@@ -38,9 +38,5 @@
         <file>picture/add_alarm.png</file>
         <file>picture/delete.png</file>
         <file>mp3/alarm.wav</file>
-        <file>picture/continue_white.png</file>
-        <file>picture/day_white.png</file>
-        <file>picture/hour_white.png</file>
-        <file>picture/pause_white.png</file>
     </qresource>
 </RCC>

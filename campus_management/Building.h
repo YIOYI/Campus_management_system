@@ -100,6 +100,7 @@ private:
 	vector<int> Roads;
     unordered_map<int, int> distance;
 };
+
 class Map
 {
 public:

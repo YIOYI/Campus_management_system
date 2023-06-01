@@ -11,7 +11,7 @@
 #include <QChar>
 
 
-    //Buildings文件的格式为：编号 建筑名 坐标 能到达的建筑的编号 换行 最后一行没有换行
+//Buildings文件的格式为：编号 建筑名 坐标 能到达的建筑的编号 换行 最后一行没有换行
 int Building::get_Building(QString& inLine)
 {
     int s = 0,r = 0;
@@ -62,6 +62,7 @@ int Building::get_Building(QString& inLine)
 	}
 	return 0;
 }
+
 void Building::Building_clear()
 {
     id=0;
@@ -69,6 +70,7 @@ void Building::Building_clear()
     name="";
     Roads.clear();
 }
+
 Building::Building(const Building& p)
 {
 	id = p.id;
@@ -78,6 +80,7 @@ Building::Building(const Building& p)
     for (auto iter=p.Roads.begin();iter!=p.Roads.end();iter++)
         Roads.push_back(*iter);
 }
+
 int Map::get_Map() 
 {
     QFile file(":/txt/Buildings.txt");
@@ -108,6 +111,7 @@ int Map::get_Map()
 
     return 0;
 }
+
 int Map::findBuilding(const QString &name)
 {
     int id=0;

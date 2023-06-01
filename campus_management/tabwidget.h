@@ -20,9 +20,7 @@ signals:
     void quit_tabwidget();
 public slots:
     void time_update();
-    void alarm_guide(Building dest);
 public:
-    QTimer*timer_calendar;
     _Time *ti;  /*虚拟时间*/
     explicit TabWidget(QWidget *parent = nullptr);
     ~TabWidget();

@@ -43,13 +43,13 @@ Form2::Form2(QWidget *parent) :
     ui->label->setPixmap(QPixmap::fromImage(*map_img));
     ui->label->adjustSize();
     ui->sa_map->setWidget(ui->label);
-    ui->plan_hour->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 }
 
 Form2::~Form2()
 {
     clear_map();
     delete ui;
+    delete m;
     delete map_img;
     delete guide_img;
     delete change_img;
@@ -175,7 +175,6 @@ void Form2::init_form2(Person*a,_Time *ti)
 void Form2::guide_anime(deque<int> &a)
 {
     paint_over=0;
-    qDebug()<<"guide";
     QPainter painter(guide_img);
     painter.setPen(QPen(Qt::red,3,Qt::SolidLine,Qt::RoundCap));
     QImage *last_img = nullptr;
@@ -442,6 +441,7 @@ void Form2::FF_day()
 }
 void Form2::set_week()
 {
+    if(ui->cb_week->currentIndex()!=0)
     ti->time_set(ui->cb_week->currentIndex()+1,1,0);
     timeUpdate();
 }
@@ -470,52 +470,4 @@ void Form2::show_event_info()
     }
     }
 
-}
-void Form2::guide_for_alarm(Building dest)
-{
-    guide_break=0;
-    guide_img=new QImage(*map_img);
-
-    Building bsrc;
-    int idst = dest.id_();
-    int event_num=0;
-
-    ti->time_now();
-    int d=ti->day();
-    int h=ti->hour();
-    h=(h-6)%16;
-    for(auto iter:current_user->perEvents[d-1][h])
-    {
-        int k=0;
-        for(auto j:iter.weeks)
-        {
-            if(j==ui->plan_week->currentIndex()+1)
-                k=1;
-        }
-        if(iter.Tag==1||iter.Tag==2)
-            k=1;
-        if(k==1)
-        {
-            bsrc=iter.building;
-            event_num++;
-        }
-    }
-
-    qDebug()<<event_num;
-    if(event_num!=1)
-        bsrc=m->Get_i_Building(46);  //学五
-
-    ui->search_src->setText(bsrc.name_());
-    ui->search_tar->setText(dest.name_());
-
-    if(bsrc.id_()==dest.id_())
-    {
-        clear_map();
-        ui->label_guide_text->setText("已在目的地点");
-    }
-    else
-    {
-        deque<int> a = bsrc.ShortestPath(idst, *m); //路径点数
-        guide_anime(a);
-    }
 }

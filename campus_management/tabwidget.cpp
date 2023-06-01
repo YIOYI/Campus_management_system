@@ -14,9 +14,7 @@ TabWidget::TabWidget(QWidget *parent) :
     addTab(page2,"导航系统");
 
     connect(page3,&Form3::QUIT_form,this,&TabWidget::quit);
-    connect(page3,&Form3::jmp_to_guide,this,&TabWidget::alarm_guide);
-    connect(page3,&Form3::alarm_ring,this,&TabWidget::time_update);
-
+    connect(this,&TabWidget::currentChanged,page3,&Form3::show_log);
 
 
     setWindowTitle("学生事务管理系统");
@@ -26,12 +24,14 @@ TabWidget::TabWidget(QWidget *parent) :
         "    min-height:10ex;"
         "}"
         );
-
 }
 
 TabWidget::~TabWidget()
 {
+    current_user->update_perevents();
     delete page3;
+    delete page2;
+    delete page1;
     delete ui;
 }
 
@@ -42,15 +42,14 @@ void TabWidget::init(Person* user_information,_Time *t)
     current_user = user_information;
     page1->init_form1(current_user,ti);
     page2->init_form2(current_user,ti);
-    page3->init_form3(current_user,ti);
+    page3->init_form3(current_user);
     show();
 
-
     time_update();
-    timer_calendar = new QTimer(this);
+    QTimer*timer_calendar = new QTimer(this);
     timer_calendar->start(1000);
     connect(timer_calendar,&QTimer::timeout,this,&TabWidget::time_update);
-    connect(timer_calendar,&QTimer::timeout,page3,&Form3::detect_alarm);
+
 }
 
 void TabWidget::quit()
@@ -58,6 +57,7 @@ void TabWidget::quit()
     qDebug()<<"退出 tab";
     emit quit_tabwidget();
 }
+
 void TabWidget::time_update()
 {
     QString tmp;
@@ -73,13 +73,8 @@ void TabWidget::time_update()
         case 6: day="周六"; break;
         case 7: day="周日"; break;
     }
+
     tmp=day+QString("/%1点").arg(ti->hour());
     page1->set_time(tmp);
     page2->set_time(tmp);
-    page3->set_time(tmp);
-}
-void TabWidget::alarm_guide(Building dest)
-{
-    setCurrentIndex(2);
-    page2->guide_for_alarm(dest);
 }

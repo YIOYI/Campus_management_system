@@ -103,4 +103,3 @@ void Curriculum::updatecurriculum()
         outFile.close();
 }
 
-
