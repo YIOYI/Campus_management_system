@@ -602,7 +602,8 @@ border-radius: 5px;/*设置圆角的大小*/</string>
      <string notr="true">border: 1px solid gray;/*设置边框的粗细，以及颜色*/
 border-radius: 10px;/*设置圆角的大小*/
 font: 12pt &quot;Microsoft YaHei UI&quot;;
-background-color: rgb(255, 255, 255);</string>
+background-color: rgb(255, 255, 255);
+</string>
     </property>
     <property name="placeholderText">
      <string/>

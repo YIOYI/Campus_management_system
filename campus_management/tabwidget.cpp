@@ -18,7 +18,10 @@ TabWidget::TabWidget(QWidget *parent) :
 
 TabWidget::~TabWidget()
 {
+    current_user->update_perevents();
     delete page3;
+    delete page2;
+    delete page1;
     delete ui;
 }
 
@@ -27,6 +30,7 @@ void TabWidget::init(Person* user_information,_Time *t)
     this->ti=t;
     ti->time_now();
     current_user = user_information;
+    
     if (current_user->Tag == STUDENT)
     {
         page1 =new Form1;
@@ -57,8 +61,6 @@ void TabWidget::init(Person* user_information,_Time *t)
 
     show();
 
-
-
 }
 
 void TabWidget::quit()
@@ -66,6 +68,7 @@ void TabWidget::quit()
     qDebug()<<"退出 tab";
     emit quit_tabwidget();
 }
+
 void TabWidget::time_update()
 {
     QString tmp;

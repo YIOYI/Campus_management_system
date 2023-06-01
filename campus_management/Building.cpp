@@ -159,3 +159,4 @@ void Map::save_netBuilding(const QString& netname)
     file.close();
 
 }
+

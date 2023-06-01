@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete tabwidget;
+    delete current_user;
     delete ui;
 }
 
@@ -39,6 +40,11 @@ void MainWindow::detect_input_code()
         current_user->getID() = currentID;
         current_user->getpassword() = rightcode;
         current_user->getname() = All_students_information.students_information()[index].getname();
+
+        QString log_on;
+        log_on.append(current_user->getname()).append("登录学生管理系统成功\n");
+        current_user->inputlog(log_on);
+
         current_user->get_perevents();
         current_user->Tag = STUDENT;
         logon_to_main();
@@ -58,8 +64,7 @@ void MainWindow::detect_input_code()
         ui->label_wrong->setText("账号或者密码错误");
 }
 
-
- void MainWindow::logon_to_main()
+void MainWindow::logon_to_main()
 {
     tabwidget = new TabWidget;
     connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);

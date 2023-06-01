@@ -1,13 +1,9 @@
 #ifndef __TIME_H_
 #define __TIME_H_
-#include "qobjectdefs.h"
-#include <QObject>
-#include <QString>
-#include <iostream>
+#include<iostream>
 using namespace std;
 class _Time
 {
-
 public:
     _Time(int m = 1, int d = 1, int h = 0) :
 		week_(m), day_(d), hour_(h) {};
