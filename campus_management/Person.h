@@ -129,7 +129,6 @@ private:
 
 
 	Building position;			            //学生当前位置
-    unsigned Tag;
     enum {STUDENT, ADMIN};
 
     /*暂时用来储存其他学生的信息*/
