@@ -12,6 +12,7 @@ Form3::Form3(QWidget *parent) :
     ui->setupUi(this);
     QImage img (":/picture/mkim1.png");
     ui->label->setPixmap(QPixmap::fromImage(img));
+    current_user = nullptr;
 
     QAction * searchAction = new QAction(ui->lineEdit);
     searchAction->setIcon(QIcon(":/picture/search.png"));
@@ -768,8 +769,6 @@ void Form3::write_alarm_file (void)
     }
     qDebug() << "alarm_file open in write_alarm_file";
     QTextStream alarm_out(&alarm_file);
-//    alarm_out << "我是傻逼";
-//    qDebug() << "我是傻逼";
     for (auto single : all_alarm)
     {
         if (single.event_tag == CLASS)

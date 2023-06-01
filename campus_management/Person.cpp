@@ -268,13 +268,13 @@ void Person::update_perevents()
     QTextStream out2(&outFile2);
     if(!outFile1.open(QIODevice::WriteOnly))
     {
-        qDebug() << "open failed"<<QString::number(ID)<<".txt";
+        qDebug()<<"./information_file/collective_event.txt";
         return;
     }
 
     else if(!outFile2.open(QIODevice::WriteOnly))
     {
-        qDebug()<<"./information_file/collective_event.txt";
+        qDebug() << "open failed"<<QString::number(ID)<<".txt";
         return ;
     }
 
@@ -288,7 +288,7 @@ void Person::update_perevents()
                         ;
                     else if(a.Tag==3)
                     {
-                        out1<<a.weeks.size()<<"  ";
+                        out1<<a.weeks.size()<<"   ";
                         for(auto tempweek:a.weeks)
                             out1<<tempweek<<" ";
                         out1<<"  ";
@@ -304,7 +304,7 @@ void Person::update_perevents()
                     else if(a.Tag ==4 ||a.Tag==5)
                     {
                         out2<<a.Tag<<"  ";
-                        out2<<a.weeks.size();
+                        out2<<a.weeks.size()<<"  ";
                         for(auto tempweek:a.weeks)
                             out2<<tempweek<<" ";
                         out2<<"  ";
@@ -536,7 +536,8 @@ vector<seektime> Person::findidle(seektime temp_time,int tag)
     vector<seektime> idle_time;
     vector<pair<int,int>>times;
 
-
+    if(tag == 5)
+        return idle_time;
     while(hour<22)
     {
         if(perevents_time_set.find(day * MAX_ONE_DAY + hour) ==  perevents_time_set.end())//如果与必修选修冲突必定失败
@@ -610,39 +611,6 @@ bool cmp_findidle(pair<int,int> a,pair<int,int> b)
     return a.second < b.second;
 }
 
-void Person::init_perevents_time_set()
-{
-    perevents_time_set.clear();
-    for(int day=0;day<DAY;day++)
-        for(int hour=0;hour<HOURS;hour++)
-        {
-            for(int count=0;count<(int)perEvents[day][hour].size();count++)
-            {
-                if((perEvents[day][hour][count].Tag==1 || perEvents[day][hour][count].Tag==2))
-                {
-                    if(perEvents[day][hour][count].name.endsWith("考试"))//考试只在特定周有
-                    {
-                        for(auto x:perEvents[day][hour][count].weeks)
-                        {
-                            if(perevents_time_set.find(x*MAX_ONE_WEEK + day*MAX_ONE_DAY + hour)==perevents_time_set.end())
-                                perevents_time_set.insert(x*MAX_ONE_WEEK + day*MAX_ONE_DAY + hour);
-                        }
-                    }
-                    else if(perevents_time_set.find(day*MAX_ONE_DAY + hour)==perevents_time_set.end())//必修选修每周都有
-                        perevents_time_set.insert(day*MAX_ONE_DAY + hour);
-                }
-                else
-                {
-                    for(auto x:perEvents[day][hour][count].weeks)
-                    {
-                        if(perevents_time_set.find(x*MAX_ONE_WEEK + day*MAX_ONE_DAY + hour)==perevents_time_set.end())
-                            perevents_time_set.insert(x*MAX_ONE_WEEK + day*MAX_ONE_DAY + hour);
-                    }
-                }
-            }
-        }
-}
-
 QString number_to_week(int week)
 {
     QString week_ch;
@@ -659,3 +627,15 @@ QString number_to_week(int week)
 
     return week_ch;
 }
+
+void Person::deletename(QString a)
+{
+    for(int i=0;i<(int)event_names.size();i++)
+    {
+        if(event_names[i]==a)
+          {event_names.erase(event_names.begin()+i);break;}
+    }
+}
+
+
+

@@ -8,7 +8,6 @@ Form1::Form1(QWidget *parent) :
     ui(new Ui::Form_events)
 {
     ui->setupUi(this);
-    refresh = 0;
     positioning_tag =0;
     event_position.count = -1;
     m=new Map;
@@ -119,34 +118,36 @@ void Form1::check_detial(int r, int c)
        return;
     vector<int> index =current_user->find_index(week,c+1,r+6);
 
-    detail.append("事件名称: ");
-    for(auto count:index)
+    if(index.size()!=0)
     {
-        detail.append(current_user->perEvents[c][r][count].name).append(" ");
-    }
+        detail.append("事件名称: ");
+        for(auto count:index)
+        {
+            detail.append(current_user->perEvents[c][r][count].name).append(" ");
+         }
 
-    detail.append("\n");
-    detail.append("持续时间: ");
-    detail.append(QString::number(current_user->perEvents[c][r][index[0]].start.hour(),10));
-    detail.append(":00 -- ");
-    detail.append(QString::number(current_user->perEvents[c][r][index[0]].end.hour(),10));
-    detail.append(":00\n");
-    detail.append("事件地点: ");
-    for(auto count:index)
-    {
-        detail.append(current_user->perEvents[c][r][count].building.name_()).append(" ");
-    }
+        detail.append("\n");
+        detail.append("持续时间: ");
+        detail.append(QString::number(current_user->perEvents[c][r][index[0]].start.hour(),10));
+        detail.append(":00 -- ");
+        detail.append(QString::number(current_user->perEvents[c][r][index[0]].end.hour(),10));
+        detail.append(":00\n");
+        detail.append("事件地点: ");
+        for(auto count:index)
+        {
+            detail.append(current_user->perEvents[c][r][count].building.name_()).append(" ");
+        }
 
-    detail.append("\n");
-    detail.append("事件类型: ");
-    switch(current_user->perEvents[c][r][index[0]].Tag)
-    {
-    case 1:if(current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
+        detail.append("\n");
+        detail.append("事件类型: ");
+        switch(current_user->perEvents[c][r][index[0]].Tag)
+        {
+        case 1:if(current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
                 detail.append("必修课考试");
             else
                 detail.append("必修课");
             break;
-    case 2:if(current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
+        case 2:if(current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
                 detail.append("选修课考试");
             else
                 detail.append("选修课");
@@ -154,68 +155,67 @@ void Form1::check_detial(int r, int c)
         case 3:detail.append("集体事务");break;
         case 4:detail.append("个人事务");break;
         case 5:detail.append("临时事务");break;
-    }
-
-    detail.append("\n");
-    detail.append("事件周数: ");
-    if((current_user->perEvents[c][r][index[0]].Tag==1 ||current_user->perEvents[c][r][index[0]].Tag==2)&&!current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
-    {
-        detail.append("每周都有");
-        hasexam = true;
-    }
-    else if(index.size()>1)
-    {
-        detail.append("各个事件不同，详细信息请在主页搜索");
-    }
-    else
-    {
-        for(auto a:current_user->perEvents[c][r][index[0]].weeks)
-        {
-            detail.append(QString::number(a));
-            detail.append(" ");
         }
-    }
 
-
-    if(hasexam)
-    {
-        detail.append("\n考试信息: ");
-        QString exam_name = current_user->perEvents[c][r][index[0]].name +"考试";
-        if(current_user->namequeue.find(exam_name)!=current_user->namequeue.end())
+        detail.append("\n");
+        detail.append("事件周数: ");
+        if((current_user->perEvents[c][r][index[0]].Tag==1 ||current_user->perEvents[c][r][index[0]].Tag==2)&&!current_user->perEvents[c][r][index[0]].name.endsWith("考试"))
         {
-            detail.append("考试周有 ");
-            vector<arrayindex> exam_index = current_user->namequeue[exam_name];
-            for(int i=0;i<(int)exam_index.size();i++)
-            {
-                Event exam_information=current_user->perEvents[exam_index[i].first_index][exam_index[i].second_index][exam_index[i].count-1];
-                for(auto tempweek:exam_information.weeks)
-                {
-                    detail.append(QString::number(tempweek)).append(" ");
-                }
-            }
-            detail.append("       \n具体考试信息请搜索").append("\"").append(exam_name).append("\"");
+            detail.append("每周都有");
+            hasexam = true;
+        }
+        else if(index.size()>1)
+        {
+            detail.append("各个事件不同，详细信息请在主页搜索");
         }
         else
         {
-            detail.append("暂未发布");
+            for(auto a:current_user->perEvents[c][r][index[0]].weeks)
+            {
+                detail.append(QString::number(a));
+                detail.append(" ");
+            }
         }
-    }
 
-    else if(current_user->perEvents[c][r][index[0]].Tag == 3)
-    {
-        detail.append("\n参加学生有：");
-        int num =0;
-        for(auto tempID:current_user->perEvents[c][r][index[0]].ID)
+
+        if(hasexam)
         {
-            detail.append(QString::number(tempID)).append(" ");
-            num++;
-            if(num%3==0)
-                detail.append("\n");
+            detail.append("\n考试信息: ");
+            QString exam_name = current_user->perEvents[c][r][index[0]].name +"考试";
+            if(current_user->namequeue.find(exam_name)!=current_user->namequeue.end())
+            {
+                detail.append("考试周有 ");
+                vector<arrayindex> exam_index = current_user->namequeue[exam_name];
+                for(int i=0;i<(int)exam_index.size();i++)
+                {
+                    Event exam_information=current_user->perEvents[exam_index[i].first_index][exam_index[i].second_index][exam_index[i].count-1];
+                    for(auto tempweek:exam_information.weeks)
+                    {
+                        detail.append(QString::number(tempweek)).append(" ");
+                    }
+                }
+                detail.append("       \n具体考试信息请搜索").append("\"").append(exam_name).append("\"");
+            }
+            else
+            {
+                detail.append("暂未发布");
+            }
         }
+
+        else if(current_user->perEvents[c][r][index[0]].Tag == 3)
+        {
+            detail.append("\n参加学生有：");
+            int num =0;
+            for(auto tempID:current_user->perEvents[c][r][index[0]].ID)
+            {
+                detail.append(QString::number(tempID)).append(" ");
+                num++;
+                if(num%3==0)
+                    detail.append("\n");
+            }
+        }
+        ui->event_detial->setText(detail);
     }
-
-
-    ui->event_detial->setText(detail);
 }
 
 void Form1::init_form1(Person *a,_Time *t)
@@ -308,7 +308,6 @@ void Form1::dialog_add_event(QAbstractButton* button)
         bool judge = false;
         QMessageBox msgBox;
         Event temp;
-        refresh =1;
         temp.name = insert_dialog.ui->lineEdit->text();
         temp.building.name_() = insert_dialog.ui->lineEdit_2->text();
         temp.building.id_()=m->findBuilding(temp.building.name_());
@@ -391,6 +390,7 @@ void Form1::dialog_add_event(QAbstractButton* button)
 
         if(judge)
         {
+
             if(!isexist(temp))
             {
                 current_user->perEvents[insert_dialog.line][insert_dialog.row].push_back(temp);
@@ -408,9 +408,7 @@ void Form1::dialog_add_event(QAbstractButton* button)
             ui->tableWidget->item(insert_dialog.row,insert_dialog.line)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
             ui->tableWidget->item(insert_dialog.row,insert_dialog.line)->setForeground(Qt::black);
         }
-
     }
-
     return ;
 }
 
@@ -538,8 +536,6 @@ void Form1::add_event(Event & insert_event)
     QMessageBox msgBox;
 
     insert_event.ID.insert(insert_event.ID.end(),ID.begin(),ID.end());
-    for(auto a:insert_event.ID)
-        qDebug()<<a;
 
     if(insert_event.Tag == 3&&insert_event.ID.size()<2)
     {
@@ -552,19 +548,12 @@ void Form1::add_event(Event & insert_event)
             return;
     }
 
-    if(refresh)//是否出现过修改事务的清况，如果修改过更新储存事件时间的容器
-    {
-        current_user->init_perevents_time_set();
-        refresh=0;
-    }
-
     seektime temp_time=current_user->iscollision(insert_event);//判断当前时间是否冲突
 
     if(temp_time.tag == 1)
     {
         if(!isexist(insert_event))
         {
-            qDebug()<<"no exist";
             current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].push_back(insert_event);
             if(current_user->namequeue.find(insert_event.name)==current_user->namequeue.end())
                 current_user->event_names.push_back(insert_event.name);
@@ -575,7 +564,6 @@ void Form1::add_event(Event & insert_event)
             if(current_user->perevents_time_set.find(tempweek*MAX_ONE_WEEK + insert_event.start.day()*MAX_ONE_DAY + insert_event.start.hour())==current_user->perevents_time_set.end())
                 current_user->perevents_time_set.insert(tempweek*MAX_ONE_WEEK + insert_event.start.day()*MAX_ONE_DAY + insert_event.start.hour());
 
-        refresh=1;
         if(!positioning_tag)
         {
             msgBox.setWindowTitle("提示");
@@ -683,8 +671,13 @@ void Form1::delete_event(Event & insert_event)
                 if(ret == QMessageBox::Ok)
                     return;
             }
-            refresh=1;
-            current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].erase(current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].begin()+count);
+
+            for(auto tempweek:insert_event.weeks)
+                if((current_user->find_index(tempweek,insert_event.start.day(),insert_event.start.hour())).size() == 1)
+                {
+                    current_user->perevents_time_set.erase(tempweek*MAX_ONE_WEEK + insert_event.start.day()*MAX_ONE_DAY + insert_event.start.hour());
+                }
+
 
             if((int)current_user->namequeue[insert_event.name].size()>1) /*判断该名称是否还有其他事件*/
             {
@@ -703,13 +696,11 @@ void Form1::delete_event(Event & insert_event)
             else/*若该名称已没有其他事件，直接从容器中删除该名称*/
             {
                 current_user->namequeue.erase(insert_event.name);
+                current_user->deletename(insert_event.name);
             }
 
-            for(auto tempweek:insert_event.weeks)
-                if((current_user->find_index(tempweek,insert_event.start.day(),insert_event.start.hour())).size() == 1)
-                {
-                    current_user->perevents_time_set.erase(tempweek*MAX_ONE_WEEK + insert_event.start.day()*MAX_ONE_DAY + insert_event.start.hour());
-                }
+            current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].erase(current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].begin()+count);
+
 
             if(!positioning_tag)
             {

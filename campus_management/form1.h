@@ -68,7 +68,6 @@ private:
     int positioning_tag;
     vector<int> ID;
     QString label_ID;
-    int refresh;//刷新信号
     Ui::Form_events *ui;
     Person* current_user;  //目前正在登录的学生
     Dialog insert_dialog; //增加事件

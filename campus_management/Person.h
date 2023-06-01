@@ -82,8 +82,6 @@ public:
 	*/
     void reorder(QString);
 
-    void init_perevents_time_set();
-
     vector<int> find_index(int week,int day,int hour);//第A周第B天第B小时的事件在perEvents[B-1][B-6]中的下标位置,如果是临时事务可能有多个
 
     vector<arrayindex> find_name(QString p){return namequeue[p];};
@@ -93,6 +91,7 @@ public:
     QString &getname(){return name;};
     vector<QString> &getevent_name(){return event_names;};
     void inputlog(QString a){log.append(a);};//输入学生消息通知
+    void deletename(QString a);
 
 	friend class Students;
     friend class Form1;

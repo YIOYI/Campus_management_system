@@ -9,9 +9,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("登录界面");
+
     tabwidget = new TabWidget;
     current_user = new Person;
+    setWindowTitle("登录界面");
     connect(ui->log_on,&QPushButton::clicked,this,&MainWindow::detect_input_code);
     connect(ui->select_ID,&QComboBox::currentIndexChanged,this,&MainWindow::select_change);
     connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
@@ -78,8 +79,8 @@ void MainWindow::clean()
     tabwidget->close();
     delete tabwidget;
     delete current_user;
-    tabwidget = new TabWidget;
     current_user = new Person;
+    tabwidget = new TabWidget;
     connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
     this->show();
 }
