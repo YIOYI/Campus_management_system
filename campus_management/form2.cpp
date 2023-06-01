@@ -9,6 +9,8 @@ Form2::Form2(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+
     connect(ui->bt_guide,&QPushButton::clicked,this,&Form2::guide);
     connect(ui->bt_clear,&QPushButton::clicked,this,&Form2::clear_map);
 
@@ -27,10 +29,10 @@ Form2::Form2(QWidget *parent) :
 
     QStringList word_list;
 
-    for(int i=1;i<Building_Number;i++)
+    for(int i=36;i<87;i++)
         word_list<<m->Buildings_()[i].name_();
     QCompleter *MyInfor = new QCompleter(word_list);
-
+    MyInfor->setFilterMode(Qt::MatchFlag::MatchContains);
     ui->search_src->setCompleter(MyInfor);
     ui->search_tar->setCompleter(MyInfor);
     ui->plan_src->setCompleter(MyInfor);
@@ -57,7 +59,6 @@ Form2::~Form2()
 }
 void Form2::guide()
 {
-    qDebug()<<"start guide";
     guide_break=0;
     if(ui->plan_hour->currentIndex()==0)
     {
@@ -79,6 +80,7 @@ void Form2::guide()
         else
         {
             guide_img=new QImage(*map_img);
+            ti->time_suspend();
 
             QString src = ui->search_src->text();
             QString dst = ui->search_tar->text();
@@ -104,11 +106,11 @@ void Form2::guide()
         else
         {
             guide_img=new QImage(*map_img);
-
+            ti->time_suspend();
             QString src = ui->plan_src->text();
             int isrc = m->findBuilding(src);
             vector<int> b;
-            //={53,69,56,59,61};
+
             b.push_back(isrc);
             for(auto iter:current_user->perEvents[ui->plan_day->currentIndex()][ui->plan_hour->currentIndex()-1])
             {
@@ -151,11 +153,13 @@ void Form2::wheelEvent(QWheelEvent *event)
 }
 void Form2::clear_map()
 {
+    //ti->time_suspend();
     ui->label_event_text->clear();
     ui->label_guide_text->clear();
+    ui->plan_week->setCurrentIndex(0);
     guide_break=1;
     paint_over=1;
-    qDebug()<<"clear";
+    qDebug("清空导航界面");
     guide_img=new QImage(*map_img);
     int w = ratio*guide_img->width();
     int h = ratio*guide_img->height();
@@ -175,6 +179,7 @@ void Form2::init_form2(Person*a,_Time *ti)
 void Form2::guide_anime(deque<int> &a)
 {
     paint_over=0;
+    qDebug("使用导航");
     QPainter painter(guide_img);
     painter.setPen(QPen(Qt::red,3,Qt::SolidLine,Qt::RoundCap));
     QImage *last_img = nullptr;
@@ -269,6 +274,7 @@ void Form2::guide_anime(deque<int> &a)
 }
 void Form2::plan_anime(deque<int> &a)
 {
+    qDebug("使用多事务规划");
     ui->label_guide_text->clear();
     ui->label_guide_text->setText("开始导航\n");
     QPainter painter(guide_img);
@@ -441,9 +447,11 @@ void Form2::FF_day()
 }
 void Form2::set_week()
 {
-    if(ui->cb_week->currentIndex()!=0)
-    ti->time_set(ui->cb_week->currentIndex()+1,1,0);
-    timeUpdate();
+    if(ti->is_init()==1)
+    {
+        ti->time_set(ui->cb_week->currentIndex()+1,1,0);
+        timeUpdate();
+    }
 }
 void Form2::show_event_info()
 {
@@ -470,4 +478,51 @@ void Form2::show_event_info()
     }
     }
 
+}
+void Form2::guide_for_alarm(Building dest)
+{
+    guide_break=0;
+    guide_img=new QImage(*map_img);
+
+    Building bsrc;
+    int idst = dest.id_();
+    int event_num=0;
+
+    ti->time_now();
+    int d=ti->day();
+    int h=ti->hour();
+    h=(h-6)%16;
+    for(auto iter:current_user->perEvents[d-1][h])
+    {
+        int k=0;
+        for(auto j:iter.weeks)
+        {
+            if(j==ui->plan_week->currentIndex()+1)
+                k=1;
+        }
+        if(iter.Tag==1||iter.Tag==2)
+            k=1;
+        if(k==1)
+        {
+            bsrc=iter.building;
+            event_num++;
+        }
+    }
+
+    if(event_num!=1)
+        bsrc=m->Get_i_Building(46);  //学五
+
+    ui->search_src->setText(bsrc.name_());
+    ui->search_tar->setText(dest.name_());
+
+    if(bsrc.id_()==dest.id_())
+    {
+        clear_map();
+        ui->label_guide_text->setText("已在目的地点");
+    }
+    else
+    {
+        deque<int> a = bsrc.ShortestPath(idst, *m); //路径点数
+        guide_anime(a);
+    }
 }

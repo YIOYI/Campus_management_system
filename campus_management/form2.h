@@ -21,7 +21,6 @@
 #include"Event.h"
 
 #include "Building.h"
-
 namespace Ui {
 class Form2;
 }

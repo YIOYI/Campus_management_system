@@ -286,9 +286,11 @@ void Form1::FF_day()
 
 void Form1::set_week()
 {
-    if(ui->cb_week->currentIndex()!=0)
+    if(ti->is_init()==1)
+    {
     ti->time_set(ui->cb_week->currentIndex()+1,1,0);
     timeUpdate();
+    }
 }
 
 void Form1::skip_to_dialog(int r,int c)

@@ -23,6 +23,7 @@ public slots:
     void time_update();
 public:
     _Time *ti;  /*虚拟时间*/
+    TimePause *tp;
     explicit TabWidget(QWidget *parent = nullptr);
     ~TabWidget();
     void init(Person *,_Time *);

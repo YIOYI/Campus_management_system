@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 
 #include<QDebug>
+int log_need_to_used_user_id;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -37,6 +38,8 @@ void MainWindow::detect_input_code()
     qDebug()<<(ui->code_lineedit->text()).toInt();
     if(rightcode==(ui->code_lineedit->text()).toInt())
     {
+        log_need_to_used_user_id=currentID;
+        qDebug()<<"用户"<<log_need_to_used_user_id<<"登录";
         current_user->getID() = currentID;
         current_user->getpassword() = rightcode;
         current_user->getname() = All_students_information.students_information()[index].getname();
@@ -59,6 +62,7 @@ void MainWindow::detect_input_code()
         qDebug() << "读取结束";
         current_user->Tag = ADMIN;
         logon_to_main();
+
     }
     else
         ui->label_wrong->setText("账号或者密码错误");
@@ -69,7 +73,7 @@ void MainWindow::logon_to_main()
     tabwidget = new TabWidget;
     connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
     _Time *ti=new _Time;
-    ti->time_set(1,1,0);
+    ti->get_last_time();
     tabwidget->init(current_user,ti);
     this->hide();//关闭登录界面
  }

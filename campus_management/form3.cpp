@@ -34,6 +34,7 @@ Form3::Form3(QWidget *parent) :
 
 Form3::~Form3()
 {
+    ti->save_this_time();
     write_alarm_file();
     delete ui;
 }
@@ -878,4 +879,64 @@ void Form3::show_log(int num)
     if(num == 0)
         ui->label_log->setText(current_user->log);
 }
+void Form3::set_time(const QString &tmp)
+{
+    ui->cb_week->setCurrentIndex(ti->week()-1);
+    ui->label_time->setText(tmp);
+    if(ti->is_continue()==1)
+        ui->bt_pause->setStyleSheet("border-image: url(:/picture/continue_white.png);background-color: rgba(229, 229, 229, 0);");
+    else
+        ui->bt_pause->setStyleSheet("border-image: url(:/picture/pause_white.png);background-color: rgba(229, 229, 229, 0);");
+}
+void Form3::timeUpdate()
+{
+    QString tmp;
+    QString day;
+    ti->time_now();
+    switch (ti->day())
+    {
+    case 1: day="周一"; break;
+    case 2: day="周二"; break;
+    case 3: day="周三"; break;
+    case 4: day="周四"; break;
+    case 5: day="周五"; break;
+    case 6: day="周六"; break;
+    case 7: day="周日"; break;
+    }
+    tmp=day+QString("/%1点").arg(ti->hour());
+    ui->label_time->setText(tmp);
+    ui->cb_week->setCurrentIndex(ti->week()-1);
+}
+void Form3::time_pause()
+{
+    if(ti->is_continue()==0)
+    {
+        ti->time_continue();
+    ui->bt_pause->setStyleSheet("border-image: url(:/picture/continue_white.png);color: rgba(255, 255, 255, 0);");
+    }
+    else
+    {
+        ti->time_suspend();
+    ui->bt_pause->setStyleSheet("border-image: url(:/picture/pause_white.png);color: rgba(255, 255, 255, 0);");
+    }
+}
+void Form3::FF_hour()
+{
+    ti->time_now();
+    ti->time_set(ti->week(),ti->day(),ti->hour()+1);
+    timeUpdate();
+}
+void Form3::FF_day()
+{
+    ti->time_now();
+    ti->time_set(ti->week(),ti->day()+1,ti->hour());
+    timeUpdate();
+}
+void Form3::set_week()
+{
+    if(ti->is_init()==1)
+    {
+    ti->time_set(ui->cb_week->currentIndex()+1,1,0);
+    timeUpdate();
+    }
 

@@ -17,14 +17,14 @@ SOURCES += \
     Person.cpp \
     ShortestPath.cpp \
     _Time.cpp \
-    adminwdt.cpp \
     form1.cpp \
     form2.cpp \
     form3.cpp \
     insert_event.cpp \
     main.cpp \
     mainwindow.cpp \
-    tabwidget.cpp
+    tabwidget.cpp \
+    timepause.cpp
 
 HEADERS += \
     Alarm.h \
@@ -32,16 +32,16 @@ HEADERS += \
     Event.h \
     Person.h \
     _Time.h \
-    adminwdt.h \
     form1.h \
     form2.h \
     form3.h \
     insert_event.h \
+    log.h \
     mainwindow.h \
-    tabwidget.h
+    tabwidget.h \
+    timepause.h
 
 FORMS += \
-    adminwdt.ui \
     form1.ui \
     form2.ui \
     form3.ui \
@@ -57,5 +57,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     picture.qrc
 
-DISTFILES += \
-    ../build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/debug/qt.conf
+DISTFILES +=

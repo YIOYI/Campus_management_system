@@ -28,6 +28,7 @@ TabWidget::~TabWidget()
 void TabWidget::init(Person* user_information,_Time *t)
 {
     this->ti=t;
+    tp=ti->tp;
     ti->time_now();
     current_user = user_information;
     
@@ -61,6 +62,13 @@ void TabWidget::init(Person* user_information,_Time *t)
 
     show();
 
+
+    time_update();
+    timer_calendar = new QTimer(this);
+    timer_calendar->start(1000);
+    connect(timer_calendar,&QTimer::timeout,this,&TabWidget::time_update);
+    connect(timer_calendar,&QTimer::timeout,page3,&Form3::detect_alarm);
+    connect(ti->tp,&TimePause::t_pause,this,&TabWidget::time_update);
 }
 
 void TabWidget::quit()
@@ -74,6 +82,7 @@ void TabWidget::time_update()
     QString tmp;
     QString day;
     ti->time_now();
+    qDebug()<<"tab时间"<<ti->week()<<ti->day()<<ti->hour();
     switch (ti->day())
     {
     case 1: day="周一"; break;
@@ -88,4 +97,12 @@ void TabWidget::time_update()
     tmp=day+QString("/%1点").arg(ti->hour());
     page1->set_time(tmp);
     page2->set_time(tmp);
+    page3->set_time(tmp);
+    if(ti->is_init()==0)
+        ti->set_init();
+}
+void TabWidget::alarm_guide(Building dest)
+{
+    setCurrentIndex(2);
+    page2->guide_for_alarm(dest);
 }
