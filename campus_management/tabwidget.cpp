@@ -31,6 +31,7 @@ TabWidget::TabWidget(QWidget *parent) :
 
 TabWidget::~TabWidget()
 {
+
     delete page3;
     delete ui;
 }
@@ -65,6 +66,7 @@ void TabWidget::time_update()
     QString tmp;
     QString day;
     ti->time_now();
+    qDebug()<<"tab时间"<<ti->week()<<ti->day()<<ti->hour();
     switch (ti->day())
     {
     case 1: day="周一"; break;
@@ -79,6 +81,8 @@ void TabWidget::time_update()
     page1->set_time(tmp);
     page2->set_time(tmp);
     page3->set_time(tmp);
+    if(ti->is_init()==0)
+        ti->set_init();
 }
 void TabWidget::alarm_guide(Building dest)
 {

@@ -59,8 +59,8 @@ int Building::get_Building(QString& inLine)
         if(*itr=='\t')
             break;
         itr++;
-	}
-	return 0;
+    }
+    return 0;
 }
 void Building::Building_clear()
 {
@@ -106,6 +106,25 @@ int Map::get_Map()
 
     file.close();
 
+    QChar c;
+    QFile netfile("./information_file/net.txt");
+    if(netfile.open(QIODevice::ReadOnly)==false)
+    {
+        qDebug()<<"net.txt读打开失败";
+        return 0;
+    }
+    QTextStream netin(&netfile);
+    while(!netin.atEnd())
+    {
+        Building netA;
+        netin>>netA.id>>c>>netA.name>>c;
+                qDebug()<<netA.name<<netA.id<<netA.point.x<<netA.point.y;
+                for(auto it=netA.Roads_().begin();it!=netA.Roads_().end();it++)
+                    qDebug()<<' '<<*it;
+        Buildings.push_back(netA);
+    }
+
+    netfile.close();
     return 0;
 }
 int Map::findBuilding(const QString &name)
@@ -121,4 +140,22 @@ int Map::findBuilding(const QString &name)
     if(iter==Buildings.end())
         return -1;
     return id;
+}
+void Map::save_netBuilding(const QString& netname)
+{
+    Building netA;
+    netA.id=Buildings.size();
+    netA.name=netname;
+    Buildings.push_back(netA);
+
+    QFile file("./information_file/net.txt");
+    QTextStream in(&file);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Append )==false)
+        qDebug()<<"net.txt读打开失败";
+    else
+    {
+        in<<netA.id<<' '<<netA.name<<'\n';
+    }
+    file.close();
+
 }

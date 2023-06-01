@@ -47,6 +47,7 @@ Form3::Form3(QWidget *parent) :
 
 Form3::~Form3()
 {
+    ti->save_this_time();
     write_alarm_file();
     delete ui;
 }
@@ -914,6 +915,9 @@ void Form3::FF_day()
 }
 void Form3::set_week()
 {
+    if(ti->is_init()==1)
+    {
     ti->time_set(ui->cb_week->currentIndex()+1,1,0);
     timeUpdate();
+    }
 }

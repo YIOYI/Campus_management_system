@@ -12,8 +12,9 @@
 #include <QString>
 #include <qapplication.h>
 #include <QMessageBox>
-
 #include <_Time.h>
+
+extern int log_need_to_used_user_id;
 
 void outputMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -58,9 +59,14 @@ void outputMessage(QtMsgType type, const QMessageLogContext &context, const QStr
     }
     QString current_date=QString("第%1周\t").arg(ti.week())+day+QString("\t%1点\t").arg(ti.hour());
 
-    QString message = QString("%1 %2").arg(current_date).arg(msg);
+    QString user_mes=QString("%1").arg(log_need_to_used_user_id);
+    if(log_need_to_used_user_id==88888888)
+        user_mes="用户：管理员"+ user_mes;
+    else
+        user_mes="用户：学生"+ user_mes;
+    current_date+=user_mes;
+    QString message = QString("%1\t%3").arg(current_date).arg(msg);
 
-    // 输出信息至文件中（读写、追加形式）
     QFile file("log.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream text_stream(&file);

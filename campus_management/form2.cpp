@@ -29,7 +29,7 @@ Form2::Form2(QWidget *parent) :
 
     QStringList word_list;
 
-    for(int i=1;i<Building_Number;i++)
+    for(int i=36;i<87;i++)
         word_list<<m->Buildings_()[i].name_();
     QCompleter *MyInfor = new QCompleter(word_list);
     MyInfor->setFilterMode(Qt::MatchFlag::MatchContains);
@@ -153,7 +153,7 @@ void Form2::wheelEvent(QWheelEvent *event)
 }
 void Form2::clear_map()
 {
-    ti->time_suspend();
+    //ti->time_suspend();
     ui->label_event_text->clear();
     ui->label_guide_text->clear();
     ui->plan_week->setCurrentIndex(0);
@@ -447,8 +447,11 @@ void Form2::FF_day()
 }
 void Form2::set_week()
 {
-    ti->time_set(ui->cb_week->currentIndex()+1,1,0);
-    timeUpdate();
+    if(ti->is_init()==1)
+    {
+        ti->time_set(ui->cb_week->currentIndex()+1,1,0);
+        timeUpdate();
+    }
 }
 void Form2::show_event_info()
 {
