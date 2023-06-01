@@ -162,7 +162,7 @@ bool adminwdt::add_event(Event & insert_event)
     {
         QString tip;
 
-        vector<seektime> idle_time = current_user->findidle(temp_time);/*找到最近的三个时间点*/
+        vector<seektime> idle_time = current_user->findidle(temp_time, insert_event.Tag);/*找到最近的三个时间点*/
         if(temp_time.week != 0)
         {
             tip+="在第";tip+=QString::number(temp_time.week);tip+="周\n";
