@@ -22,6 +22,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -98,8 +99,11 @@ public:
     QLabel *label_5;
     QFrame *frame_3;
     QLabel *label_3;
-    QLabel *event_detial;
     QLabel *label_4;
+    QScrollArea *scrollArea;
+    QWidget *scrollAreaWidgetContents;
+    QGridLayout *gridLayout_2;
+    QLabel *event_detial;
     QPushButton *pushButton_refresh;
     QWidget *widget;
     QLabel *label_ID;
@@ -1019,9 +1023,23 @@ public:
         label_3->setGeometry(QRect(10, 10, 101, 41));
         label_3->setFont(font8);
         label_3->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);"));
-        event_detial = new QLabel(frame_3);
+        label_4 = new QLabel(frame_3);
+        label_4->setObjectName("label_4");
+        label_4->setGeometry(QRect(0, 0, 481, 231));
+        label_4->setStyleSheet(QString::fromUtf8("border-radius:10px;\n"
+"border:1px solid rgb(255, 255, 127)"));
+        scrollArea = new QScrollArea(frame_3);
+        scrollArea->setObjectName("scrollArea");
+        scrollArea->setGeometry(QRect(10, 50, 461, 171));
+        scrollArea->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);"));
+        scrollArea->setWidgetResizable(true);
+        scrollAreaWidgetContents = new QWidget();
+        scrollAreaWidgetContents->setObjectName("scrollAreaWidgetContents");
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 459, 169));
+        gridLayout_2 = new QGridLayout(scrollAreaWidgetContents);
+        gridLayout_2->setObjectName("gridLayout_2");
+        event_detial = new QLabel(scrollAreaWidgetContents);
         event_detial->setObjectName("event_detial");
-        event_detial->setGeometry(QRect(10, 60, 461, 161));
         QFont font11;
         font11.setFamilies({QString::fromUtf8("\345\256\213\344\275\223")});
         font11.setPointSize(11);
@@ -1029,14 +1047,13 @@ public:
         event_detial->setFont(font11);
         event_detial->setStyleSheet(QString::fromUtf8(""));
         event_detial->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
-        label_4 = new QLabel(frame_3);
-        label_4->setObjectName("label_4");
-        label_4->setGeometry(QRect(0, 0, 481, 231));
-        label_4->setStyleSheet(QString::fromUtf8("border-radius:10px;\n"
-"border:1px solid rgb(255, 255, 127)"));
+
+        gridLayout_2->addWidget(event_detial, 0, 0, 1, 1);
+
+        scrollArea->setWidget(scrollAreaWidgetContents);
         label_4->raise();
         label_3->raise();
-        event_detial->raise();
+        scrollArea->raise();
         pushButton_refresh = new QPushButton(frame);
         pushButton_refresh->setObjectName("pushButton_refresh");
         pushButton_refresh->setGeometry(QRect(960, 30, 101, 41));
@@ -1104,7 +1121,7 @@ public:
 "color: rgba(255, 255, 255, 0);"));
         bt_hour = new QPushButton(frame_time);
         bt_hour->setObjectName("bt_hour");
-        bt_hour->setGeometry(QRect(230, 60, 31, 31));
+        bt_hour->setGeometry(QRect(220, 60, 31, 31));
         bt_hour->setStyleSheet(QString::fromUtf8("border-image: url(:/picture/hour.png);\n"
 "color: rgba(255, 255, 255, 0);"));
         cb_week = new QComboBox(frame_time);
@@ -1125,30 +1142,28 @@ public:
         cb_week->addItem(QString());
         cb_week->addItem(QString());
         cb_week->setObjectName("cb_week");
-        cb_week->setGeometry(QRect(140, 10, 81, 31));
-        cb_week->setStyleSheet(QString::fromUtf8("border: 0px solid gray;/*\350\256\276\347\275\256\350\276\271\346\241\206\347\232\204\347\262\227\347\273\206\357\274\214\344\273\245\345\217\212\351\242\234\350\211\262*/\n"
-"font: 700 9pt \"Microsoft YaHei UI\";\n"
-"border-radius: 10px;/*\350\256\276\347\275\256\345\234\206\350\247\222\347\232\204\345\244\247\345\260\217*/\n"
-"background-color: rgba(229, 229, 229, 100);\n"
+        cb_week->setGeometry(QRect(110, 10, 91, 31));
+        cb_week->setStyleSheet(QString::fromUtf8("font: 700 9pt \"Microsoft YaHei UI\";\n"
+"background-color: rgb(179, 212, 213);\n"
 ""));
         cb_week->setFrame(false);
         label_time = new QLabel(frame_time);
         label_time->setObjectName("label_time");
-        label_time->setGeometry(QRect(120, 0, 251, 91));
+        label_time->setGeometry(QRect(100, 0, 271, 101));
         QFont font13;
         font13.setFamilies({QString::fromUtf8("Microsoft YaHei UI")});
-        font13.setPointSize(10);
-        font13.setBold(false);
+        font13.setPointSize(12);
+        font13.setBold(true);
         font13.setItalic(false);
         label_time->setFont(font13);
         label_time->setStyleSheet(QString::fromUtf8("border:1px solid gray;/*\350\256\276\347\275\256\350\276\271\346\241\206\347\232\204\347\262\227\347\273\206\357\274\214\344\273\245\345\217\212\351\242\234\350\211\262*/\n"
-"font: 10pt \"Microsoft YaHei UI\";\n"
+"font: 700 12pt \"Microsoft YaHei UI\";\n"
 "background-color: rgba(229, 229, 229, 100);\n"
 "border-radius: 20px;/*\350\256\276\347\275\256\345\234\206\350\247\222\347\232\204\345\244\247\345\260\217*/"));
         label_time->setAlignment(Qt::AlignCenter);
         bt_pause = new QPushButton(frame_time);
         bt_pause->setObjectName("bt_pause");
-        bt_pause->setGeometry(QRect(160, 60, 31, 31));
+        bt_pause->setGeometry(QRect(140, 60, 31, 31));
         bt_pause->setStyleSheet(QString::fromUtf8("border-image: url(:/picture/pause.png);\n"
 "color: rgba(255, 255, 255, 0);"));
         label_time->raise();
@@ -1350,8 +1365,8 @@ public:
         pushButton_clean->setText(QCoreApplication::translate("Form_events", "\346\270\205\347\251\272", nullptr));
         label_5->setText(QCoreApplication::translate("Form_events", "<html><head/><body><p>\346\263\250\357\274\232\345\210\240\351\231\244\344\272\213</p><p>\344\273\266\346\227\266\344\270\215\345\213\276\351\200\211</p><p>\344\277\256\346\224\271\344\272\213\344\273\266\345\217\252</p><p>\350\203\275\344\277\256\346\224\271\345\221\250\346\225\260</p></body></html>", nullptr));
         label_3->setText(QCoreApplication::translate("Form_events", "\344\272\213\344\273\266\344\277\241\346\201\257", nullptr));
-        event_detial->setText(QString());
         label_4->setText(QString());
+        event_detial->setText(QString());
         pushButton_refresh->setText(QCoreApplication::translate("Form_events", "\345\210\267\346\226\260", nullptr));
         label_ID->setText(QString());
         label_7->setText(QCoreApplication::translate("Form_events", "\351\200\211\346\213\251\345\217\202\345\212\240\345\255\246\347\224\237\345\255\246\345\217\267\357\274\232", nullptr));

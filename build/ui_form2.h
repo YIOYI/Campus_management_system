@@ -251,7 +251,8 @@ public:
         plan_day->setStyleSheet(QString::fromUtf8("border: 1px solid gray;/*\350\256\276\347\275\256\350\276\271\346\241\206\347\232\204\347\262\227\347\273\206\357\274\214\344\273\245\345\217\212\351\242\234\350\211\262*/\n"
 "border-radius: 10px;/*\350\256\276\347\275\256\345\234\206\350\247\222\347\232\204\345\244\247\345\260\217*/\n"
 "font: 12pt \"Microsoft YaHei UI\";\n"
-"background-color: rgb(255, 255, 255);"));
+"background-color: rgb(255, 255, 255);\n"
+""));
         plan_hour = new QComboBox(frame_back);
         plan_hour->addItem(QString());
         plan_hour->addItem(QString());
