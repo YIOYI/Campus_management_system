@@ -62,6 +62,12 @@ private slots:
 
     void on_add_Button_clicked();
 
+    void on_start_time_sel_combo_currentIndexChanged(int index);
+
+    void on_end_time_sel_combo_activated(int index);
+
+    void on_Tag_sel_combo_currentIndexChanged(int index);
+
 private:
     arrayindex event_position;
     int positioning_tag;

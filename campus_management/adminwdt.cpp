@@ -501,7 +501,7 @@ void adminwdt::Show_index_index_class (int index)
     ui->day_sel_combo->setCurrentIndex(tmp.start.day()-1);
     ui->start_time_sel_combo->setCurrentIndex(tmp.start.hour()-6);
     ui->end_time_sel_combo->setCurrentIndex(tmp.end.hour()-7);
-    if (tmp.Tag == 1 || tmp.Tag == 2)
+    if ((tmp.Tag == 1 || tmp.Tag == 2) && !tmp.name.endsWith("考试"))
         init_week_sel_combo({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16});
     else
         init_week_sel_combo(tmp.weeks);
@@ -519,14 +519,18 @@ QString adminwdt::Event_to_format_QString (Event &single)
     text += "事件地点: " + single.building.name_() + "\n";
 
     text += "事件周数: ";
-    if (single.Tag == 1 || single.Tag == 2)
+    if ((single.Tag == 1 || single.Tag == 2) && !single.name.endsWith("考试"))
         text += "每周都有\n";
     else
     {
-        auto p = single.weeks.begin();
-        text += "第" + QString::number(*p) + "周";
-        for ( ; p != single.weeks.end(); p ++)
-            text += ", 第" + QString::number(*p) + "周";
+        if (single.weeks.empty())
+            text += "无";
+        else
+        {
+            for (auto p = single.weeks.begin(); p != single.weeks.end(); p ++)
+                text += "第" + QString::number(*p) + "周, ";
+            text.chop(2);
+        }
         text += "\n";
     }
 
@@ -535,10 +539,14 @@ QString adminwdt::Event_to_format_QString (Event &single)
         text += "每人都有\n";
     else
     {
-        auto p = single.ID.begin();
-        text += QString::number(*p);
-        for ( ; p != single.ID.end(); p ++)
-            text += ", " + QString::number(*p);
+        if (single.ID.empty())
+            text += "无";
+        else
+        {
+            for (auto p = single.ID.begin(); p != single.ID.end(); p ++)
+                text +=  QString::number(*p) + ", ";
+            text.chop(2);
+        }
         text += "\n";
     }
 
@@ -597,19 +605,19 @@ Event adminwdt::handle_evevt (void)
     ret.end.hour() = ui->end_time_sel_combo->currentIndex() + 7;
 
     QWidget * l_wdt = ui->local_wdt->layout()->itemAt(0)->widget();
-    if (ui->offline_Button->isCheckable())
+    if (ui->offline_Button->isChecked())
     {
         int id = Bupt_map->findBuilding(((QComboBox *) l_wdt)->currentText());
         ret.building = Bupt_map->Get_i_Building(id);
     }
-    else if (ui->online_Button->isCheckable())
+    else if (ui->online_Button->isChecked())
     {
         Bupt_map->save_netBuilding(((QLineEdit*) l_wdt)->text());
         int id = Bupt_map->findBuilding(((QLineEdit*) l_wdt)->text());
         ret.building = Bupt_map->Get_i_Building(id);
     }
 
-    if (ret.Tag == 3)
+    if (ret.Tag == 3 || ((ret.Tag == 1 || ret.Tag == 2) && ret.name.endsWith("考试")))
     {
         ret.periodicity = 0;
         QListWidget *weel_sel_listwdt = (QListWidget *) (ui->week_sel_combo->view());
@@ -757,3 +765,47 @@ void adminwdt::on_add_Button_clicked()
         }
     }
 }
+
+void adminwdt::on_start_time_sel_combo_currentIndexChanged(int index)
+{
+    int Tag = ui->Tag_sel_combo->currentIndex();
+    int end = ui->end_time_sel_combo->currentIndex();
+    if (Tag == 0 || Tag == 1)
+    {
+        if (end < index)
+            ui->end_time_sel_combo->setCurrentIndex(index);
+        else if (end - index > 2)
+            ui->end_time_sel_combo->setCurrentIndex(index + 2);
+    }
+    else if (Tag == 2)
+    {
+        ui->end_time_sel_combo->setCurrentIndex(index);
+    }
+}
+
+
+void adminwdt::on_end_time_sel_combo_activated(int index)
+{
+    int Tag = ui->Tag_sel_combo->currentIndex();
+    int start = ui->start_time_sel_combo->currentIndex();
+
+    if (Tag == 0 || Tag == 1)
+    {
+        if (start > index)
+            ui->start_time_sel_combo->setCurrentIndex(index);
+        else if (index - start > 2)
+            ui->start_time_sel_combo->setCurrentIndex(index - 2);
+    }
+    else if (Tag == 2)
+    {
+        ui->start_time_sel_combo->setCurrentIndex(index);
+    }
+}
+
+
+void adminwdt::on_Tag_sel_combo_currentIndexChanged(int index)
+{
+    int start = ui->start_time_sel_combo->currentIndex();
+    on_start_time_sel_combo_currentIndexChanged(start);
+}
+
