@@ -59,8 +59,6 @@ void adminwdt::show_percurriculum()
     ui->tableWidget->clearContents(); /*清空单元格内容*/
     int week=ui->select_week->currentIndex()+1; /*获取周数*/
 
-    qDebug()<<"课表刷新";
-
     for (int day = 0; day < DAY; day++)
     {
         for (int i = 0; i < HOURS; i++) /*遍历事件*/
@@ -116,7 +114,7 @@ void adminwdt::init_adminwdt(Person *a)
 
 bool adminwdt::add_event(Event & insert_event)
 {
-    qDebug()<<"add";
+
     QMessageBox msgBox;
 
     insert_event.ID.insert(insert_event.ID.end(),ID.begin(),ID.end());

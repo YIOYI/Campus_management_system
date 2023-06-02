@@ -2619,7 +2619,7 @@ color: rgba(255, 255, 255, 0);</string>
       <widget class="QPushButton" name="bt_hour">
        <property name="geometry">
         <rect>
-         <x>230</x>
+         <x>220</x>
          <y>60</y>
          <width>31</width>
          <height>31</height>
@@ -2636,17 +2636,15 @@ color: rgba(255, 255, 255, 0);</string>
       <widget class="QComboBox" name="cb_week">
        <property name="geometry">
         <rect>
-         <x>140</x>
+         <x>110</x>
          <y>10</y>
-         <width>81</width>
+         <width>91</width>
          <height>31</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 0px solid gray;/*设置边框的粗细，以及颜色*/
-font: 700 9pt &quot;Microsoft YaHei UI&quot;;
-border-radius: 10px;/*设置圆角的大小*/
-background-color: rgba(229, 229, 229, 100);
+        <string notr="true">font: 700 9pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgb(179, 212, 213);
 </string>
        </property>
        <property name="placeholderText">
@@ -2739,23 +2737,23 @@ background-color: rgba(229, 229, 229, 100);
       <widget class="QLabel" name="label_time">
        <property name="geometry">
         <rect>
-         <x>120</x>
+         <x>100</x>
          <y>0</y>
-         <width>251</width>
-         <height>91</height>
+         <width>271</width>
+         <height>101</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>Microsoft YaHei UI</family>
-         <pointsize>10</pointsize>
+         <pointsize>12</pointsize>
          <italic>false</italic>
-         <bold>false</bold>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">border:1px solid gray;/*设置边框的粗细，以及颜色*/
-font: 10pt &quot;Microsoft YaHei UI&quot;;
+font: 700 12pt &quot;Microsoft YaHei UI&quot;;
 background-color: rgba(229, 229, 229, 100);
 border-radius: 20px;/*设置圆角的大小*/</string>
        </property>
@@ -2769,7 +2767,7 @@ border-radius: 20px;/*设置圆角的大小*/</string>
       <widget class="QPushButton" name="bt_pause">
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>140</x>
          <y>60</y>
          <width>31</width>
          <height>31</height>

@@ -271,7 +271,7 @@ void Person::get_admin_perevents()
     QTextStream in1(&inFile1);
 
 
-    qDebug() << "读取课表";
+
     while (!in1.atEnd())
     {
         Event tempevent;
@@ -318,7 +318,6 @@ void Person::get_admin_perevents()
     }
 
     inFile1.close();
-    qDebug() << "读取课表结束";
 
     QFile inFile2("./information_file/collective_event.txt");
     if (!inFile2.open(QIODevice::ReadOnly))
@@ -327,7 +326,7 @@ void Person::get_admin_perevents()
 
     /*从collective_event文件中读取集体事务*/
 
-    qDebug() << "读取集体事务";
+
     while(!in2.atEnd())
     {
         Event tempevent;
@@ -376,7 +375,7 @@ void Person::get_admin_perevents()
     }
 
     inFile2.close();
-    qDebug() << "读取集体事物结束";
+
 
     init_perevents_time_set();
 }
@@ -628,9 +627,8 @@ seektime Person::iscollision(Event &a)
 
 vector<int> Person::find_index(int week,int day,int hour)
 {
-    qDebug()<<perEvents[day-1][hour-6].size();
     vector<int> index_;
-    if(perEvents[day-1][hour-6].size()<1)
+    if(perevents_time_set.find(week*MAX_ONE_WEEK +day *MAX_ONE_DAY + hour) ==  perevents_time_set.end()&&perevents_time_set.find(day *MAX_ONE_DAY + hour) ==  perevents_time_set.end())
         ;
     else if(perEvents[day-1][hour-6].size()==1 && (perEvents[day-1][hour-6][0].Tag == 1 || perEvents[day-1][hour-6][0].Tag==2))
         index_.push_back(0);
@@ -640,7 +638,6 @@ vector<int> Person::find_index(int week,int day,int hour)
         {
             for(auto a:perEvents[day-1][hour-6][count].weeks)//遍历改时间点每个事件所有周数，是否与week匹配
             {
-                qDebug()<<"findindex"<<a;
                 if(a==week)//匹配成功插入index
                 {
                     index_.push_back(count);
@@ -780,6 +777,6 @@ QString number_to_week(int week)
         case 6: week_ch="周六";break;
         case 7: week_ch="周日";break;
     }
-
     return week_ch;
 }
+

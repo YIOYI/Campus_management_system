@@ -17,7 +17,6 @@ int Building::get_Building(QString& inLine)
     int s = 0,r = 0;
 	Roads.clear();
     name.clear();
-    //qDebug()<<inLine;
     QString::iterator itr = inLine.begin();
     id=0;
     for( ;itr != inLine.end()&&(*itr!=' '&&*itr!='\t');itr++)
@@ -84,7 +83,6 @@ int Map::get_Map()
     bool isOk=file.open(QIODevice::ReadOnly);
     if (!isOk)
 	{
-        qDebug() << "open failed";
 		return 1;
 	}
 	Building A;
@@ -110,7 +108,6 @@ int Map::get_Map()
     QFile netfile("./information_file/net.txt");
     if(netfile.open(QIODevice::ReadOnly)==false)
     {
-        qDebug()<<"net.txt读打开失败";
         return 0;
     }
     QTextStream netin(&netfile);
@@ -118,9 +115,7 @@ int Map::get_Map()
     {
         Building netA;
         netin>>netA.id>>c>>netA.name>>c;
-                qDebug()<<netA.name<<netA.id<<netA.point.x<<netA.point.y;
-                for(auto it=netA.Roads_().begin();it!=netA.Roads_().end();it++)
-                    qDebug()<<' '<<*it;
+
         Buildings.push_back(netA);
     }
 
@@ -150,9 +145,7 @@ void Map::save_netBuilding(const QString& netname)
 
     QFile file("./information_file/net.txt");
     QTextStream in(&file);
-    if(file.open(QIODevice::WriteOnly | QIODevice::Append )==false)
-        qDebug()<<"net.txt读打开失败";
-    else
+    if(file.open(QIODevice::WriteOnly | QIODevice::Append )!=false)
     {
         in<<netA.id<<' '<<netA.name<<'\n';
     }

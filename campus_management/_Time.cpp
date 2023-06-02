@@ -1,7 +1,6 @@
 
 #include<iostream>
 #include"_Time.h"
-#include "qdebug.h"
 #include<ctime>
 using std::cin;
 using std::cout;
@@ -66,9 +65,7 @@ void _Time::get_last_time()
     if(file.open(QIODevice::ReadOnly )!=false)
     {
         in>>w>>c>>d>>c>>h>>c;
-        qDebug()<<week_<<' '<<day_<<' '<<hour_;
         time_set(w,d,h);
-        qDebug()<<week_<<' '<<day_<<' '<<hour_;
     }
     file.close();
 }

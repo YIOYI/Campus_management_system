@@ -14,6 +14,7 @@ TabWidget::TabWidget(QWidget *parent) :
         "    min-height:10ex;"
         "}"
         );
+
 }
 
 TabWidget::~TabWidget()
@@ -42,15 +43,22 @@ void TabWidget::init(Person* user_information,_Time *t)
         addTab(page2,"导航系统");
 
         connect(page3,&Form3::QUIT_form,this,&TabWidget::quit);
+        connect(page3,&Form3::jmp_to_guide,this,&TabWidget::alarm_guide);
+        connect(page3,&Form3::alarm_ring,this,&TabWidget::time_update);
+        connect(this,&TabWidget::update_one_day_event,this->page3,&Form3::show_one_day_event);
+
 
         page1->init_form1(current_user,ti);
         page2->init_form2(current_user,ti);
-        page3->init_form3(current_user);
+        page3->init_form3(current_user,ti);
+
 
         time_update();
-        QTimer*timer_calendar = new QTimer(this);
+        timer_calendar = new QTimer(this);
         timer_calendar->start(1000);
         connect(timer_calendar,&QTimer::timeout,this,&TabWidget::time_update);
+        connect(timer_calendar,&QTimer::timeout,page3,&Form3::detect_alarm);
+        connect(ti->tp,&TimePause::t_pause,this,&TabWidget::time_update);
     }
     else if (current_user->Tag == ADMIN)
     {
@@ -63,12 +71,7 @@ void TabWidget::init(Person* user_information,_Time *t)
     show();
 
 
-    time_update();
-    timer_calendar = new QTimer(this);
-    timer_calendar->start(1000);
-    connect(timer_calendar,&QTimer::timeout,this,&TabWidget::time_update);
-    connect(timer_calendar,&QTimer::timeout,page3,&Form3::detect_alarm);
-    connect(ti->tp,&TimePause::t_pause,this,&TabWidget::time_update);
+
 }
 
 void TabWidget::quit()
@@ -82,7 +85,7 @@ void TabWidget::time_update()
     QString tmp;
     QString day;
     ti->time_now();
-    qDebug()<<"tab时间"<<ti->week()<<ti->day()<<ti->hour();
+
     switch (ti->day())
     {
     case 1: day="周一"; break;
@@ -95,6 +98,9 @@ void TabWidget::time_update()
     }
 
     tmp=day+QString("/%1点").arg(ti->hour());
+
+    if(ti->hour()==20||ti->hour()==0)
+        emit update_one_day_event();
     page1->set_time(tmp);
     page2->set_time(tmp);
     page3->set_time(tmp);

@@ -19,9 +19,12 @@ class TabWidget : public QTabWidget
 
 signals:
     void quit_tabwidget();
+    void update_one_day_event();
 public slots:
     void time_update();
+    void alarm_guide(Building dest);
 public:
+    QTimer*timer_calendar;
     _Time *ti;  /*虚拟时间*/
     TimePause *tp;
     explicit TabWidget(QWidget *parent = nullptr);

@@ -21,11 +21,20 @@ class Form3 : public QWidget
 
 signals:
     void QUIT_form();
-
+    void jmp_to_guide(Building);
+    void alarm_ring();
+public slots:
+    void set_time(const QString &tmp);
+    void timeUpdate();
+    void time_pause();
+    void FF_hour();
+    void FF_day();
+    void set_week();
 public:
+    _Time *ti;
     explicit Form3(QWidget *parent = nullptr);
     ~Form3();
-    void init_form3(Person *);
+    void init_form3(Person *,_Time *ti);
     void search();
     void mycellenter(int row, int column);
     void search_outcome(int row,int column);
@@ -46,10 +55,11 @@ public:
     QString alarm_to_format_QString(Event &temp);
     bool format_QString_to_Event(const QString &text, Event &tar);
 
-    void detect_alarm (_Time now);
+    void detect_alarm ();
     void read_alarm_file (void);
     void write_alarm_file (void);
     void show_log(int);//显示学生消息通知
+    void show_one_day_event();//展示当天所有事务
 
 private slots:
     void on_pushButton_clicked();

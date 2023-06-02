@@ -163,7 +163,7 @@ deque<int> Building::ShortestPath(vector<int> point, Map& mp)
 
 	count1 = 0;
 	int min_score = INT_MAX;
-	constexpr int size = 10000;
+    constexpr int size = 100;
 	vector<pair<decltype(point), int>> race;
 	race.push_back({ point, Calculate_Score(point, dists) });
 

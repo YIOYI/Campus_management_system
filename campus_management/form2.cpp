@@ -269,8 +269,6 @@ void Form2::guide_anime(deque<int> &a)
     }
     paint_over=1;
     painter.end();
-
-    qDebug()<<"paint success";
 }
 void Form2::plan_anime(deque<int> &a)
 {
@@ -474,7 +472,6 @@ void Form2::show_event_info()
                 tmp+="事务："+iter.name+"  地点："+iter.building.name_()+"\n";
                 ui->label_event_text->setText(tmp);
             }
-
     }
     }
 

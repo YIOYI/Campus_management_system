@@ -34,12 +34,9 @@ void MainWindow::detect_input_code()
     int currentID = (ui->select_ID->currentText()).toInt();
     int index = All_students_information.getindex(currentID);
     int rightcode = All_students_information.students_information()[index].getpassword();
-    qDebug()<<rightcode;
-    qDebug()<<(ui->code_lineedit->text()).toInt();
     if(rightcode==(ui->code_lineedit->text()).toInt())
     {
         log_need_to_used_user_id=currentID;
-        qDebug()<<"用户"<<log_need_to_used_user_id<<"登录";
         current_user->getID() = currentID;
         current_user->getpassword() = rightcode;
         current_user->getname() = All_students_information.students_information()[index].getname();
@@ -54,12 +51,11 @@ void MainWindow::detect_input_code()
     }
     else if (ui->select_ID->currentText() == "88888888" && ui->code_lineedit->text() == "88888888")
     {
+        log_need_to_used_user_id=88888888;
         current_user->getID() = 88888888;
         current_user->getpassword() = 88888888;
         current_user->getname() = "管理员";
-        qDebug() << "正在读取";
         current_user->get_admin_perevents();
-        qDebug() << "读取结束";
         current_user->Tag = ADMIN;
         logon_to_main();
 
@@ -75,6 +71,7 @@ void MainWindow::logon_to_main()
     _Time *ti=new _Time;
     ti->get_last_time();
     tabwidget->init(current_user,ti);
+    qDebug()<<"登录";
     this->hide();//关闭登录界面
  }
 
@@ -90,7 +87,6 @@ void MainWindow::select_change()
 
 void MainWindow::clean()
 {
-    qDebug()<<"重新登录";
     tabwidget->close();
     delete tabwidget;
     delete current_user;

@@ -68,8 +68,6 @@ void Form1::show_percurriculum()
     ui->tableWidget->clearContents(); /*清空单元格内容*/
     int week=ui->select_week->currentIndex()+1; /*获取周数*/
 
-    qDebug()<<"课表刷新";
-
     for (int day = 0; day < DAY; day++)
     {
         for (int i = 0; i < HOURS; i++) /*遍历事件*/
@@ -540,8 +538,8 @@ void Form1::add_event(Event & insert_event)
     QMessageBox msgBox;
 
     insert_event.ID.insert(insert_event.ID.end(),ID.begin(),ID.end());
-    for(auto a:insert_event.ID)
-        qDebug()<<a;
+//    for(auto a:insert_event.ID)
+//        qDebug()<<a;
 
     if(insert_event.Tag == 3&&insert_event.ID.size()<2)
     {
@@ -566,7 +564,7 @@ void Form1::add_event(Event & insert_event)
     {
         if(!isexist(insert_event))
         {
-            qDebug()<<"no exist";
+
             current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].push_back(insert_event);
             if(current_user->namequeue.find(insert_event.name)==current_user->namequeue.end())
                 current_user->event_names.push_back(insert_event.name);
