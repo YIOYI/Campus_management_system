@@ -134,12 +134,6 @@ bool adminwdt::add_event(Event & insert_event)
             return false;
     }
 
-    if(refresh)
-    {
-        current_user->init_perevents_time_set();
-        refresh=0;
-
-    }
     seektime temp_time=current_user->iscollision(insert_event);
 
     if(temp_time.tag == 1)

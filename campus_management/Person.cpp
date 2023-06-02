@@ -377,7 +377,6 @@ void Person::get_admin_perevents()
     inFile2.close();
 
 
-    init_perevents_time_set();
 }
 
 void Person::update_perevents()

@@ -809,22 +809,29 @@ void Form3::Ring (Alarm &single)
 
     QMessageBox msgBox = QMessageBox(QMessageBox::Warning, "您有一个闹钟", text);
 
-
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    auto * yesButton = msgBox.button(QMessageBox::Yes);
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+    auto * yesButton = msgBox.button(QMessageBox::Save);
     yesButton->setText("跳转到导航");
-
+    auto * noButton = msgBox.button(QMessageBox::Cancel);
+    noButton->setText("OK");
 
     msgBox.exec();
 
 
     if (msgBox.clickedButton() == yesButton) {
+        player->stop();
+        delete player;
+        delete audioOutput;
         emit jmp_to_guide(single.alarm_event.building);
     }
+    else
+    {
+        player->stop();
+        delete player;
+        delete audioOutput;
+    }
 
-    player->stop();
-    delete player;
-    delete audioOutput;
+
 }
 
 QString Form3::alarm_to_format_QString(Event &tmp)
