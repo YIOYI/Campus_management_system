@@ -296,8 +296,8 @@ void Form1::skip_to_dialog(int r,int c)
        insert_dialog.ui->lineEdit_2->clear();
        insert_dialog.ui->label_ID->clear();
        ID.clear();
-       ui->radioButton_event3->setChecked(true);
-       ui->widget->show();
+       insert_dialog.ui->comboBox->setCurrentIndex(0);
+       insert_dialog.ui->widget->show();
        insert_dialog.show();
        insert_dialog.row =r;
        insert_dialog.line=c;
@@ -434,6 +434,8 @@ void Form1::dialog_add_event(QAbstractButton* button)
             ui->tableWidget->item(insert_dialog.row,insert_dialog.line)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
             ui->tableWidget->item(insert_dialog.row,insert_dialog.line)->setForeground(Qt::black);
         }
+        insert_dialog.ID.clear();
+        insert_dialog.label_ID.clear();
     }
     return ;
 }
@@ -774,6 +776,7 @@ void Form1::clear_frame2()
     ui->comboBox_end_time->setCurrentIndex(1);
     ui->label_ID->clear();
     ID.clear();
+    label_ID.clear();
     positioning_tag=0;
 
     ui->checkBox_week1->setChecked(false);
@@ -810,6 +813,9 @@ void Form1::doubleclick_set(int r,int c)
     if (item == nullptr) //单元格为空时增加事务
     {
         skip_to_dialog(r,c);
+
+        ui->comboBox_day->setCurrentIndex(c);
+        ui->comboBox_start_time->setCurrentIndex(r);
     }
     else
     {

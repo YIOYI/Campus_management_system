@@ -10,6 +10,7 @@ Dialog::Dialog(QWidget *parent) :
     setWindowTitle("加入事件");
     connect(ui->comboBox,&QComboBox::currentIndexChanged,this,&Dialog::wideget_control);
     connect(ui->pushButton_ID,&QPushButton::clicked,this,&Dialog::insert_ID);
+    connect(ui->pushButton_clear,&QPushButton::clicked,this,&Dialog::clear);
 }
 
 Dialog::~Dialog()
@@ -17,10 +18,15 @@ Dialog::~Dialog()
     delete ui;
 }
 
+void Dialog::clear()
+{
+    ui->label_ID->clear();
+    ID.clear();
+}
+
 void Dialog::insert_ID()
 {
     int buffer_ID = ui->comboBox_ID->currentText().toInt();
-    qDebug()<<buffer_ID<<current_ID;
     if(buffer_ID==current_ID)
         return;
     else
@@ -35,6 +41,7 @@ void Dialog::insert_ID()
     if(ID.size()%4==0)
         label_ID.append("\n");
     ui->label_ID->setText(label_ID);
+
 }
 
 void Dialog::wideget_control()

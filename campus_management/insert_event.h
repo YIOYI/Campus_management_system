@@ -15,6 +15,7 @@ class Dialog : public QDialog
 public slots:
     void insert_ID();
     void wideget_control();
+    void clear();
 public:
     explicit Dialog(QWidget *parent = nullptr);
 

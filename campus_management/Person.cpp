@@ -106,6 +106,8 @@ void Person::get_perevents()
                     perevents_time_set.insert(tempevent.start.day()*MAX_ONE_DAY + temphour);
             }
         }
+        else
+            othercollective.push_back(tempevent);//不属于该学生的选修课或者考试
     }
 
     inFile1.close();
@@ -169,7 +171,7 @@ void Person::get_perevents()
                 perevents_time_set.insert(x*MAX_ONE_WEEK + tempevent.start.day()*MAX_ONE_DAY + tempevent.start.hour());
         }
         else
-            othercollective.push_back(tempevent);
+            othercollective.push_back(tempevent);//不属于该学生的集体事务
     }
 
     inFile2.close();
@@ -261,14 +263,16 @@ void Person::update_perevents()
 {
     const QString filename_collective = "./information_file/collective_event.txt";    //更新储存学生集体事务临时事务的文件
     const QString filename_perevent = "./information_file/perevent/" + QString::number(ID) + ".txt";    //更新储存学生个人事务临时事务的文件
+
     QFile outFile1(filename_collective);
     QFile outFile2(filename_perevent);
 
     QTextStream out1(&outFile1);
     QTextStream out2(&outFile2);
+
     if(!outFile1.open(QIODevice::WriteOnly))
     {
-        qDebug()<<"./information_file/collective_event.txt";
+        qDebug()<<"open failed ./information_file/collective_event.txt";
         return;
     }
 
@@ -286,6 +290,7 @@ void Person::update_perevents()
                 {
                     if(a.Tag ==1 ||a.Tag==2)
                         ;
+
                     else if(a.Tag==3)
                     {
                         out1<<a.weeks.size()<<"   ";
@@ -319,18 +324,21 @@ void Person::update_perevents()
 
     for(auto tempevent:othercollective)
     {
-        out1<<tempevent.weeks.size()<<"  ";
-        for(auto tempweek:tempevent.weeks)
-            out1<<tempweek<<" ";
-        out1<<"  ";
-        out1<<tempevent.start.day()<<" ";
-        out1<<tempevent.start.hour()<<" ";
-        out1<<tempevent.end.hour()<<"  ";
-        out1<<tempevent.name<<"   ";
-        out1<<tempevent.building.id_() << " ";
-        for(auto tempID:tempevent.ID)
-            out1<<tempID<<" ";
-        out1<<0<<"\n";
+        if(tempevent.Tag==3)
+        {
+            out1<<tempevent.weeks.size()<<"  ";
+            for(auto tempweek:tempevent.weeks)
+                out1<<tempweek<<" ";
+            out1<<"  ";
+            out1<<tempevent.start.day()<<" ";
+            out1<<tempevent.start.hour()<<" ";
+            out1<<tempevent.end.hour()<<"  ";
+            out1<<tempevent.name<<"   ";
+            out1<<tempevent.building.id_() << " ";
+            for(auto tempID:tempevent.ID)
+                out1<<tempID<<" ";
+            out1<<0<<"\n";
+        }
     }
 
     outFile1.close();
@@ -370,104 +378,28 @@ seektime Person::iscollision(Event &a)
     other_user.clear();
     allcollective_event_set.clear();
 
+    if(a.Tag == 3)
+        init_allcollective_event_set(a.ID);
+
     if ( perevents_time_set.find(tempday * MAX_ONE_DAY + temphour) !=  perevents_time_set.end())//先检测与必修选修是否冲突,如果冲突必定失败
+    {
         return { 0,tempday,temphour,0 };
+    }
 
     if(a.Tag == 3)//如果是集体事务则需要同时检测加入的其他几个学生的冲突
     {
         for (auto tempweek : a.weeks)//先检测与本人事务是否冲突
         {
-             if ( perevents_time_set.find(tempweek*MAX_ONE_WEEK + tempday *MAX_ONE_DAY + temphour) !=  perevents_time_set.end() )
+            if( perevents_time_set.find(tempweek*MAX_ONE_WEEK + tempday *MAX_ONE_DAY + temphour) !=  perevents_time_set.end() )
             {
                 vector<int> temporary_event =find_index(tempweek,tempday,temphour);
-                if(perEvents[tempday-1][temphour-6][temporary_event[0]].Tag !=5)//如果不是临时事务则冲突
+                if(perEvents[tempday-1][temphour-6][temporary_event[0]].Tag == 3)//如果是集体事务则冲突
                 {
                     return { tempweek,tempday,temphour,0 };
                 }
             }
         }
 
-        for(auto tempID:a.ID)
-            other_user.insert(tempID);
-
-        QFile inFile1("./information_file/curriculum.txt");
-        if (!inFile1.open(QIODevice::ReadOnly))
-            qDebug() << "open failed curriculum.txt";
-        QTextStream in1(&inFile1);
-
-        while(!in1.atEnd())
-        {
-            QString name;
-            QString trash;
-            vector<int>weeks;
-            int tempweek;
-            int tag;
-            int day;
-            int hour_s;
-            int hour_e;
-            int ID;
-
-            tag =0;
-            in1 >> tag;/*首先输出该集体事件周期数*/
-            if(!tag)
-                break;
-            in1 >> day;
-            in1 >> hour_s;
-            in1 >> hour_e;
-            in1 >> name;
-
-            if(tag==2 && name.endsWith("考试"))
-            {
-                in1>>trash;//地点
-                in1>>tempweek;//周数
-                while(tempweek)
-                {
-                    weeks.push_back(tempweek);
-                    in1>>tempweek;
-                }
-
-                in1>> ID;//学生ID
-                while (ID)
-                {
-                    if(other_user.find(ID)!=other_user.end())//如果添加的考试中有该学生，则时间容器中加入这个事件的时间
-                    {
-                        for (auto tempweek : weeks)
-                            for(int temphour=hour_s;temphour!=hour_e;temphour++)
-                            {
-                                if(allcollective_event_set.find(tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + temphour)==allcollective_event_set.end())//当前时间点是否有事务以及事务的个数
-                                    allcollective_event_set[tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + temphour]=1;
-                                else
-                                    allcollective_event_set[tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + temphour]++;
-                            }
-                        break;
-                    }
-                    in1 >> ID;
-                }
-            }
-            else
-                in1.readLine();
-        }
-        inFile1.close();
-
-        //检验其他学生集体事务
-        for(auto tempevent:othercollective)
-        {
-            int day = tempevent.start.day();
-            int hour_s =tempevent.start.hour();
-            for(auto ID:tempevent.ID)
-            {
-                if(other_user.find(ID)!=other_user.end())//如果添加的集体事务中有该学生，则时间容器中加入这个事件的时间
-                {
-                    for (auto tempweek : tempevent.weeks)
-                    {
-                        if(allcollective_event_set.find(tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour_s)==allcollective_event_set.end())//当前时间点是否有事务以及事务的个数
-                            allcollective_event_set[tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour_s]=1;
-                        else
-                            allcollective_event_set[tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour_s]++;
-                    }
-                }
-            }
-        }
 
         for (auto tempweek : a.weeks)//检测与其他学生的集体事务是否冲突
         {
@@ -540,15 +472,31 @@ vector<seektime> Person::findidle(seektime temp_time,int tag)
         return idle_time;
     while(hour<22)
     {
-        if(perevents_time_set.find(day * MAX_ONE_DAY + hour) ==  perevents_time_set.end())//如果与必修选修冲突必定失败
-        {
+
             if(tag == 1||tag ==2)
             {
-                idle_time.push_back({week,day,hour,1});
+                if(perevents_time_set.find(day * MAX_ONE_DAY + hour) ==  perevents_time_set.end())//只要不与必修选修冲突就添加成功
+                    idle_time.push_back({week,day,hour,1});
             }
 
             else if(tag == 3)//集体事务检测所有参加学生的集体事务
             {
+                if(perevents_time_set.find(day * MAX_ONE_DAY + hour) !=  perevents_time_set.end())//如果是必修选修冲突
+                {
+                        allcollective_event_set[week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour]=other_user.size()+1;
+                }
+                else if(perevents_time_set.find(week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour) != perevents_time_set.end())//如果是集体事务冲突
+                {
+                    vector<int> index =find_index(week,day,hour);
+                    if(index.size()==1 && perEvents[day-1][hour-6][index[0]].Tag==3)
+                    {
+                        if(allcollective_event_set.find(week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour)==allcollective_event_set.end())//当前时间点是否有事务以及事务的个数
+                            allcollective_event_set[week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour]=1;
+                        else
+                            allcollective_event_set[week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour]++;
+                    }
+                }
+
                 if(allcollective_event_set.find(week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour) != allcollective_event_set.end())//检测与参加学生的集体事务是否冲突
                 {
                     times.push_back(make_pair(hour,allcollective_event_set[week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour]));
@@ -559,9 +507,10 @@ vector<seektime> Person::findidle(seektime temp_time,int tag)
                     idle_time.push_back({week,day,hour,1});
                 }
             }
+
             else if(tag == 4)//个人事务则检测本人是否有事件冲突，个人事务遇到集体事务和临时事务都会冲突
             {
-                if(perevents_time_set.find(week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour)==perevents_time_set.end())
+                if(perevents_time_set.find(week*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour) == perevents_time_set.end()&&perevents_time_set.find(day * MAX_ONE_DAY + hour) ==  perevents_time_set.end())
                 {
                     idle_time.push_back({week,day,hour,1});
                 }
@@ -569,8 +518,7 @@ vector<seektime> Person::findidle(seektime temp_time,int tag)
 
             if((int)idle_time.size()==3)//最多给出三个空闲时间
                 break;
-        }
-        hour++;
+            hour++;
     }
 
     if(idle_time.size()==0)
@@ -637,5 +585,40 @@ void Person::deletename(QString a)
     }
 }
 
+void Person::init_allcollective_event_set(vector<int> ID_)
+{
+    for(auto tempID:ID_)
+        other_user.insert(tempID);
+
+    for(auto tempevent:othercollective)
+    {
+        int day = tempevent.start.day();
+        int hour_s =tempevent.start.hour();
+        for(auto ID:tempevent.ID)
+        {
+            if(other_user.find(ID)!=other_user.end())//如果添加的集体事务中有该学生，则时间容器中加入这个事件的时间
+            {
+                if(tempevent.weeks.size()!=0)//集体事务读入set容器
+                {
+                    for (auto tempweek : tempevent.weeks)
+                    {
+                        if(allcollective_event_set.find(tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour_s)==allcollective_event_set.end())//当前时间点是否有事务以及事务的个数
+                            allcollective_event_set[tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour_s]=1;
+                        else
+                            allcollective_event_set[tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + hour_s]++;
+                    }
+                }
+                else//选修课程读入set容器
+                {
+                    for (int tempweek=0;tempweek <16;tempweek++)
+                        for(int temphour =hour_s;temphour<tempevent.end.hour();temphour++)
+                        {
+                                allcollective_event_set[tempweek*MAX_ONE_WEEK + day *MAX_ONE_DAY + temphour]=other_user.size()+1;
+                        }
+                }
+            }
+        }
+    }
+}
 
 
