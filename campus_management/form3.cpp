@@ -31,6 +31,7 @@ Form3::Form3(QWidget *parent) :
     connect(ui->tableWidget_search,&QTableWidget::cellClicked,this,&Form3::search_outcome);
     connect(ui->pushButton_quit,&QPushButton::clicked,this,&Form3::quit);
     connect(ui->pushButton_correct,&QPushButton::clicked,this,&Form3::correct);
+    connect(ui->pushButton_search,&QPushButton::clicked,this,&Form3::keysearch);
 }
 
 Form3::~Form3()
@@ -123,6 +124,7 @@ void Form3::search_outcome(int row,int column)
 {
     int line=0;
 
+    ui->tableWidget_outcome->clearContents();
     current_user->reorder(search_select[row-1]);
     vector<arrayindex> p = current_user->namequeue[search_select[row-1]];
     ui->tableWidget_outcome->setRowCount(p.size());
@@ -875,7 +877,125 @@ void Form3::show_log(int num)
         ui->label_log->setText(current_user->log);
 }
 
+void Form3::keysearch()
+{
+    ui->tableWidget_outcome->clearContents();
+    ui->tableWidget_outcome->setRowCount(1);
+    ui->label_foundation->setText("关键词检索");
+    int tag = ui->comboBox_choose_tag->currentIndex();
+    int hour = ui->comboBox_choose_hour->currentIndex();
+    int day = ui->comboBox_choose_day->currentIndex();
+    int hour_end;
+    int day_end;
+    int hour_begin;
+    int day_begin;
+    int line =0;
 
+    if(hour == 0)
+    {
+        hour_end = HOURS;
+        hour_begin= 0;
+    }
+    else
+    {
+        hour_end = hour;
+        hour_begin = hour-1;
+    }
+    if(day == 0)
+    {
+        day_end = DAY;
+        day_begin =0;
+    }
+    else
+    {
+        day_end = day;
+        day_begin=day-1;
+    }
+
+    for(int count = day_begin;count< day_end;count++)
+        for(int i = hour_begin;i<hour_end;i++ )
+        {
+            for(auto temp:current_user->perEvents[count][i])
+            {
+                if(temp.Tag == tag ||tag ==0)
+                {
+                    QString type;
+                    QString time;
+                    QString week;
+                    QString address;
+                    QString tip;
+
+                    switch (temp.Tag)
+                    {
+                        case 1:if(temp.name.endsWith("考试"))
+                            type.append("必修课考试");
+                        else
+                            type.append("必修课");
+                        break;
+                        case 2:if(temp.name.endsWith("考试"))
+                            type.append("选修课考试");
+                        else
+                            type.append("选修课");
+                        break;
+                        case 3:type.append("集体事务");break;
+                        case 4:type.append("个人事务");break;
+                        case 5:type.append("临时事务");break;
+                    }
+
+                    type.append("--").append(temp.name);
+
+                    time += number_to_week(temp.start.day());
+                    time+=" ";
+                    time+=QString::number(temp.start.hour());
+                    time+=":00~";
+                    time+=QString::number(temp.end.hour());
+                    time+=":00";
+
+                    if((temp.Tag==1 || temp.Tag ==2)&&!(temp.name.endsWith("考试")))
+                        week+="每周都有";
+                    else
+                    {
+                        for(auto tempweek:temp.weeks)
+                        {
+                            week+=QString::number(tempweek);
+                            week+=" ";
+                        }
+                    }
+
+                    address =temp.building.name_();
+
+                    if(temp.Tag ==1||temp.Tag ==2)
+                     {
+                        QString exam_name = temp.name +"考试";
+                        if(current_user->namequeue.find(exam_name)!=current_user->namequeue.end())
+                            tip.append("已发布考试");
+                      }
+                    else if(temp.Tag == 3)
+                    {
+                        tip.append("参加学生：");
+                        for(auto tempID:temp.ID)
+                        {
+                            tip.append(QString::number(tempID)).append(" ");
+                        }
+                    }
+
+                    ui->tableWidget_outcome->setItem(line,0,new QTableWidgetItem(type));
+                    ui->tableWidget_outcome->item(line,0)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+                    ui->tableWidget_outcome->setItem(line,1,new QTableWidgetItem(time));
+                    ui->tableWidget_outcome->item(line,1)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+                    ui->tableWidget_outcome->setItem(line,2,new QTableWidgetItem(week));
+                    ui->tableWidget_outcome->item(line,2)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+                    ui->tableWidget_outcome->setItem(line,3,new QTableWidgetItem(address));
+                    ui->tableWidget_outcome->item(line,3)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+                    ui->tableWidget_outcome->setItem(line,4,new QTableWidgetItem(tip));
+                    ui->tableWidget_outcome->item(line,4)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+                    line++;
+                    ui->tableWidget_outcome->insertRow(line);
+                }
+            }
+        }
+
+}
 
 
 

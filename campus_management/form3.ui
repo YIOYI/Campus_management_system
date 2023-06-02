@@ -839,18 +839,18 @@ border-radius: 15px;/*设置圆角的大小*/</string>
     <string>修改密码</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="comboBox_choose_tag">
    <property name="geometry">
     <rect>
-     <x>1191</x>
+     <x>1190</x>
      <y>30</y>
-     <width>121</width>
+     <width>101</width>
      <height>35</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>13</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -863,7 +863,12 @@ border-radius: 15px;/*设置圆角的大小*/</string>
    </item>
    <item>
     <property name="text">
-     <string>课程</string>
+     <string>  必修</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>  选修</string>
     </property>
    </item>
    <item>
@@ -882,18 +887,18 @@ border-radius: 15px;/*设置圆角的大小*/</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="comboBox_2">
+  <widget class="QComboBox" name="comboBox_choose_day">
    <property name="geometry">
     <rect>
-     <x>1311</x>
+     <x>1290</x>
      <y>30</y>
-     <width>121</width>
+     <width>101</width>
      <height>35</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>13</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <item>
@@ -903,97 +908,52 @@ border-radius: 15px;/*设置圆角的大小*/</string>
    </item>
    <item>
     <property name="text">
-     <string>第一周</string>
+     <string>  周一</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>第二周</string>
+     <string>  周二</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>第三周</string>
+     <string>  周三</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>第四周</string>
+     <string>  周四</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>第五周</string>
+     <string>  周五</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>第六周</string>
+     <string>  周六</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>第七周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第八周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第九周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第十周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第十一周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第十二周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第十三周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第十四周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第十五周</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>第十六周</string>
+     <string>  周日</string>
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="comboBox_3">
+  <widget class="QComboBox" name="comboBox_choose_hour">
    <property name="geometry">
     <rect>
-     <x>1430</x>
+     <x>1390</x>
      <y>30</y>
-     <width>121</width>
+     <width>101</width>
      <height>35</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>13</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <item>
@@ -1082,6 +1042,22 @@ border-radius: 15px;/*设置圆角的大小*/</string>
     </property>
    </item>
   </widget>
+  <widget class="QPushButton" name="pushButton_search">
+   <property name="geometry">
+    <rect>
+     <x>1500</x>
+     <y>30</y>
+     <width>41</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">image: url(:/picture/search.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>label</zorder>
   <zorder>tableWidget_search</zorder>
   <zorder>label_5</zorder>
@@ -1105,9 +1081,10 @@ border-radius: 15px;/*设置圆角的大小*/</string>
   <zorder>label_11</zorder>
   <zorder>pushButton_quit</zorder>
   <zorder>pushButton_correct</zorder>
-  <zorder>comboBox</zorder>
-  <zorder>comboBox_2</zorder>
-  <zorder>comboBox_3</zorder>
+  <zorder>comboBox_choose_tag</zorder>
+  <zorder>comboBox_choose_day</zorder>
+  <zorder>comboBox_choose_hour</zorder>
+  <zorder>pushButton_search</zorder>
  </widget>
  <tabstops>
   <tabstop>tableWidget_search</tabstop>
