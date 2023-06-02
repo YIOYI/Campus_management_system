@@ -26,6 +26,7 @@ void _Time::time_set(int w,int d,int h)  //用户设定时间
     day_ =d;
     hour_=h;
 	start_time = now_time - (((long)week_ * 7 - 7 + day_ - 1) * 24 + hour_) * 5;
+    qDebug()<<"设定时间为 第"<<w<<"周 周"<<d<<h<<"点";
 	time_continue();  //时间继续流动
 }
 
@@ -65,7 +66,9 @@ void _Time::get_last_time()
     if(file.open(QIODevice::ReadOnly )!=false)
     {
         in>>w>>c>>d>>c>>h>>c;
-        time_set(w,d,h);
+        week_=w;
+        day_=d;
+        hour_=h;
     }
     file.close();
 }

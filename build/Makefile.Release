@@ -485,7 +485,7 @@ release/moc_adminwdt.cpp: ../campus_management/adminwdt.h \
 		../campus_management/Building.h \
 		release/moc_predefs.h \
 		C:/Qt/6.5.0/mingw_64/bin/moc.exe
-	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/Campus_Management/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/Campus_Management/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\adminwdt.h -o release\moc_adminwdt.cpp
+	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/gitgub_source/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/gitgub_source/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\adminwdt.h -o release\moc_adminwdt.cpp
 
 release/moc_form1.cpp: ../campus_management/form1.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QWidget \
@@ -724,6 +724,8 @@ release/moc_form1.cpp: ../campus_management/form1.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QRadioButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtablewidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
@@ -748,7 +750,7 @@ release/moc_form1.cpp: ../campus_management/form1.h \
 		../campus_management/Building.h \
 		release/moc_predefs.h \
 		C:/Qt/6.5.0/mingw_64/bin/moc.exe
-	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/Campus_Management/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/Campus_Management/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\form1.h -o release\moc_form1.cpp
+	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/gitgub_source/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/gitgub_source/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\form1.h -o release\moc_form1.cpp
 
 release/moc_form2.cpp: ../campus_management/form2.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QWidget \
@@ -998,7 +1000,7 @@ release/moc_form2.cpp: ../campus_management/form2.h \
 		../campus_management/Building.h \
 		release/moc_predefs.h \
 		C:/Qt/6.5.0/mingw_64/bin/moc.exe
-	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/Campus_Management/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/Campus_Management/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\form2.h -o release\moc_form2.cpp
+	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/gitgub_source/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/gitgub_source/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\form2.h -o release\moc_form2.cpp
 
 release/moc_form3.cpp: ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QWidget \
@@ -1187,15 +1189,8 @@ release/moc_form3.cpp: ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qinputmethod.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/qlocale.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qguiapplication_platform.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QGroupBox \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qgroupbox.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qframe.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QHeaderView \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qheaderview.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractitemview.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractscrollarea.h \
-		C:/Qt/6.5.0/mingw_64/include/QtCore/qabstractitemmodel.h \
-		C:/Qt/6.5.0/mingw_64/include/QtCore/qitemselectionmodel.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QComboBox \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qcombobox.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qstyleoption.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractspinbox.h \
@@ -1207,6 +1202,21 @@ release/moc_form3.cpp: ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtabbar.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qrubberband.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qframe.h \
+		C:/Qt/6.5.0/mingw_64/include/QtCore/qabstractitemmodel.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QFrame \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QGridLayout \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qlayout.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QGroupBox \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QHeaderView \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qheaderview.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractitemview.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt/6.5.0/mingw_64/include/QtCore/qitemselectionmodel.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QLabel \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qlabel.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qpicture.h \
@@ -1220,6 +1230,8 @@ release/moc_form3.cpp: ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QPushButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableView \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
@@ -1242,7 +1254,7 @@ release/moc_form3.cpp: ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qstandarditemmodel.h \
 		release/moc_predefs.h \
 		C:/Qt/6.5.0/mingw_64/bin/moc.exe
-	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/Campus_Management/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/Campus_Management/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\form3.h -o release\moc_form3.cpp
+	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/gitgub_source/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/gitgub_source/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\form3.h -o release\moc_form3.cpp
 
 release/moc_insert_event.cpp: ../campus_management/insert_event.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QDialog \
@@ -1467,7 +1479,7 @@ release/moc_insert_event.cpp: ../campus_management/insert_event.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QWidget \
 		release/moc_predefs.h \
 		C:/Qt/6.5.0/mingw_64/bin/moc.exe
-	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/Campus_Management/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/Campus_Management/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\insert_event.h -o release\moc_insert_event.cpp
+	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/gitgub_source/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/gitgub_source/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\insert_event.h -o release\moc_insert_event.cpp
 
 release/moc_mainwindow.cpp: ../campus_management/mainwindow.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QMainWindow \
@@ -1723,6 +1735,8 @@ release/moc_mainwindow.cpp: ../campus_management/mainwindow.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/qitemselectionmodel.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QRadioButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtablewidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
@@ -1735,8 +1749,6 @@ release/moc_mainwindow.cpp: ../campus_management/mainwindow.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
 		../campus_management/form2.h \
 		ui_form2.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/QPainter \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qpainter.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/QTime \
@@ -1761,7 +1773,7 @@ release/moc_mainwindow.cpp: ../campus_management/mainwindow.h \
 		ui_adminwdt.h \
 		release/moc_predefs.h \
 		C:/Qt/6.5.0/mingw_64/bin/moc.exe
-	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/Campus_Management/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/Campus_Management/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\mainwindow.h -o release\moc_mainwindow.cpp
+	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/gitgub_source/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/gitgub_source/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\mainwindow.h -o release\moc_mainwindow.cpp
 
 release/moc_tabwidget.cpp: ../campus_management/tabwidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTabWidget \
@@ -2002,6 +2014,8 @@ release/moc_tabwidget.cpp: ../campus_management/tabwidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QRadioButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtablewidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
@@ -2026,8 +2040,6 @@ release/moc_tabwidget.cpp: ../campus_management/tabwidget.h \
 		../campus_management/Building.h \
 		../campus_management/form2.h \
 		ui_form2.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/QPainter \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qpainter.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/QTime \
@@ -2052,7 +2064,7 @@ release/moc_tabwidget.cpp: ../campus_management/tabwidget.h \
 		ui_adminwdt.h \
 		release/moc_predefs.h \
 		C:/Qt/6.5.0/mingw_64/bin/moc.exe
-	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/Campus_Management/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/Campus_Management/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\tabwidget.h -o release\moc_tabwidget.cpp
+	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/gitgub_source/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/gitgub_source/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\tabwidget.h -o release\moc_tabwidget.cpp
 
 release/moc_timepause.cpp: ../campus_management/timepause.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/QObject \
@@ -2148,7 +2160,7 @@ release/moc_timepause.cpp: ../campus_management/timepause.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/qbindingstorage.h \
 		release/moc_predefs.h \
 		C:/Qt/6.5.0/mingw_64/bin/moc.exe
-	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/Campus_Management/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/Campus_Management/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\timepause.h -o release\moc_timepause.cpp
+	C:\Qt\6.5.0\mingw_64\bin\moc.exe $(DEFINES) --include F:/Qt_Source/gitgub_source/Campus_management_system/build-campus_management-Desktop_Qt_6_5_0_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/6.5.0/mingw_64/mkspecs/win32-g++ -IF:/Qt_Source/gitgub_source/Campus_management_system/campus_management -IC:/Qt/6.5.0/mingw_64/include -IC:/Qt/6.5.0/mingw_64/include/QtWidgets -IC:/Qt/6.5.0/mingw_64/include/QtMultimedia -IC:/Qt/6.5.0/mingw_64/include/QtGui -IC:/Qt/6.5.0/mingw_64/include/QtNetwork -IC:/Qt/6.5.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\campus_management\timepause.h -o release\moc_timepause.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -3363,6 +3375,8 @@ release/form1.o: ../campus_management/form1.cpp ../campus_management/form1.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QRadioButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtablewidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
@@ -3823,15 +3837,8 @@ release/form3.o: ../campus_management/form3.cpp ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qinputmethod.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/qlocale.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qguiapplication_platform.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QGroupBox \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qgroupbox.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qframe.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QHeaderView \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qheaderview.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractitemview.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractscrollarea.h \
-		C:/Qt/6.5.0/mingw_64/include/QtCore/qabstractitemmodel.h \
-		C:/Qt/6.5.0/mingw_64/include/QtCore/qitemselectionmodel.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QComboBox \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qcombobox.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qstyleoption.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractspinbox.h \
@@ -3843,6 +3850,21 @@ release/form3.o: ../campus_management/form3.cpp ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtabbar.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtabwidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qrubberband.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qframe.h \
+		C:/Qt/6.5.0/mingw_64/include/QtCore/qabstractitemmodel.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QFrame \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QGridLayout \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qlayout.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QGroupBox \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QHeaderView \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qheaderview.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractitemview.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt/6.5.0/mingw_64/include/QtCore/qitemselectionmodel.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QLabel \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qlabel.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qpicture.h \
@@ -3856,6 +3878,8 @@ release/form3.o: ../campus_management/form3.cpp ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QPushButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableView \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
@@ -3887,17 +3911,11 @@ release/form3.o: ../campus_management/form3.cpp ../campus_management/form3.h \
 		C:/Qt/6.5.0/mingw_64/include/QtMultimedia/qaudio.h \
 		C:/Qt/6.5.0/mingw_64/include/QtMultimedia/QAudioOutput \
 		C:/Qt/6.5.0/mingw_64/include/QtMultimedia/qaudiooutput.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QComboBox \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qcombobox.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QCheckBox \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qcheckbox.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTreeView \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtreeview.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QHBoxLayout \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qboxlayout.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qlayout.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qlayoutitem.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qgridlayout.h
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QHBoxLayout
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\form3.o ..\campus_management\form3.cpp
 
 release/insert_event.o: ../campus_management/insert_event.cpp ../campus_management/insert_event.h \
@@ -4377,6 +4395,8 @@ release/main.o: ../campus_management/main.cpp ../campus_management/mainwindow.h 
 		C:/Qt/6.5.0/mingw_64/include/QtCore/qitemselectionmodel.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QRadioButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtablewidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
@@ -4389,8 +4409,6 @@ release/main.o: ../campus_management/main.cpp ../campus_management/mainwindow.h 
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
 		../campus_management/form2.h \
 		ui_form2.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/QPainter \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qpainter.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/QTime \
@@ -4674,6 +4692,8 @@ release/mainwindow.o: ../campus_management/mainwindow.cpp ../campus_management/m
 		C:/Qt/6.5.0/mingw_64/include/QtCore/qitemselectionmodel.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QRadioButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtablewidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
@@ -4686,8 +4706,6 @@ release/mainwindow.o: ../campus_management/mainwindow.cpp ../campus_management/m
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
 		../campus_management/form2.h \
 		ui_form2.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/QPainter \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qpainter.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/QTime \
@@ -4957,6 +4975,8 @@ release/tabwidget.o: ../campus_management/tabwidget.cpp ../campus_management/tab
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qpushbutton.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QRadioButton \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
+		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QTableWidget \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtablewidget.h \
 		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qtableview.h \
@@ -4981,8 +5001,6 @@ release/tabwidget.o: ../campus_management/tabwidget.cpp ../campus_management/tab
 		../campus_management/Building.h \
 		../campus_management/form2.h \
 		ui_form2.h \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/QScrollArea \
-		C:/Qt/6.5.0/mingw_64/include/QtWidgets/qscrollarea.h \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/QPainter \
 		C:/Qt/6.5.0/mingw_64/include/QtGui/qpainter.h \
 		C:/Qt/6.5.0/mingw_64/include/QtCore/QTime \

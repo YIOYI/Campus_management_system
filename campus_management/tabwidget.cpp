@@ -19,6 +19,7 @@ TabWidget::TabWidget(QWidget *parent) :
 
 TabWidget::~TabWidget()
 {
+    qDebug()<<"退出";
     current_user->update_perevents();
     delete page3;
     delete page2;

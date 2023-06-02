@@ -15,7 +15,7 @@ Form1::Form1(QWidget *parent) :
 
     QStringList word_list;
 
-    for(int i=1;i<Building_Number;i++)
+    for(int i=36;i<87;i++)
         word_list<<m->Buildings_()[i].name_();
     QCompleter *MyInfor = new QCompleter(word_list);
     MyInfor->setFilterMode(Qt::MatchFlag::MatchContains);
