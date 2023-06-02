@@ -245,15 +245,13 @@ void Form3::AlarmTable_init()
     ui->AlarmTable->setFocusPolicy(Qt::NoFocus); //去掉选中单元格时的虚框
 
     model->setHorizontalHeaderLabels({"启用", "时间", "重复", "事件", "备注", "ID"});
-    ui->AlarmTable->setColumnWidth(0, 30);
-    ui->AlarmTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-    ui->AlarmTable->setColumnWidth(1, 60);
-    ui->AlarmTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+    ui->AlarmTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->AlarmTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->AlarmTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-    ui->AlarmTable->setColumnWidth(3, 75);
-    ui->AlarmTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
+    ui->AlarmTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     ui->AlarmTable->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->AlarmTable->hideColumn(5);
+    ui->AlarmTable->resizeRowsToContents();
     //ui->AlarmTable->setStyleSheet("#frame{border-image: url(:/picture/alarmtable_background.png)}");
 
     connect(model, &QStandardItemModel::itemChanged, this, &Form3::on_UseCheck_activated);
@@ -262,7 +260,16 @@ void Form3::AlarmTable_init()
     {
         int rowcount = ui->AlarmTable->model()->rowCount();
         if (single.event_tag != CLASS)
+        {
             AddAlarmRow(rowcount, single);
+        }
+        else
+        {
+            if ((single.alarm_event.start.hour()-single.alarm_hour) == 1)
+                if (single.alarm_week+1 == single.alarm_event.start.day())
+                    continue;
+            AddAlarmRow(rowcount, single);
+        }
     }
 
     //Ring(all_alarm[0]);
@@ -282,14 +289,22 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
 
 
     QComboBox* TimeCmb = new QComboBox();
-    TimeCmb->addItems({"0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00",
-                       "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"});
+    TimeCmb->addItems({"0:00  ", "1:00  ", "2:00  ", "3:00  ", "4:00  ", "5:00  ", "6:00  ", "7:00  ", "8:00  ", "9:00  ", "10:00  ", "11:00  ",
+                       "12:00  ", "13:00  ", "14:00  ", "15:00  ", "16:00  ", "17:00  ", "18:00  ", "19:00  ", "20:00  ", "21:00  ", "22:00  ", "23:00  "});
     TimeCmb->setCurrentIndex(single.alarm_hour);
     ui->AlarmTable->setIndexWidget(model->index(row, 1), TimeCmb);
 
     QComboBox* TagCmb;
     QComboBox* WeekCmb;
-    if (single.alarm_tag == WEEKLY)
+    if (single.event_tag == CLASS)
+    {
+        WeekCmb = new QComboBox();
+        WeekCmb->addItems({"星期一  ", "星期二  ", "星期三  ", "星期四  ", "星期五  ", "星期六  ", "星期天  "});
+        WeekCmb->setCurrentIndex(single.alarm_week);
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), WeekCmb);
+        connect(WeekCmb, &QComboBox::currentIndexChanged, this, &Form3::on_WeekCmb_activated);
+    }
+    else if (single.alarm_tag == WEEKLY)
     {
         WeekCmb = new QComboBox();
         WeekCmb->addItems({"星期一  ", "星期二  ", "星期三  ", "星期四  ", "星期五  ", "星期六  ", "星期天  ", "重置  "});
@@ -297,15 +312,7 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
         ui->AlarmTable->setIndexWidget(model->index(row, 2), WeekCmb);
         connect(WeekCmb, &QComboBox::currentIndexChanged, this, &Form3::on_WeekCmb_activated);
     }
-    else if (single.event_tag != TEMPORARY)
-    {
-        TagCmb = new QComboBox();
-        TagCmb->addItems({"只响一次  ", "每天一次  ", "每周一次  "});
-        TagCmb->setCurrentIndex(single.alarm_tag);
-        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
-        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
-    }
-    else
+    else if (single.event_tag == TEMPORARY)
     {
         TagCmb = new QComboBox();
         TagCmb->addItems({"只响一次  "});
@@ -313,9 +320,17 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
         ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
         connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
     }
+    else
+    {
+        TagCmb = new QComboBox();
+        TagCmb->addItems({"只响一次  ", "每天一次  ", "每周一次  "});
+        TagCmb->setCurrentIndex(single.alarm_tag);
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
+        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
+    }
 
     QComboBox* ThingCmb = new QComboBox();
-    ThingCmb->addItems({"课外活动", "临时事物", "无"});
+    ThingCmb->addItems({"课程  ", "课外活动  ", "临时事物  ", "无  "});
     ThingCmb->setCurrentIndex(single.event_tag);
     ui->AlarmTable->setIndexWidget(model->index(row, 3), ThingCmb);
 
@@ -323,7 +338,50 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
     set<QString> st;
     QStringList word_list;
     word_list << "您未选择事件或是选择的事件已改变,请重新选择";
-    if (single.event_tag == AFTERCLASS)
+    if (single.event_tag == CLASS)
+    {
+        ui->AlarmTable->setIndexWidget(model->index(row, 4), nullptr);
+
+        for (int i = 0; i < DAY; i ++)
+        {
+            for (int j = 0; j < HOURS; j ++)
+            {
+                for (int k = 0; k < (int)current_user->perEvents[i][j].size(); k ++)
+                {
+                    Event tmp = current_user->perEvents[i][j][k];
+                    QString time;
+                    if (tmp.Tag == 1 || tmp.Tag == 2)
+                    {
+                        time = alarm_to_format_QString(tmp);
+                        if (!st.count(time))
+                        {
+                            st.insert(time);
+                            word_list << time;
+                        }
+                    }
+                }
+            }
+        }
+        QComboBox* ClassCmb = new QComboBox();
+        ClassCmb->addItems(word_list);
+        if (st.count(single.tip))
+        {
+            ClassCmb->setCurrentText(single.tip);
+            for (auto it = all_alarm.begin(); it != all_alarm.end(); it ++)
+            {
+                if (it->tip == single.tip)
+                {
+                    it->IsUsed = false;
+                    break;
+                }
+            }
+        }
+        else
+            ClassCmb->setCurrentText("您未选择事件或是选择的事件已改变,请重新选择");
+        ui->AlarmTable->setIndexWidget(model->index(row, 4), ClassCmb);
+        connect(ClassCmb, &QComboBox::currentTextChanged, this, &Form3::on_ClassCmb_activated);
+    }
+    else if (single.event_tag == AFTERCLASS)
     {
         ui->AlarmTable->setIndexWidget(model->index(row, 4), nullptr);
 
@@ -409,9 +467,7 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
 //    if (single.event_tag == TEMPORARY)
 //        model->item(row, 2)->setSelectable(false);
 
-
     ui->AlarmTable->resizeRowsToContents();
-
     connect(model, &QStandardItemModel::itemChanged, this, &Form3::on_UseCheck_activated);
     connect(TimeCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TimeCmb_activated);
     connect(ThingCmb, &QComboBox::currentIndexChanged, this, &Form3::on_ThingCmb_activated);
@@ -527,7 +583,35 @@ void Form3::on_ThingCmb_activated (const int Index)
     set<QString> st;
     QStringList word_list;
     word_list << "您未选择事件或是选择的事件已改变,请重新选择";
-    if (Index == AFTERCLASS)
+    if (Index == CLASS)
+    {
+        ui->AlarmTable->setIndexWidget(model->index(row, 4), nullptr);
+        for (int i = 0; i < DAY; i ++)
+        {
+            for (int j = 0; j < HOURS; j ++)
+            {
+                for (int k = 0; k < (int)current_user->perEvents[i][j].size(); k ++)
+                {
+                    Event tmp = current_user->perEvents[i][j][k];
+                    QString time;
+                    if (tmp.Tag == 1 || tmp.Tag == 2)
+                    {
+                        time = alarm_to_format_QString(tmp);
+                        if (!st.count(time))
+                        {
+                            st.insert(time);
+                            word_list << time;
+                        }
+                    }
+                }
+            }
+        }
+        QComboBox* ClassCmb = new QComboBox();
+        ClassCmb->addItems(word_list);
+        ui->AlarmTable->setIndexWidget(model->index(row, 4), ClassCmb);
+        connect(ClassCmb, &QComboBox::currentTextChanged, this, &Form3::on_ClassCmb_activated);
+    }
+    else if (Index == AFTERCLASS)
     {
         ui->AlarmTable->setIndexWidget(model->index(row, 4), nullptr);
         for (int i = 0; i < DAY; i ++)
@@ -597,15 +681,7 @@ void Form3::on_ThingCmb_activated (const int Index)
         connect(NoneLineedit, &QLineEdit::textChanged, this, &Form3::NoneLineedit_textChanged);
     }
 
-    if (Index != TEMPORARY)
-    {
-        ui->AlarmTable->setIndexWidget(model->index(row, 2), nullptr);
-        QComboBox* TagCmb = new QComboBox();
-        TagCmb->addItems({"只响一次  ", "每天一次  ", "每周一次  "});
-        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
-        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
-    }
-    else if (Index == TEMPORARY)
+    if (Index == TEMPORARY)
     {
         ui->AlarmTable->setIndexWidget(model->index(row, 2), nullptr);
         QComboBox* TagCmb = new QComboBox();
@@ -613,6 +689,23 @@ void Form3::on_ThingCmb_activated (const int Index)
         ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
         connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
         all_alarm[alarm_index].alarm_tag = ONCE;
+    }
+    else if (Index == CLASS)
+    {
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), nullptr);
+        QComboBox*WeekCmb = new QComboBox();
+        WeekCmb->addItems({"星期一  ", "星期二  ", "星期三  ", "星期四  ", "星期五  ", "星期六  ", "星期天  "});
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), WeekCmb);
+        connect(WeekCmb, &QComboBox::currentIndexChanged, this, &Form3::on_WeekCmb_activated);
+        all_alarm[alarm_index].alarm_tag = WEEKLY;
+    }
+    else
+    {
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), nullptr);
+        QComboBox* TagCmb = new QComboBox();
+        TagCmb->addItems({"只响一次  ", "每天一次  ", "每周一次  "});
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
+        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
     }
 
 }
@@ -660,6 +753,30 @@ bool Form3::format_QString_to_Event(const QString &text, Event &tar)
 void Form3::on_TemporaryCmb_activated(const QString& text)
 {
     on_AfterclassCmb_activated(text);
+}
+
+void Form3::on_ClassCmb_activated(const QString& text)
+{
+    ui->AlarmTable->resizeRowsToContents();
+    if (text == "您未选择事件或是选择的事件已改变,请重新选择")
+        return;
+    QModelIndexList selectList = ui->AlarmTable->selectionModel()->selectedIndexes();
+    QModelIndex index = selectList.first();
+    int ID = model->item(index.row(), 5)->data().toInt();
+    for (auto it = all_alarm.begin(); it != all_alarm.end(); it ++)
+    {
+        if (it->tip == text)
+        {
+            it->IsUsed = false;
+            break;
+        }
+    }
+    int alarm_index = find_alarm_index(ID);
+
+    all_alarm[alarm_index].tip = text;
+
+    format_QString_to_Event(text, all_alarm[alarm_index].alarm_event);
+
 }
 
 void Form3::NoneLineedit_textChanged (const QString& text)
@@ -716,24 +833,11 @@ void Form3::detect_alarm ()
 
 void Form3::read_alarm_file (void)
 {
-    QFile alarm_offset_file("./information_file/perevent/" + QString::number(current_user->ID) + "_alarm_offset.txt");
-    if (!alarm_offset_file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qDebug() << "alarmoffset_file not open in write_alarm_file";
-        return;
-    }
-    QTextStream alarm_offset_in(&alarm_offset_file);
-
     int cnt = 0;
-
-    while (!alarm_offset_in.atEnd())
+    for (auto pQString : current_user->event_names)
     {
-        int offset = -1;
-        QString text;
-        alarm_offset_in >> offset >> text;
-        auto p = current_user->namequeue[text];
-
-        for (auto a : p)
+        auto p_arrayindex = current_user->namequeue[pQString];
+        for (auto a : p_arrayindex)
         {
             Event event_temp = current_user->perEvents[a.first_index][a.second_index][a.count-1];
             if (event_temp.Tag != 1 && event_temp.Tag != 2)
@@ -741,7 +845,7 @@ void Form3::read_alarm_file (void)
 
             Alarm alarm_temp;
             alarm_temp.alarm_event = event_temp;
-            alarm_temp.alarm_hour = event_temp.start.hour() + offset;
+            alarm_temp.alarm_hour = event_temp.start.hour() - 1;
             alarm_temp.alarm_tag = WEEKLY;
             alarm_temp.alarm_week = event_temp.start.day() - 1;
             alarm_temp.event_tag = CLASS;
@@ -754,7 +858,6 @@ void Form3::read_alarm_file (void)
             all_alarm.push_back(alarm_temp);
         }
     }
-    alarm_offset_file.close();
 
 
     QFile alarm_file("./information_file/perevent/" + QString::number(current_user->ID) + "_alarm.txt");
@@ -782,7 +885,6 @@ void Form3::read_alarm_file (void)
 
         if (alarm_temp.event_tag == NONE || format_QString_to_Event(alarm_temp.tip, alarm_temp.alarm_event))
         {
-
             cnt ++;
             all_alarm.push_back(alarm_temp);
         }
@@ -803,7 +905,10 @@ void Form3::write_alarm_file (void)
     for (auto single : all_alarm)
     {
         if (single.event_tag == CLASS)
-            continue;
+            if ((single.alarm_event.start.hour()-single.alarm_hour) == 1)
+                if (single.alarm_week+1 == single.alarm_event.start.day())
+                    continue;
+
         alarm_out << single.IsUsed << " ";
         alarm_out << single.alarm_hour << " ";
         alarm_out << single.alarm_week << " ";
@@ -829,10 +934,10 @@ void Form3::Ring (Alarm &single)
     audioOutput->setVolume(50);
     player->play();
 
-    vector<QString> tag_QString = {"课余活动", "临时活动", "", "课程"};
+    vector<QString> tag_QString = {"课程", "课余活动", "临时活动", ""};
     QString text;
     text += "现在的时间是" + QString::number(single.alarm_hour) + ":00\n";
-    text += tag_QString[single.alarm_tag] + " " + single.tip;
+    text += tag_QString[single.event_tag] + " " + single.tip;
 
 
     QMessageBox msgBox = QMessageBox(QMessageBox::Warning, "您有一个闹钟", text);

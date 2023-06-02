@@ -47,6 +47,7 @@ public:
     void on_TagCmb_activated (const int Index);
     void on_WeekCmb_activated (const int Index);
     void on_ThingCmb_activated (const int Index);
+    void on_ClassCmb_activated (const QString &text);
     void on_AfterclassCmb_activated (const QString &text);
     void on_TemporaryCmb_activated(const QString& text);
     void NoneLineedit_textChanged (const QString& text);
