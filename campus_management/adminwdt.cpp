@@ -578,6 +578,7 @@ void adminwdt::on_delete_Button_clicked()
         QMessageBox::information(this,
                                  tr("提示"), tr("删除成功"),
                                  QMessageBox::Ok , QMessageBox::Ok);
+        qDebug()<<"删除事件"<<tmp.name;
     }
 }
 
@@ -691,6 +692,7 @@ void adminwdt::on_change_Button_clicked()
             QMessageBox::information(this,
                                      tr("提示"), tr("修改成功"),
                                      QMessageBox::Ok , QMessageBox::Ok);
+            qDebug()<<"修改事件"<<tmp.name<<"为"<<now.name;
         }
         else
         {
@@ -751,6 +753,7 @@ void adminwdt::on_add_Button_clicked()
             QMessageBox::information(this,
                                      tr("提示"), tr("添加成功"),
                                      QMessageBox::Ok , QMessageBox::Ok);
+            qDebug()<<"添加事件"<<now.name;
         }
     }
 }

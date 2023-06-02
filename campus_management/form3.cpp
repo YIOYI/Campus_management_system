@@ -297,10 +297,18 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
         ui->AlarmTable->setIndexWidget(model->index(row, 2), WeekCmb);
         connect(WeekCmb, &QComboBox::currentIndexChanged, this, &Form3::on_WeekCmb_activated);
     }
-    else
+    else if (single.event_tag != TEMPORARY)
     {
         TagCmb = new QComboBox();
         TagCmb->addItems({"只响一次  ", "每天一次  ", "每周一次  "});
+        TagCmb->setCurrentIndex(single.alarm_tag);
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
+        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
+    }
+    else
+    {
+        TagCmb = new QComboBox();
+        TagCmb->addItems({"只响一次  "});
         TagCmb->setCurrentIndex(single.alarm_tag);
         ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
         connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
@@ -420,6 +428,7 @@ void Form3::on_pushButton_clicked()
     all_alarm.push_back(temp);
     //temp.event_tag = NONE;
     AddAlarmRow(rowcount, temp);
+//    qDebug()<<"添加在闹钟"
 }
 
 int Form3::find_alarm_index (int ID)
@@ -442,12 +451,12 @@ void Form3::on_UseCheck_activated (const QStandardItem* item)
 
     if (item->checkState() == Qt::Checked)
     {
-        qDebug() << "打开闹钟";
+        qDebug() << "打开为"<<all_alarm[alarm_index].tip<<"设置的闹钟";
         all_alarm[alarm_index].IsUsed = true;
     }
     else
     {
-        qDebug() << "关闭闹钟";
+        qDebug() << "关闭为"<<all_alarm[alarm_index].tip<<"设置的闹钟";
         all_alarm[alarm_index].IsUsed = false;
     }
 }
@@ -587,6 +596,25 @@ void Form3::on_ThingCmb_activated (const int Index)
         NoneLineedit->setPlaceholderText("在此输入闹钟备注");
         connect(NoneLineedit, &QLineEdit::textChanged, this, &Form3::NoneLineedit_textChanged);
     }
+
+    if (Index != TEMPORARY)
+    {
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), nullptr);
+        QComboBox* TagCmb = new QComboBox();
+        TagCmb->addItems({"只响一次  ", "每天一次  ", "每周一次  "});
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
+        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
+    }
+    else if (Index == TEMPORARY)
+    {
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), nullptr);
+        QComboBox* TagCmb = new QComboBox();
+        TagCmb->addItems({"只响一次  "});
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
+        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
+        all_alarm[alarm_index].alarm_tag = ONCE;
+    }
+
 }
 
 #include <sstream>
@@ -875,6 +903,9 @@ void Form3::on_deleteButton_clicked()
 
     int ID = model->item(row, 5)->data().toInt();
     int alarm_index = find_alarm_index(ID);
+    auto single = all_alarm.begin()+alarm_index;
+
+    qDebug()<<"删除为"<<single->tip<<"设置的闹钟";
     all_alarm.erase(all_alarm.begin()+alarm_index);
 
 
