@@ -54,7 +54,6 @@ public:
 private slots:
     void on_pushButton_clicked();
     void on_deleteButton_clicked();
-
 private:
     Person* current_user;  //目前正在登录的学生
     int previousColorRow;

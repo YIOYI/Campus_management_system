@@ -16,7 +16,6 @@ TabWidget::TabWidget(QWidget *parent) :
     connect(page3,&Form3::QUIT_form,this,&TabWidget::quit);
     connect(this,&TabWidget::currentChanged,page3,&Form3::show_log);
 
-
     setWindowTitle("学生事务管理系统");
     setStyleSheet(
         "QTabBar::tab{"

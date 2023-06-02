@@ -879,5 +879,3 @@ void Form3::show_log(int num)
 
 
 
-
-
