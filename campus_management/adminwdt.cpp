@@ -59,6 +59,8 @@ void adminwdt::show_percurriculum()
     ui->tableWidget->clearContents(); /*清空单元格内容*/
     int week=ui->select_week->currentIndex()+1; /*获取周数*/
 
+    qDebug()<<"课表刷新";
+
     for (int day = 0; day < DAY; day++)
     {
         for (int i = 0; i < HOURS; i++) /*遍历事件*/
@@ -114,7 +116,7 @@ void adminwdt::init_adminwdt(Person *a)
 
 bool adminwdt::add_event(Event & insert_event)
 {
-
+    qDebug()<<"add";
     QMessageBox msgBox;
 
     insert_event.ID.insert(insert_event.ID.end(),ID.begin(),ID.end());
@@ -631,20 +633,28 @@ Event adminwdt::handle_evevt (void)
         }
     }
 
-    QListWidget *ID_sel_listwdt = (QListWidget *) (ui->ID_sel_combo->view());
-
-
-    int nCount = ID_sel_listwdt->count();
-    for (int i = 0; i < nCount; ++i)
+    if (ret.Tag == 2 || ret.Tag == 3)
     {
-        QListWidgetItem *pItem = ID_sel_listwdt->item(i);
-        QWidget *pWidget = ID_sel_listwdt->itemWidget(pItem);
-        QCheckBox *pCheckBox = (QCheckBox *)pWidget;
-        if (pCheckBox->isChecked())
+        QListWidget *ID_sel_listwdt = (QListWidget *) (ui->ID_sel_combo->view());
+
+        int nCount = ID_sel_listwdt->count();
+        for (int i = 0; i < nCount; ++i)
         {
-            ret.ID.push_back(pItem->data(Qt::UserRole).toInt());
+            QListWidgetItem *pItem = ID_sel_listwdt->item(i);
+            QWidget *pWidget = ID_sel_listwdt->itemWidget(pItem);
+            QCheckBox *pCheckBox = (QCheckBox *)pWidget;
+            if (pCheckBox->isChecked())
+            {
+                ret.ID.push_back(pItem->data(Qt::UserRole).toInt());
+            }
         }
     }
+    else
+    {
+        for (int i = 0; i <= 9; i ++)
+            ret.ID.push_back(i+2021210);
+    }
+
 
     return ret;
 }
@@ -710,6 +720,20 @@ void adminwdt::on_add_Button_clicked()
     }
 
     Event now = handle_evevt();
+
+    if (now.name.endsWith("考试"))
+    {
+        QString name = now.name;
+        name.chop(2);
+        if (!current_user->namequeue.count(name))
+        {
+            QMessageBox::information(this,
+                                     tr("警告"), tr("当前考试信息的课程不存在，请输入正确的课程"),
+                                     QMessageBox::Ok , QMessageBox::Ok);
+            return;
+        }
+    }
+
     QString text = "您当前添加的事件如下:\n\n";
     text += Event_to_format_QString(now);
     text += "\n是否添加?";
@@ -736,4 +760,3 @@ void adminwdt::on_add_Button_clicked()
         }
     }
 }
-
