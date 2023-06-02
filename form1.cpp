@@ -67,6 +67,7 @@ void Form1::show_percurriculum()
     ui->tableWidget->clearContents(); /*清空单元格内容*/
     int week=ui->select_week->currentIndex()+1; /*获取周数*/
 
+
     for (int day = 0; day < DAY; day++)
     {
         for (int i = 0; i < HOURS; i++) /*遍历事件*/
@@ -209,7 +210,7 @@ void Form1::check_detial(int r, int c)
                 detail.append(QString::number(tempID)).append(" ");
                 num++;
                 if(num%3==0)
-                    detail.append("\n");
+                    detail.append("\n           ");
             }
         }
         ui->event_detial->setText(detail);
@@ -284,17 +285,17 @@ void Form1::FF_day()
 
 void Form1::set_week()
 {
-    if(ti->is_init()==1)
-    {
+    if(ui->cb_week->currentIndex()!=0)
     ti->time_set(ui->cb_week->currentIndex()+1,1,0);
     timeUpdate();
-    }
 }
 
 void Form1::skip_to_dialog(int r,int c)
 {
        insert_dialog.ui->lineEdit->clear();
        insert_dialog.ui->lineEdit_2->clear();
+       insert_dialog.ui->label_ID->clear();
+       ui->radioButton_event3->setChecked(true);
        insert_dialog.show();
        insert_dialog.row =r;
        insert_dialog.line=c;
@@ -315,6 +316,27 @@ void Form1::dialog_add_event(QAbstractButton* button)
         temp.start.day()=insert_dialog.line+1;
         temp.start.hour()=insert_dialog.row+6;
         temp.end.hour()=temp.start.hour()+1;
+
+        if(temp.name.isEmpty()||temp.building.name_().isEmpty())
+        {
+            msgBox.setWindowTitle("提示");
+            msgBox.setText("信息填写不能为空");
+            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            int ret = msgBox.exec();
+            if(ret == QMessageBox::Ok || ret == QMessageBox::Cancel)
+                return;
+        }
+        else if(m->findBuilding(temp.building.name_())==-1)
+        {
+            msgBox.setWindowTitle("提示");
+            msgBox.setText("请输入合法地址");
+            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            int ret = msgBox.exec();
+            if(ret == QMessageBox::Ok || ret == QMessageBox::Cancel)
+                return;
+        }
 
         if(insert_dialog.ui->comboBox->currentText()=="个人事务")
             temp.Tag=4;
@@ -339,7 +361,7 @@ void Form1::dialog_add_event(QAbstractButton* button)
                     tip+="在第";tip+=QString::number(temp_time.week);tip+="周\n";
                  }
 
-                tip+="周";tip+=QString::number(temp_time.day);
+                tip+=number_to_week(temp_time.day);
                 tip+="       ";
                 tip+=QString::number(temp_time.hour);tip+=":00 ~ ";tip+=QString::number(temp_time.hour+1);tip+=":00\n";
                 tip+="与其他事务发生冲突\n";
@@ -390,7 +412,9 @@ void Form1::dialog_add_event(QAbstractButton* button)
 
         if(judge)
         {
-
+            current_user->log.append("成功添加").append(temp.name).append("事务 ").append(number_to_week(temp.start.day())).append(" ").append(QString::number(temp.start.hour()))
+                          .append(":00 ~ ").append(QString::number(temp.start.hour()+1)).append(":00\n");;
+            qDebug()<<"成功添加"<<temp.name<<"事务";
             if(!isexist(temp))
             {
                 current_user->perEvents[insert_dialog.line][insert_dialog.row].push_back(temp);
@@ -465,6 +489,16 @@ void Form1::handle_event()
         if(ret == QMessageBox::Ok || ret == QMessageBox::Cancel)
             return;
     }
+    else if(m->findBuilding(ui->lineEdit_address->text())==-1)
+    {
+        msgBox.setWindowTitle("提示");
+        msgBox.setText("请输入合法地址");
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        int ret = msgBox.exec();
+        if(ret == QMessageBox::Ok || ret == QMessageBox::Cancel)
+            return;
+    }
 
     if(ui->checkBox_week1->isChecked())
         insert_event.weeks.push_back(1);
@@ -514,21 +548,19 @@ void Form1::handle_event()
     if(operate_tag == 1 && insert_event.periodicity!=0)
     {
         add_event(insert_event);
-        clear_frame2();
     }
 
     else if(operate_tag == 2 && insert_event.periodicity!=0)
     {
         revise_event(insert_event);
-        clear_frame2();
     }
 
     else if(operate_tag == 3)
     {
         delete_event(insert_event);
-        clear_frame2();
     }
-    ID.clear();
+
+    clear_frame2();
 }
 
 void Form1::add_event(Event & insert_event)
@@ -552,6 +584,9 @@ void Form1::add_event(Event & insert_event)
 
     if(temp_time.tag == 1)
     {
+        current_user->log.append("成功添加").append(insert_event.name).append("事务  ").append(number_to_week(insert_event.start.day())).append(" ").append(QString::number(insert_event.start.hour()))
+                          .append(":00 ~ ").append(QString::number(insert_event.start.hour()+1)).append(":00");
+            qDebug()<<"成功添加"<<insert_event.name<<"事务";
         if(!isexist(insert_event))
         {
             current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].push_back(insert_event);
@@ -634,7 +669,7 @@ void Form1::add_event(Event & insert_event)
         msgBox.setDefaultButton(QMessageBox::Ok);
         int ret = msgBox.exec();
         if(ret == QMessageBox::Ok)
-            return;
+            return ;
     }
 
 }
@@ -659,7 +694,7 @@ void Form1::delete_event(Event & insert_event)
 
     for(auto &a:current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6])
     {
-        if(a.name == insert_event.name && a.Tag == insert_event.Tag&&a.building.name_()==insert_event.building.name_())
+        if(a.name == insert_event.name && a.Tag == insert_event.Tag&&a.building.name_()==insert_event.building.name_())//找到匹配的事件
         {
             if(a.Tag==3&&a.ID[0]!=current_user->ID)
             {
@@ -699,6 +734,9 @@ void Form1::delete_event(Event & insert_event)
                 current_user->deletename(insert_event.name);
             }
 
+            current_user->log.append("成功删除").append(insert_event.name).append("事务").append(number_to_week(insert_event.start.day())).append(" ").append(QString::number(insert_event.start.hour()))
+                          .append(":00 ~ ").append(QString::number(insert_event.start.hour()+1)).append(":00\n");;
+            qDebug()<<"成功删除"<<insert_event.name<<"事务";
             current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].erase(current_user->perEvents[insert_event.start.day()-1][insert_event.start.hour()-6].begin()+count);
 
 
@@ -732,6 +770,9 @@ void Form1::clear_frame2()
     ui->comboBox_day->setCurrentIndex(0);
     ui->comboBox_start_time->setCurrentIndex(0);
     ui->comboBox_end_time->setCurrentIndex(1);
+    ui->label_ID->clear();
+    ID.clear();
+    positioning_tag=0;
 
     ui->checkBox_week1->setChecked(false);
     ui->checkBox_week2->setChecked(false);
@@ -750,9 +791,9 @@ void Form1::clear_frame2()
     ui->checkBox_week15->setChecked(false);
     ui->checkBox_week16->setChecked(false);
 
-    ui->radioButton_add->setChecked(true);
-    ui->radioButton_delete->setChecked(true);
-    ui->radioButton_revise->setChecked(false);
+    ui->radioButton_add->setCheckable(true);
+    ui->radioButton_delete->setCheckable(true);
+    ui->radioButton_revise->setCheckable(false);
     ui->radioButton_add->setChecked(true);
     ui->radioButton_delete->setChecked(false);
     ui->radioButton_revise->setChecked(false);
@@ -801,7 +842,6 @@ void Form1::doubleclick_set(int r,int c)
         ui->lineEdit_address->setText(set_event.building.name_());
         ui->comboBox_day->setCurrentIndex(set_event.start.day()-1);
         ui->comboBox_start_time->setCurrentIndex(set_event.start.hour()-6);
-        //ui->comboBox_end_time->setCurrentIndex(set_event.end.hour()-7);
 
         for(auto tempweek :set_event.weeks)
         {
@@ -847,6 +887,8 @@ bool Form1::isexist(Event &a)
                 if(alreadyin == false)
                     p.weeks.push_back(week_insert);
             }
+
+            sort(p.weeks.begin(),p.weeks.end());
             return 1;
         }
     }
@@ -889,6 +931,7 @@ void Form1::seek_position()
             positioning_tag =1;
             event_position.count = count;
             ui->radioButton_revise->setCheckable(true);
+            ui->radioButton_revise->setChecked(true);
             ui->radioButton_add->setCheckable(false);
             ui->radioButton_delete->setCheckable(false);
             msgBox.setWindowTitle("提示");

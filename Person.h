@@ -18,8 +18,6 @@
 #define WEEKS 16
 //#include "Building.h"
 
-enum {STUDENT, ADMIN};
-
 using namespace std;
 
 struct arrayindex  //储存perevent下标，用于map第二个参数
@@ -27,10 +25,6 @@ struct arrayindex  //储存perevent下标，用于map第二个参数
     int first_index;//天-1
     int second_index;//小时-6
     int count; //自动计数器,分每个value,注意每次获取下标要-1
-    bool operator== (const arrayindex &rhs)
-    {
-        return this->first_index==rhs.first_index && this->second_index==rhs.second_index && this->count==rhs.count;
-    }
 };
 
 struct seektime //储存时间,用于iscollision函数返回值
@@ -67,11 +61,6 @@ public:
     */
     void get_perevents();
 
-    /**
-     * @brief 从大课表中中读出管理员的所有事件,储存在vector<Event> perEvents[DAY][HOURS]
-    */
-    void get_admin_perevents();
-
 	/**
 	 * @brief 更新个人事务、临时事务表和集体活动的文件，选修必修课不能被学生增加修改
 	*/
@@ -104,13 +93,10 @@ public:
     void inputlog(QString a){log.append(a);};//输入学生消息通知
     void deletename(QString a);
 
-    unsigned Tag;
-
 	friend class Students;
     friend class Form1;
     friend class Form2;
     friend class Form3;
-    friend class adminwdt;
 
 private:
     QString name;
@@ -126,8 +112,8 @@ private:
     unordered_set<int> perevents_time_set;     //判断该时间是否有事件以及事件在perevents中的位置
     vector<QString> event_names;
 
-
-	Building position;			            //学生当前位置
+	/*Building position;	*/			            //学生当前位置
+    unsigned Tag;
     enum {STUDENT, ADMIN};
 
     /*暂时用来储存其他学生的信息*/
@@ -166,5 +152,4 @@ private:
     unordered_map<int, int>  ID_index;     // 通过学生ID查找在students数组的下标
 	vector<Person> students;               // Students类的私有成员变量，储存所有学生id、name、password
 };
-
 #endif 

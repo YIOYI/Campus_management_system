@@ -19,7 +19,11 @@ class Form_events;
 }
 
 
-
+struct position{
+    int first_index;
+    int second_index;
+    int count;
+};
 
 class Form1 : public QWidget
 {
@@ -59,9 +63,8 @@ public slots:
     void set_week();
 
 private:
-
     Map *m;      //地图数据
-    arrayindex event_position;
+    position event_position;
     int positioning_tag;
     vector<int> ID;
     QString label_ID;
