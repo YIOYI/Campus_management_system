@@ -54,6 +54,7 @@ public:
     void Ring (Alarm &single);
     QString alarm_to_format_QString(Event &temp);
     bool format_QString_to_Event(const QString &text, Event &tar);
+    void keysearch();//关键字搜索
 
     void detect_alarm ();
     void read_alarm_file (void);

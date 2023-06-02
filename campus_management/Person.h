@@ -103,6 +103,7 @@ public:
     vector<QString> &getevent_name(){return event_names;};
     void inputlog(QString a){log.append(a);};//输入学生消息通知
     void deletename(QString a);
+    void init_allcollective_event_set(vector<int> a);
 
     unsigned Tag;
 
@@ -120,7 +121,7 @@ private:
 
     vector<Event> perEvents[DAY][HOURS];//储存单个学生的所有事件,第一个下标为事件day-1，第二个为事件开始时间-6
 
-    vector<Event> othercollective;
+    vector<Event> othercollective;//不属于该学生的事件，包括集体事务以及选修课
 
     unordered_map<QString, vector<arrayindex>> namequeue;           //通过事件名字可以找到该事件序号
     unordered_set<int> perevents_time_set;     //判断该时间是否有事件以及事件在perevents中的位置

@@ -851,6 +851,24 @@ background-color: rgb(255, 255, 255);
      </property>
     </item>
    </widget>
+   <widget class="QPushButton" name="bt_guide_2">
+    <property name="geometry">
+     <rect>
+      <x>1150</x>
+      <y>180</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/picture/guide.png);
+background-color: rgba(255, 255, 255, 0);
+font: 16pt &quot;Microsoft YaHei UI&quot;;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <zorder>frame_back</zorder>
   <zorder>search_tar</zorder>
