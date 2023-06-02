@@ -10,17 +10,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("登录界面");
-    tabwidget = new TabWidget;
     current_user = new Person;
+    setWindowTitle("登录界面");
     connect(ui->log_on,&QPushButton::clicked,this,&MainWindow::detect_input_code);
     connect(ui->select_ID,&QComboBox::currentIndexChanged,this,&MainWindow::select_change);
-    connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
 }
 
 MainWindow::~MainWindow()
 {
     delete tabwidget;
+    delete current_user;
     delete ui;
 }
 
@@ -35,16 +34,29 @@ void MainWindow::detect_input_code()
     int currentID = (ui->select_ID->currentText()).toInt();
     int index = All_students_information.getindex(currentID);
     int rightcode = All_students_information.students_information()[index].getpassword();
-    qDebug()<<rightcode;
-    qDebug()<<(ui->code_lineedit->text()).toInt();
     if(rightcode==(ui->code_lineedit->text()).toInt())
     {
         log_need_to_used_user_id=currentID;
-        qDebug()<<"用户"<<log_need_to_used_user_id<<"登录";
         current_user->getID() = currentID;
         current_user->getpassword() = rightcode;
         current_user->getname() = All_students_information.students_information()[index].getname();
+
+        QString log_on;
+        log_on.append(current_user->getname()).append("登录学生管理系统成功\n");
+        current_user->inputlog(log_on);
+
         current_user->get_perevents();
+        current_user->Tag = STUDENT;
+        logon_to_main();
+    }
+    else if (ui->select_ID->currentText() == "88888888" && ui->code_lineedit->text() == "88888888")
+    {
+        log_need_to_used_user_id=88888888;
+        current_user->getID() = 88888888;
+        current_user->getpassword() = 88888888;
+        current_user->getname() = "管理员";
+        current_user->get_admin_perevents();
+        current_user->Tag = ADMIN;
         logon_to_main();
 
     }
@@ -52,12 +64,14 @@ void MainWindow::detect_input_code()
         ui->label_wrong->setText("账号或者密码错误");
 }
 
-
- void MainWindow::logon_to_main()
+void MainWindow::logon_to_main()
 {
+    tabwidget = new TabWidget;
+    connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
     _Time *ti=new _Time;
     ti->get_last_time();
     tabwidget->init(current_user,ti);
+    qDebug()<<"登录";
     this->hide();//关闭登录界面
  }
 
@@ -73,24 +87,9 @@ void MainWindow::select_change()
 
 void MainWindow::clean()
 {
-    qDebug()<<"重新登录";
     tabwidget->close();
     delete tabwidget;
     delete current_user;
-    tabwidget = new TabWidget;
     current_user = new Person;
-    connect(tabwidget,&TabWidget::quit_tabwidget,this,&MainWindow::clean);
     this->show();
 }
-
-
-
-
-
-
-
-
-
-
-
-

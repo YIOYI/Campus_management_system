@@ -30,11 +30,11 @@ public slots:
     void FF_hour();
     void FF_day();
     void set_week();
-
 public:
+    _Time *ti;
     explicit Form3(QWidget *parent = nullptr);
     ~Form3();
-    void init_form3(Person *,_Time *t);
+    void init_form3(Person *,_Time *ti);
     void search();
     void mycellenter(int row, int column);
     void search_outcome(int row,int column);
@@ -58,15 +58,13 @@ public:
     void detect_alarm ();
     void read_alarm_file (void);
     void write_alarm_file (void);
+    void show_log(int);//显示学生消息通知
+    void show_one_day_event();//展示当天所有事务
 
 private slots:
     void on_pushButton_clicked();
-
     void on_deleteButton_clicked();
-
-
 private:
-    _Time *ti;
     Person* current_user;  //目前正在登录的学生
     int previousColorRow;
     vector<QString> search_select;/*与搜索匹配的事件名称*/

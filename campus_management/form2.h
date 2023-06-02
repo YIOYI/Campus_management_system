@@ -17,7 +17,6 @@
 #include <QWheelEvent>
 #include <QTimer>
 #include <QScrollBar>
-#include <QAbstractItemView>
 #include"Person.h"
 #include"Event.h"
 

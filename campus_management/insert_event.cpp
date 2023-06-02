@@ -20,7 +20,6 @@ Dialog::~Dialog()
 void Dialog::insert_ID()
 {
     int buffer_ID = ui->comboBox_ID->currentText().toInt();
-    qDebug()<<buffer_ID<<current_ID;
     if(buffer_ID==current_ID)
         return;
     else

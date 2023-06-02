@@ -17,6 +17,7 @@ SOURCES += \
     Person.cpp \
     ShortestPath.cpp \
     _Time.cpp \
+    adminwdt.cpp \
     form1.cpp \
     form2.cpp \
     form3.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     Event.h \
     Person.h \
     _Time.h \
+    adminwdt.h \
     form1.h \
     form2.h \
     form3.h \
@@ -42,6 +44,7 @@ HEADERS += \
     timepause.h
 
 FORMS += \
+    adminwdt.ui \
     form1.ui \
     form2.ui \
     form3.ui \

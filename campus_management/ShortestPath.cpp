@@ -33,16 +33,12 @@ vector<pair<int, int>> Building::Dijkstra(Map& mp)
 	ret[0] = { id,0 };
 	ret[id] = { id,0 };
 	dist[id] = 0;
-    for (auto a : mp.Get_i_Building(id).Roads)
-    {
-        path.push_back(make_pair(a, mp.Get_i_Building(id).distance[a]));
-        ret[a] = {id, mp.Get_i_Building(id).distance[a]};
-        dist[a] = mp.Get_i_Building(id).distance[a];
-    }
-//	partial_sort(path.begin(), path.begin() + 1, path.end(), cmp1);
-//	auto tmp = path.front();
-//	ret[tmp.first] = { id, tmp.second };
-//	dist[tmp.first] = tmp.second;
+	for (auto a : mp.Get_i_Building(id).Roads)
+		path.push_back(make_pair(a, mp.Get_i_Building(id).distance[a]));
+	partial_sort(path.begin(), path.begin() + 1, path.end(), cmp1);
+	auto tmp = path.front();
+	ret[tmp.first] = { id, tmp.second };
+	dist[tmp.first] = tmp.second;
 	
 
 	while (!path.empty())
@@ -132,7 +128,7 @@ void Reproduce(vector<pair<vector<int>, int>>& race, unordered_map<pair<int, int
  * @param second 第二个路径
  * @return 交叉完毕的路径
 */
-vector<int> Cross(vector<int> first, vector<int> second);
+vector<int> Cross(vector<int>& first, vector<int>& second);
 
 /**
  * @brief 变异操作，将数组内随即一对建筑兑换
@@ -147,7 +143,7 @@ bool cmp2(pair<vector<int>, int>& lhs, pair<vector<int>, int>& rhs)
 }
 
 static int count1 = 0;
-constexpr int time1 = 100;
+constexpr int time1 = 50;
 
 deque<int> Building::ShortestPath(vector<int> point, Map& mp)
 {
@@ -163,12 +159,12 @@ deque<int> Building::ShortestPath(vector<int> point, Map& mp)
 
 	count1 = 0;
 	int min_score = INT_MAX;
-	constexpr int size = 10000;
+    constexpr int size = 100;
 	vector<pair<decltype(point), int>> race;
 	race.push_back({ point, Calculate_Score(point, dists) });
 
 	srand((unsigned)time(NULL));
-	while (race.size() < size/2)
+	while (race.size() < size)
 	{
 		vector<int> tmp(point.begin() + 1, point.end() - 1);
 		vector<int> newind;
@@ -187,9 +183,9 @@ deque<int> Building::ShortestPath(vector<int> point, Map& mp)
 	while (count1 <= time1)
 	{
 		Reproduce(race, dists, size);
-		auto mid = race.begin() + race.size() / 2;
+		/*auto mid = race.begin() + race.size() / 2;
 		partial_sort(race.begin(), mid, race.end(), cmp2);
-		race.erase(mid, race.end());
+		race.erase(mid, race.end());*/
 		if (race[0].second < min_score)
 		{
 			min_score = race[0].second;
@@ -225,7 +221,7 @@ int Calculate_Score(vector<int> road, unordered_map<pair<int, int>, int, pair_ha
 
 void Reproduce(vector<pair<vector<int>, int>>& race, unordered_map<pair<int, int>, int, pair_hash>& dists, const int size)
 {
-	srand((unsigned)time(NULL));
+	/*srand((unsigned)time(NULL));
 
 	for (int i = 0; i < size/4; i++)
 	{
@@ -243,7 +239,32 @@ void Reproduce(vector<pair<vector<int>, int>>& race, unordered_map<pair<int, int
 			for (int i = 0; i < a; i++)
 				newind = Mutations(newind);
 			race.push_back({ newind, Calculate_Score(newind, dists) });
+	}*/
+
+	vector<pair<vector<int>, int>> newrace;
+	for (int i = 0; i < 6; i++)
+		newrace.push_back(race[0]);
+	for (int i = 0; i < size-6; i++)
+	{
+		newrace.push_back(race[i / 2]);
 	}
+	race = newrace;
+	std::random_shuffle(race.begin(), race.end());
+
+	for (int i = 0; i < size; i += 2)
+	{
+		Cross(race[i].first, race[i + 1].first);
+		race[i].second = Calculate_Score(race[i].first, dists);
+		race[i+1].second = Calculate_Score(race[i+1].first, dists);
+	}
+	for (int i = 0; i < size*0.05; i++)
+	{
+		int sel = rand() % race.size();
+		race[sel].first = Mutations(race[sel].first);
+		race[sel].second = Calculate_Score(race[sel].first, dists);
+	}
+	sort(race.begin(), race.end(), cmp2);
+
 }
 
 vector<int> Mutations(vector<int> individual)
@@ -258,7 +279,7 @@ vector<int> Mutations(vector<int> individual)
 	return ret;
 }
 
-vector<int> Cross(vector<int> first, vector<int> second)
+vector<int> Cross(vector<int>& first, vector<int>& second)
 {
 	vector<int> father(first.begin() + 1, first.end() - 1);
 	vector<int> mather(second.begin() + 1, second.end() - 1);
@@ -288,6 +309,13 @@ vector<int> Cross(vector<int> first, vector<int> second)
 	ret.push_back(first[0]);
 	ret.insert(ret.end(), father.begin(), father.end());
 	ret.push_back(first[0]);
+	first = ret;
+
+	vector<int> ret_2;
+	ret_2.push_back(first[0]);
+	ret_2.insert(ret_2.end(), mather.begin(), mather.end());
+	ret_2.push_back(first[0]);
+	second = ret_2;
 
 	return ret;
 }

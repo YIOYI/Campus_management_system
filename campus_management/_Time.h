@@ -1,6 +1,5 @@
 #ifndef __TIME_H_
 #define __TIME_H_
-#include "qobjectdefs.h"
 #include <QObject>
 #include <QString>
 #include <iostream>

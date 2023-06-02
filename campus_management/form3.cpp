@@ -11,8 +11,8 @@ Form3::Form3(QWidget *parent) :
 {
     ui->setupUi(this);
     QImage img (":/picture/mkim1.png");
-    //img = (img.scaled(0.5*img->width(),0.5*img->height(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
     ui->label->setPixmap(QPixmap::fromImage(img));
+    current_user = nullptr;
 
     QAction * searchAction = new QAction(ui->lineEdit);
     searchAction->setIcon(QIcon(":/picture/search.png"));
@@ -22,16 +22,9 @@ Form3::Form3(QWidget *parent) :
     ui->tableWidget_search->verticalHeader()->setVisible(false);
     ui->tableWidget_search->setShowGrid(false);
     ui->tableWidget_search->setMouseTracking(true);
+
     QHeaderView* header = ui->tableWidget_outcome->horizontalHeader();
     header->setStyleSheet("QHeaderView::section{background-color:rgba(225, 74, 28,100);}");
-
-    //ui->tableWidget_outcome->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    //ui->tableWidget_outcome->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
-    //ui->tableWidget_outcome->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
-
-    //ui->alarmTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    //ui->alarmTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
-    //ui->alarmTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
 
     connect(ui->lineEdit,&QLineEdit::textChanged,this,&Form3::search);//搜索框内容改变时重新搜索
     connect(ui->tableWidget_search,&QTableWidget::cellEntered,this,&Form3::mycellenter);
@@ -52,7 +45,7 @@ Form3::~Form3()
     delete ui;
 }
 
-void Form3::init_form3(Person *a,_Time *t)
+void Form3::init_form3(Person *a,_Time*t)
 {
     ti=t;
     current_user =a;
@@ -64,7 +57,9 @@ void Form3::init_form3(Person *a,_Time *t)
     QImage image(address);
     ui->label_image->setPixmap(QPixmap::fromImage(image));
     ui->tableWidget_search->hide();
+    show_one_day_event();
 
+    ui->label_log->setText(current_user->log);
     read_alarm_file();
     AlarmTable_init();
 }
@@ -74,7 +69,6 @@ void Form3::search()
     const QString text = ui->lineEdit->text();
     search_select.clear();
 
-    QString temp;
     if(text.isEmpty())
     {
         ui->tableWidget_search->hide();
@@ -93,7 +87,7 @@ void Form3::search()
     ui->tableWidget_search->setColumnCount(1);
 
 
-    for(int row=1;row < search_select.size()+1;row++)
+    for(int row=1;row < (int)search_select.size()+1;row++)
     {
         QString out =QString::number(row);
         if(row<10)
@@ -142,37 +136,44 @@ void Form3::search_outcome(int row,int column)
     ui->tableWidget_outcome->setRowCount(p.size());
     QString foundation_information;
     foundation_information += search_select[row-1];
-    foundation_information += "---";
-    int tag =(current_user->perEvents)[p[0].first_index][p[0].second_index][p[0].count-1].Tag;
-    switch (tag)
-    {
-        case 1:foundation_information +="必修课";break;
-        case 2:foundation_information +="选修课";break;
-        case 3:foundation_information +="集体事务";break;
-        case 4:foundation_information +="个人事务";break;
-        case 5:foundation_information +="临时事务";break;
-    }
 
     ui->label_foundation->setText(foundation_information);
 
     for(auto a:p)
     {
+        QString type;
         QString time;
         QString week;
         QString address;
-        time+="周";
-        time += QString::number((current_user->perEvents)[a.first_index][a.second_index][a.count-1].start.day());
+        QString tip;
+        int tag = current_user->perEvents[a.first_index][a.second_index][a.count-1].Tag;
+
+        switch (tag)
+        {
+        case 1:if(current_user->perEvents[a.first_index][a.second_index][a.count-1].name.endsWith("考试"))
+                type.append("必修课考试");
+            else
+                type.append("必修课");
+            break;
+        case 2:if(current_user->perEvents[a.first_index][a.second_index][a.count-1].name.endsWith("考试"))
+                type.append("选修课考试");
+            else
+                type.append("选修课");
+            break;
+        case 3:type.append("集体事务");break;
+        case 4:type.append("个人事务");break;
+        case 5:type.append("临时事务");break;
+        }
+
+        time += number_to_week((current_user->perEvents)[a.first_index][a.second_index][a.count-1].start.day());
         time+=" ";
         time+=QString::number((current_user->perEvents)[a.first_index][a.second_index][a.count-1].start.hour());
         time+=":00~";
         time+=QString::number(((current_user->perEvents)[a.first_index][a.second_index][a.count-1].end.hour()));
         time+=":00";
-        ui->tableWidget_outcome->setItem(line,0,new QTableWidgetItem(time));
 
-        if(tag==1 || tag ==2)
-        {
+        if((tag==1 || tag ==2)&&!(current_user->perEvents)[a.first_index][a.second_index][a.count-1].name.endsWith("考试"))
             week+="每周都有";
-        }
         else
         {
             for(auto tempweek:(current_user->perEvents)[a.first_index][a.second_index][a.count-1].weeks)
@@ -181,8 +182,34 @@ void Form3::search_outcome(int row,int column)
                 week+=" ";
             }
         }
-        ui->tableWidget_outcome->setItem(line,1,new QTableWidgetItem(week));
+
+        address = current_user->perEvents[a.first_index][a.second_index][a.count-1].building.name_();
+
+        if(tag ==1||tag ==2)
+        {
+            QString exam_name = current_user->perEvents[a.first_index][a.second_index][a.count-1].name +"考试";
+            if(current_user->namequeue.find(exam_name)!=current_user->namequeue.end())
+                tip.append("已发布考试");
+        }
+        else if(tag == 3)
+        {
+            tip.append("参加学生：");
+            for(auto tempID:current_user->perEvents[a.first_index][a.second_index][a.count-1].ID)
+            {
+                tip.append(QString::number(tempID)).append(" ");
+            }
+        }
+
+        ui->tableWidget_outcome->setItem(line,0,new QTableWidgetItem(type));
+        ui->tableWidget_outcome->item(line,0)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+        ui->tableWidget_outcome->setItem(line,1,new QTableWidgetItem(time));
         ui->tableWidget_outcome->item(line,1)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+        ui->tableWidget_outcome->setItem(line,2,new QTableWidgetItem(week));
+        ui->tableWidget_outcome->item(line,2)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+        ui->tableWidget_outcome->setItem(line,3,new QTableWidgetItem(address));
+        ui->tableWidget_outcome->item(line,3)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+        ui->tableWidget_outcome->setItem(line,4,new QTableWidgetItem(tip));
+        ui->tableWidget_outcome->item(line,4)->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
         line++;
     }
 }
@@ -205,6 +232,7 @@ void Form3::correct()
         return;
 
 }
+
 #include <QComboBox>
 #include <QCheckBox>
 #include <QTreeView>
@@ -226,6 +254,7 @@ void Form3::AlarmTable_init()
     ui->AlarmTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
     ui->AlarmTable->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     ui->AlarmTable->hideColumn(5);
+    //ui->AlarmTable->setStyleSheet("#frame{border-image: url(:/picture/alarmtable_background.png)}");
 
     connect(model, &QStandardItemModel::itemChanged, this, &Form3::on_UseCheck_activated);
 
@@ -236,13 +265,11 @@ void Form3::AlarmTable_init()
             AddAlarmRow(rowcount, single);
     }
 
-    ti->time_continue();
     //Ring(all_alarm[0]);
 }
 
 void Form3::AddAlarmRow (const int row, Alarm& single)
-{ 
-    ti->time_suspend();
+{
     disconnect(model, &QStandardItemModel::itemChanged, this, &Form3::on_UseCheck_activated);
     QStandardItem *UseCheck = new QStandardItem();
     UseCheck->setFlags(UseCheck->flags() | Qt::ItemIsUserCheckable);
@@ -270,10 +297,18 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
         ui->AlarmTable->setIndexWidget(model->index(row, 2), WeekCmb);
         connect(WeekCmb, &QComboBox::currentIndexChanged, this, &Form3::on_WeekCmb_activated);
     }
-    else
+    else if (single.event_tag != TEMPORARY)
     {
         TagCmb = new QComboBox();
         TagCmb->addItems({"只响一次  ", "每天一次  ", "每周一次  "});
+        TagCmb->setCurrentIndex(single.alarm_tag);
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
+        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
+    }
+    else
+    {
+        TagCmb = new QComboBox();
+        TagCmb->addItems({"只响一次  "});
         TagCmb->setCurrentIndex(single.alarm_tag);
         ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
         connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
@@ -296,7 +331,7 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
         {
             for (int j = 0; j < HOURS; j ++)
             {
-                for (int k = 0; k < current_user->perEvents[i][j].size(); k ++)
+                for (int k = 0; k < (int)current_user->perEvents[i][j].size(); k ++)
                 {
                     Event tmp = current_user->perEvents[i][j][k];
                     QString time;
@@ -330,7 +365,7 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
         {
             for (int j = 0; j < HOURS; j ++)
             {
-                for (int k = 0; k < current_user->perEvents[i][j].size(); k ++)
+                for (int k = 0; k < (int)current_user->perEvents[i][j].size(); k ++)
                 {
                     Event tmp = current_user->perEvents[i][j][k];
                     QString time;
@@ -384,9 +419,7 @@ void Form3::AddAlarmRow (const int row, Alarm& single)
 
 void Form3::on_pushButton_clicked()
 {
-    qDebug() << "开始添加";
     int rowcount = ui->AlarmTable->model()->rowCount();
-    qDebug() << "添加第" << rowcount << "行";
     Alarm temp;
     if (all_alarm.size())
         temp.index = all_alarm[all_alarm.size()-1].index + 1;
@@ -395,12 +428,13 @@ void Form3::on_pushButton_clicked()
     all_alarm.push_back(temp);
     //temp.event_tag = NONE;
     AddAlarmRow(rowcount, temp);
+//    qDebug()<<"添加在闹钟"
 }
 
 int Form3::find_alarm_index (int ID)
 {
     int i = 0;
-    for ( ; i < all_alarm.size(); i ++)
+    for ( ; i < (int)all_alarm.size(); i ++)
     {
         if (all_alarm[i].index == ID)
             break;
@@ -417,19 +451,18 @@ void Form3::on_UseCheck_activated (const QStandardItem* item)
 
     if (item->checkState() == Qt::Checked)
     {
-        qDebug() << "Checked";
+        qDebug() << "打开为"<<all_alarm[alarm_index].tip<<"设置的闹钟";
         all_alarm[alarm_index].IsUsed = true;
     }
     else
     {
-        qDebug() << "UnChecked";
+        qDebug() << "关闭为"<<all_alarm[alarm_index].tip<<"设置的闹钟";
         all_alarm[alarm_index].IsUsed = false;
     }
 }
 
 void Form3::on_TimeCmb_activated (const int Index)
 {
-    qDebug() << "Index为" <<  Index;
     QModelIndexList selectList = ui->AlarmTable->selectionModel()->selectedIndexes();
     QModelIndex index = selectList.first();
     int ID = model->item(index.row(), 5)->data().toInt();
@@ -443,7 +476,6 @@ void Form3::on_TagCmb_activated (const int Index)
     QModelIndex index = selectList.first();
     int row = index.row();
     int ID = model->item(index.row(), 5)->data().toInt();
-    qDebug() << ID;
     int alarm_index = find_alarm_index(ID);
     all_alarm[alarm_index].alarm_tag = Index;
 
@@ -502,7 +534,7 @@ void Form3::on_ThingCmb_activated (const int Index)
         {
             for (int j = 0; j < HOURS; j ++)
             {
-                for (int k = 0; k < current_user->perEvents[i][j].size(); k ++)
+                for (int k = 0; k < (int)current_user->perEvents[i][j].size(); k ++)
                 {
                     Event tmp = current_user->perEvents[i][j][k];
                     QString time;
@@ -532,7 +564,7 @@ void Form3::on_ThingCmb_activated (const int Index)
         {
             for (int j = 0; j < HOURS; j ++)
             {
-                for (int k = 0; k < current_user->perEvents[i][j].size(); k ++)
+                for (int k = 0; k < (int)current_user->perEvents[i][j].size(); k ++)
                 {
                     Event tmp = current_user->perEvents[i][j][k];
                     QString time;
@@ -564,6 +596,25 @@ void Form3::on_ThingCmb_activated (const int Index)
         NoneLineedit->setPlaceholderText("在此输入闹钟备注");
         connect(NoneLineedit, &QLineEdit::textChanged, this, &Form3::NoneLineedit_textChanged);
     }
+
+    if (Index != TEMPORARY)
+    {
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), nullptr);
+        QComboBox* TagCmb = new QComboBox();
+        TagCmb->addItems({"只响一次  ", "每天一次  ", "每周一次  "});
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
+        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
+    }
+    else if (Index == TEMPORARY)
+    {
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), nullptr);
+        QComboBox* TagCmb = new QComboBox();
+        TagCmb->addItems({"只响一次  "});
+        ui->AlarmTable->setIndexWidget(model->index(row, 2), TagCmb);
+        connect(TagCmb, &QComboBox::currentIndexChanged, this, &Form3::on_TagCmb_activated);
+        all_alarm[alarm_index].alarm_tag = ONCE;
+    }
+
 }
 
 #include <sstream>
@@ -571,7 +622,6 @@ void Form3::on_ThingCmb_activated (const int Index)
 void Form3::on_AfterclassCmb_activated(const QString& text)
 {
     ui->AlarmTable->resizeRowsToContents();
-    qDebug() << text;
     if (text == "您未选择事件或是选择的事件已改变,请重新选择")
         return;
     QModelIndexList selectList = ui->AlarmTable->selectionModel()->selectedIndexes();
@@ -590,7 +640,6 @@ bool Form3::format_QString_to_Event(const QString &text, Event &tar)
     string event_name_temp;
     in >> event_name_temp;
     QString event_name = QString::fromStdString(event_name_temp);
-    qDebug() << event_name;
     auto p = current_user->namequeue[event_name];
 
     for (auto a : p)
@@ -664,6 +713,7 @@ void Form3::detect_alarm ()
     prev = now;
 }
 
+
 void Form3::read_alarm_file (void)
 {
     QFile alarm_offset_file("./information_file/perevent/" + QString::number(current_user->ID) + "_alarm_offset.txt");
@@ -681,7 +731,6 @@ void Form3::read_alarm_file (void)
         int offset = -1;
         QString text;
         alarm_offset_in >> offset >> text;
-        qDebug() << offset << text;
         auto p = current_user->namequeue[text];
 
         for (auto a : p)
@@ -709,7 +758,6 @@ void Form3::read_alarm_file (void)
 
 
     QFile alarm_file("./information_file/perevent/" + QString::number(current_user->ID) + "_alarm.txt");
-    qDebug() << "./information_file/perevent/" + QString::number(current_user->ID) + "_alarm.txt";
     if (!alarm_file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug() << "alarm_file not open in write_alarm_file";
@@ -720,7 +768,6 @@ void Form3::read_alarm_file (void)
     while (!alarm_in.atEnd())
     {
         QString line_temp = alarm_in.readLine();
-        qDebug() << line_temp;
         QTextStream line_in(&line_temp);
         Alarm alarm_temp;
         int IsUsed_value, IsRung_value;
@@ -729,14 +776,13 @@ void Form3::read_alarm_file (void)
         char erasespace;
         line_in >> erasespace;
         alarm_temp.tip = line_in.readLine();
-        qDebug() << alarm_temp.tip;
         alarm_temp.IsUsed = IsUsed_value;
         alarm_temp.IsRung = IsRung_value;
         alarm_temp.index = cnt;
 
         if (alarm_temp.event_tag == NONE || format_QString_to_Event(alarm_temp.tip, alarm_temp.alarm_event))
         {
-            qDebug() << alarm_temp.alarm_event.name;
+
             cnt ++;
             all_alarm.push_back(alarm_temp);
         }
@@ -753,10 +799,7 @@ void Form3::write_alarm_file (void)
         qDebug() << "alarm_file not open in write_alarm_file";
         return;
     }
-    qDebug() << "alarm_file open in write_alarm_file";
     QTextStream alarm_out(&alarm_file);
-//    alarm_out << "我是傻逼";
-//    qDebug() << "我是傻逼";
     for (auto single : all_alarm)
     {
         if (single.event_tag == CLASS)
@@ -768,7 +811,7 @@ void Form3::write_alarm_file (void)
         alarm_out << single.event_tag << " ";
         alarm_out << single.IsRung << " ";
         alarm_out << single.tip;
-        qDebug() << single.tip;
+
         if (single != *all_alarm.rbegin())
             alarm_out << "\n";
     }
@@ -782,10 +825,9 @@ void Form3::Ring (Alarm &single)
     QMediaPlayer *player = new QMediaPlayer;
     QAudioOutput * audioOutput = new QAudioOutput;
     player->setAudioOutput(audioOutput);
-    player->setSource(QUrl::fromLocalFile(":/mp3/alarm.wav"));
+    player->setSource(QUrl::fromLocalFile("../campus_management/mp3/alarm.wav"));
     audioOutput->setVolume(50);
     player->play();
-    qDebug() << player->isPlaying();
 
     vector<QString> tag_QString = {"课余活动", "临时活动", "", "课程"};
     QString text;
@@ -795,22 +837,29 @@ void Form3::Ring (Alarm &single)
 
     QMessageBox msgBox = QMessageBox(QMessageBox::Warning, "您有一个闹钟", text);
 
-
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    auto * yesButton = msgBox.button(QMessageBox::Yes);
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+    auto * yesButton = msgBox.button(QMessageBox::Save);
     yesButton->setText("跳转到导航");
-
+    auto * noButton = msgBox.button(QMessageBox::Cancel);
+    noButton->setText("OK");
 
     msgBox.exec();
 
 
     if (msgBox.clickedButton() == yesButton) {
+        player->stop();
+        delete player;
+        delete audioOutput;
         emit jmp_to_guide(single.alarm_event.building);
     }
+    else
+    {
+        player->stop();
+        delete player;
+        delete audioOutput;
+    }
 
-    player->stop();
-    delete player;
-    delete audioOutput;
+
 }
 
 QString Form3::alarm_to_format_QString(Event &tmp)
@@ -854,11 +903,20 @@ void Form3::on_deleteButton_clicked()
 
     int ID = model->item(row, 5)->data().toInt();
     int alarm_index = find_alarm_index(ID);
+    auto single = all_alarm.begin()+alarm_index;
+
+    qDebug()<<"删除为"<<single->tip<<"设置的闹钟";
     all_alarm.erase(all_alarm.begin()+alarm_index);
 
-    qDebug() << row;
 
     model->removeRows(row, 1);
+}
+
+
+void Form3::show_log(int num)
+{
+    if(num == 0)
+        ui->label_log->setText(current_user->log);
 }
 void Form3::set_time(const QString &tmp)
 {
@@ -921,3 +979,61 @@ void Form3::set_week()
     timeUpdate();
     }
 }
+
+void Form3::show_one_day_event()
+{
+    QString information;
+    _Time a;
+    ti->time_now();
+    int week =ti->week();
+    int now_hour = ti->hour();
+
+    if(now_hour<20)
+    {
+        ui->label_title->setText("今日事务");
+        int day= ti->day();
+        for(int hour = 6;hour<22;hour++)
+        {
+            vector<int> search_outcome = current_user->find_index(week,day,hour);
+            if(search_outcome.size()!=0)//该时间是否有事件
+            {
+                information.append(QString::number(hour)).append(":00 ~ ").append(QString::number(hour+1)).append(":00\t");
+                for(auto a:search_outcome)
+                {
+                    Event temp = current_user->perEvents[day-1][hour-6][a];
+                    information.append(temp.name).append("  ").append(temp.building.name_());
+                }
+                information.append("\n");
+            }
+        }
+        ui->label_one_day_event->setText(information);
+    }
+    else
+    {
+        ui->label_title->setText("明日事务");
+        int day= ti->day()+1;
+        for(int hour = 6;hour<22;hour++)
+        {
+            vector<int> search_outcome = current_user->find_index(week,day,hour);
+            if(search_outcome.size()!=0)//该时间是否有事件
+            {
+                information.append(QString::number(hour)).append(":00 ~ ").append(QString::number(hour+1)).append(":00\t");
+                for(auto a:search_outcome)
+                {
+                    Event temp = current_user->perEvents[day-1][hour-6][a];
+                    information.append(temp.name).append("  ").append(temp.building.name_());
+                }
+                information.append("\n");
+            }
+        }
+        ui->label_one_day_event->setText(information);
+    }
+
+
+}
+
+
+
+
+
+

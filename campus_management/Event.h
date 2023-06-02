@@ -26,6 +26,7 @@ struct duration {
     _Time end;
 };
 
+
 class Event               // 储存单个事件单次的信息,可以是课程也可以是其他事件
 {
 public:
@@ -36,6 +37,7 @@ public:
     friend class Form1;
     friend class Form2;
     friend class Form3;
+    friend class adminwdt;
 
 	friend bool cmp(Event,Event);
     void init();

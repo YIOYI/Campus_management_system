@@ -45,13 +45,13 @@ Form2::Form2(QWidget *parent) :
     ui->label->setPixmap(QPixmap::fromImage(*map_img));
     ui->label->adjustSize();
     ui->sa_map->setWidget(ui->label);
-    ui->plan_hour->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 }
 
 Form2::~Form2()
 {
     clear_map();
     delete ui;
+    delete m;
     delete map_img;
     delete guide_img;
     delete change_img;
@@ -159,7 +159,6 @@ void Form2::clear_map()
     ui->plan_week->setCurrentIndex(0);
     guide_break=1;
     paint_over=1;
-    qDebug("清空导航界面");
     guide_img=new QImage(*map_img);
     int w = ratio*guide_img->width();
     int h = ratio*guide_img->height();
@@ -179,7 +178,7 @@ void Form2::init_form2(Person*a,_Time *ti)
 void Form2::guide_anime(deque<int> &a)
 {
     paint_over=0;
-    qDebug("使用导航");
+    qDebug()<<"使用导航 出发地点"<<ui->search_src->text()<<"目的地点"<<ui->search_tar->text();
     QPainter painter(guide_img);
     painter.setPen(QPen(Qt::red,3,Qt::SolidLine,Qt::RoundCap));
     QImage *last_img = nullptr;
@@ -269,12 +268,11 @@ void Form2::guide_anime(deque<int> &a)
     }
     paint_over=1;
     painter.end();
-
-    qDebug()<<"paint success";
 }
 void Form2::plan_anime(deque<int> &a)
 {
-    qDebug("使用多事务规划");
+    QString time_log=QString("第%1周 周%2 %3点");
+    qDebug()<<"使用多事务规划,规划时间为"<<time_log;
     ui->label_guide_text->clear();
     ui->label_guide_text->setText("开始导航\n");
     QPainter painter(guide_img);
@@ -474,7 +472,6 @@ void Form2::show_event_info()
                 tmp+="事务："+iter.name+"  地点："+iter.building.name_()+"\n";
                 ui->label_event_text->setText(tmp);
             }
-
     }
     }
 
@@ -513,8 +510,9 @@ void Form2::guide_for_alarm(Building dest)
         bsrc=m->Get_i_Building(46);  //学五
 
     ui->search_src->setText(bsrc.name_());
-    ui->search_tar->setText(dest.name_());
+    ui->search_tar->setText(bsrc.name_());
 
+    qDebug()<<"从"<<bsrc.name_()<<"到"<<bsrc.name_()<<"导航";
     if(bsrc.id_()==dest.id_())
     {
         clear_map();
