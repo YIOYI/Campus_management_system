@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form2</class>
+ <widget class="QWidget" name="Form2">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1600</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1600</width>
+    <height>900</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1600</width>
+    <height>900</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QScrollArea" name="sa_map">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>210</y>
+     <width>1191</width>
+     <height>661</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>10000</width>
+     <height>10000</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(222, 245, 250);</string>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1189</width>
+      <height>659</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLineEdit" name="search_tar">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>40</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: 1px solid gray;/*设置边框的粗细，以及颜色*/
+border-radius: 10px;/*设置圆角的大小*/
+font: 12pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="placeholderText">
+    <string>请输入目的地点...</string>
+   </property>
+   <property name="clearButtonEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="search_src">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>40</y>
+     <width>191</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: 1px solid gray;/*设置边框的粗细，以及颜色*/
+border-radius: 10px;/*设置圆角的大小*/
+font: 12pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="placeholderText">
+    <string>请输入出发地点...</string>
+   </property>
+   <property name="clearButtonEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>40</y>
+     <width>41</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12pt &quot;Microsoft YaHei UI&quot;;</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;导航&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>90</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12pt &quot;Microsoft YaHei UI&quot;;</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;多事务规划&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>30</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/picture/arrow.png);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_back">
+   <property name="geometry">
+    <rect>
+     <x>-1</x>
+     <y>-1</y>
+     <width>1601</width>
+     <height>901</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(252, 238, 77);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QPushButton" name="bt_guide">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>160</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/picture/guide.png);
+background-color: rgba(255, 255, 255, 0);
+font: 16pt &quot;Microsoft YaHei UI&quot;;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="bt_clear">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>160</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/picture/clear.png);
+font: 16pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgba(255, 255, 255, 0);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>160</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_2">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>20</y>
+      <width>431</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/picture/happy.jpg);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_time">
+    <property name="geometry">
+     <rect>
+      <x>1190</x>
+      <y>10</y>
+      <width>391</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="bt_day">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>100</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/picture/week.png);
+background-color: rgba(229, 229, 229, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bt_hour">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>100</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/picture/hour.png);
+background-color: rgba(229, 229, 229, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="cb_week">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>40</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 0px solid gray;/*设置边框的粗细，以及颜色*/
+font: 700 10pt &quot;Microsoft YaHei UI&quot;;
+border-radius: 10px;/*设置圆角的大小*/
+background-color: rgb(243, 235, 137);
+</string>
+     </property>
+     <property name="placeholderText">
+      <string/>
+     </property>
+     <property name="frame">
+      <bool>false</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>第一周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第二周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第三周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第四周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第五周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第六周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第七周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第八周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第九周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第十周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第十一周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第十二周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第十三周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第十四周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第十五周</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第十六周</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_time">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>30</y>
+       <width>321</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+       <pointsize>12</pointsize>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border:1px solid gray;/*设置边框的粗细，以及颜色*/
+font: 12pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgba(229, 229, 229, 100);
+border-radius: 20px;/*设置圆角的大小*/</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bt_pause">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>100</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/picture/continue.png);
+background-color: rgba(229, 229, 229, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <zorder>label_time</zorder>
+    <zorder>bt_day</zorder>
+    <zorder>bt_hour</zorder>
+    <zorder>cb_week</zorder>
+    <zorder>bt_pause</zorder>
+   </widget>
+   <widget class="QLineEdit" name="plan_src">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>90</y>
+      <width>191</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid gray;/*设置边框的粗细，以及颜色*/
+border-radius: 10px;/*设置圆角的大小*/
+font: 12pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="placeholderText">
+     <string>请输入出发地点...</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_3">
+    <property name="geometry">
+     <rect>
+      <x>1240</x>
+      <y>200</y>
+      <width>341</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_event">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>321</width>
+       <height>661</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border:1px solid gray;/*设置边框的粗细，以及颜色*/
+background-color: rgba(229, 229, 229, 100);
+border-radius: 20px;/*设置圆角的大小*/</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_guide_text">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>320</y>
+       <width>281</width>
+       <height>331</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border:1px solid gray;/*设置边框的粗细，以及颜色*/
+background-color: rgba(255, 255, 255, 255);
+border-radius: 5px;/*设置圆角的大小*/</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_guide_title">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>270</y>
+       <width>161</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 700 14pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgba(255, 255, 255, 0);</string>
+     </property>
+     <property name="text">
+      <string>导航信息</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_event_title">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>161</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 700 14pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgba(255, 255, 255, 0);</string>
+     </property>
+     <property name="text">
+      <string>时段事件信息</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_event_text">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>90</y>
+       <width>281</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border:1px solid gray;/*设置边框的粗细，以及颜色*/
+background-color: rgba(255, 255, 255, 255);
+border-radius: 5px;/*设置圆角的大小*/</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QComboBox" name="plan_day">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>90</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid gray;/*设置边框的粗细，以及颜色*/
+border-radius: 10px;/*设置圆角的大小*/
+font: 12pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgb(255, 255, 255);
+</string>
+    </property>
+    <property name="placeholderText">
+     <string/>
+    </property>
+    <item>
+     <property name="text">
+      <string>周一</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>周二</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>周三</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>周四</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>周五</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>周六</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>周日</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="plan_hour">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>90</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid gray;/*设置边框的粗细，以及颜色*/
+border-radius: 10px;/*设置圆角的大小*/
+font: 12pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="placeholderText">
+     <string/>
+    </property>
+    <item>
+     <property name="text">
+      <string>请选择时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>6点--7点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>7点--8点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>8点--9点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>9点--10点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>10点--11点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>11点--12点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>12点--13点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>13点--14点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>14点--15点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>15点--16点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>16点--17点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>17点--18点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>18点--19点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>19点--20点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>20点--21点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>21点--22点</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="plan_week">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>90</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid gray;/*设置边框的粗细，以及颜色*/
+border-radius: 10px;/*设置圆角的大小*/
+font: 12pt &quot;Microsoft YaHei UI&quot;;
+background-color: rgb(255, 255, 255);
+</string>
+    </property>
+    <property name="placeholderText">
+     <string/>
+    </property>
+    <property name="frame">
+     <bool>false</bool>
+    </property>
+    <item>
+     <property name="text">
+      <string>第一周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第二周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第三周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第四周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第五周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第六周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第七周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第八周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第九周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第十周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第十一周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第十二周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第十三周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第十四周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第十五周</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>第十六周</string>
+     </property>
+    </item>
+   </widget>
+  </widget>
+  <zorder>frame_back</zorder>
+  <zorder>search_tar</zorder>
+  <zorder>search_src</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>frame</zorder>
+  <zorder>sa_map</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
