@@ -999,5 +999,3 @@ void Form3::show_one_day_event()
 
 
 
-
-
